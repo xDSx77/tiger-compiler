@@ -1,0 +1,17 @@
+===================================== ===========================================
+                              PTHL - Tiger
+================================================================================
+
+The goal of this project is to implement a full compiling program .
+
+===   MAKEFILE USAGE
+      make [target]
+target:
+    all   -  Generate the tc binary
+
+TC-0
+
+TC-0 is a weak form of TC-1 : the grammar is simpler: object-related productions are n
+ot to be supported at this stage . No command line option is supported.
+
+
