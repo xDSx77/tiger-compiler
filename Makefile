@@ -17,7 +17,7 @@ $(SRC_SCANNER): $(SCANNER)
 parse: $(SRC_PARSER)
 
 $(SRC_PARSER): $(PARSER)
-	bison -o $@ $<
+	bison -dv -o $@ $<
 
 $(BIN): $(SRC_SCANNER) $(SRC_PARSER)
 	$(CXX) $(CXXFLAGS) -o $@ $^
