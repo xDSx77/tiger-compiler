@@ -1,10 +1,8 @@
-%option debug nounput noyywrap
+%option noyywrap
 
 %{
-#include <iostream>
-#include <fstream>
 #define TOKEN(Type)
-  yy::parser::make_
+  yy::parser::make_ ## Type (loc)
 
 %}
 
@@ -13,7 +11,7 @@ LETTER      [a-zA-Z]
 STRING      "\""[a-zA-Z0-9]*"\""
 
 %%
-<<EOF>> yyterminate();
+<<EOF>>     yyterminate();
 "if"        return TOKEN(IF);
 "\n"        return TOKEN(NEWLINE);
 "nil"       return TOKEN(NIL);
@@ -62,6 +60,12 @@ STRING      "\""[a-zA-Z0-9]*"\""
 
 {LETTER}    return TOKEN(LETTER);
 {DIGIT}     return TOKEN(DIGIT);
-{STRING}    return TOKEN(DIGIT);
+{STRING}    return TOKEN(STRING);
 
 %%
+
+int main()
+{
+    yylex();
+    return 0;
+}

@@ -7,13 +7,17 @@
 %define filename_type {const std::string}
 %expect 0
 %defines
-%right ELSE THEN
+%left LETTER DIGIT STRING UNDER_S NIL
 %left OR
 %left AND
 %left SUP_EQ INF_EQ EQUAL SUP INF DIF
 %left PLUS MINUS
 %left MUL DIV
-%left LPAR RPAR
+%left LPAR RPAR LBRACK RBRACK LBRACE RBRACE
+%left ASSIGN
+%right ELSE THEN
+%right OF
+%right DO
 
 %token
                 NIL         "nil"
@@ -125,48 +129,32 @@ exp :
     { $$ = $1 }
   | STRING
     { $$ = $1 }
-
-/* Array and record creations. */
   | type-id LBRACK exp RBRACK OF exp
     { $$ = $1 $LBRACK $3 $RBRACK $OF $6 }
   | type-id LBRACE RBRACE
     { $$ = $1 $LBRACE $RBRACE }
   | type-id LBRACE id_exp RBRACE
     { $$ = $1 $LBRACE $3 $RBRACE }
-
-/* Object creation. */
   | NEW type-id
-  { $$ = $NEW $2 }
-
-/* Variables, field, elements of an array. */
+    { $$ = $NEW $2 }
   | lvalue
     { $$ = $1 }
-
-/* Function call. */
   | id LPAR RPAR
     { $$ = $1 $LPAR $RPAR }
   | id LPAR exp2 RPAR
     { $$ = $1 $LPAR $3 $RPAR }
-
-/* Method call. */
   | lvalue DOT id LPAR RPAR
     { $$ = $1 $DOT $3 $LPAR $RPAR }
   | lvalue DOT id LPAR exp2 RPAR
     { $$ = $1 $DOT $3 $LPAR $5 $RPAR }
-
-/* Operations. */
   | MINUS exp
     { $$ = - $2 }
   | exp op exp
     { $$ = $1 $2 $3 }
   | LPAR exps RPAR
     { $$ = $LPAR $2 $RPAR }
-
-/* Assignment. */
   | lvalue ASSIGN exp
     { $$ = $1 $ASSIGN $3 }
-
-/* Control structures. */
   | IF exp THEN exp
     { $$ = $IF $2 $THEN $4 }
   | IF exp THEN exp ELSE exp
@@ -205,28 +193,22 @@ decs :
     { $$ = s1 $2 }
 
 dec :
-/* Type declaration. */
     TYPE id EQUAL ty
     { $$ = $TYPE $2 $EQUAL $4 }
-/* Class definition (alternative form). */
   | CLASS id LBRACE classfields RBRACE
     { $$ = $CLASS $2 $LBRACE $4 $RBRACE }
   | CLASS id EXTENDS type-id LBRACE classfields RBRACE
     { $$ = $CLASS $2 $EXTENDS $4 $LBRACE $6 $RBRACE }
-/* Variable declaration. */
   | vardec
     { $$ = $1; }
-/* Function declaration. */
   | FUNCTION id LPAR tyfields RPAR EQUAL exp
     { $$ = sFUNCTION $2 $LPAR $4 $RPAR $EQUAL $7 }
   | FUNCTION id LPAR tyfields RPAR COLON type-id EQUAL exp
     { $$ = sFUNCTION $2 $LPAR $4 $RPAR $COLON $7 $EQUAL $9 }
-/* Primitive declaration. */
   | PRIMITIVE id LPAR tyfields RPAR
     { $$ = sPRIMITIVE $2 $LPAR $4 $RPAR }
   | PRIMITIVE id LPAR tyfields RPAR COLON type-id
     { $$ = sPRIMITIVE $2 $LPAR $4 $RPAR $COLON $7 }
-/* Importing a set of declarations. */
   | IMPORT STRING
     { $$ = $IMPORT $STRING}
 
@@ -241,29 +223,21 @@ classfields :
   | classfield classfields
     {$$ = $1 $2}
 
-/* Class fields. */
 classfield :
-/* Attribute declaration. */
     vardec
     { $$ = $1}
-/* Method declaration. */
   | METHOD id LPAR tyfields RPAR EQUAL exp
     { $$ = $METHOD $2 $LPAR $4 $RPAR $EQUAL $7}
   | METHOD id LPAR tyfields RPAR COLON type-id EQUAL exp
     { $$ = $METHOD $2 $LPAR $4 $RPAR $COLON $7 $EQUAL $9}
 
-/* Types. */
 ty :
-/* Type alias. */
     type-id
     { $$ = $1}
-/*  Record type definition. */
   | LBRACE tyfields RBRACE
     { $$ = $LBRACE $2 $RBRACE}
-/* Array type definition. */
   | ARRAY OF type-id
     { $$ = $ARRAY $OF $3}
-/* Class definition (canonical form). */
   | CLASS LBRACE classfields RBRACE
     { $$ = $CLASS $LBRACE $3 $RBRACE}
   | CLASS EXTENDS type-id LBRACE classfields RBRACE
@@ -310,7 +284,6 @@ op:
     { $$ = |}
 
 %%
-/* Part 3 */
 
 int main()
 {
