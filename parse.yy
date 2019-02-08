@@ -7,8 +7,15 @@
 %define filename_type {const std::string}
 %expect 0
 %defines
+%right ELSE THEN
+%left OR
+%left AND
+%left SUP_EQ INF_EQ EQUAL SUP INF DIF
+%left PLUS MINUS
+%left MUL DIV
+%left LPAR RPAR
 
-%token          NEWLINE     "\n"
+%token
                 NIL         "nil"
                 NEW         "new"
                 OF          "of"
@@ -82,7 +89,6 @@ sev_choices :
     { $$ = $DIGIT $2}
   | UNDER_S sev_choices
     { $$ = $UNDER_S $2}
-
 
 id :
     LETTER
@@ -306,3 +312,8 @@ op:
 %%
 /* Part 3 */
 
+int main()
+{
+    yylex();
+    return 0;
+}
