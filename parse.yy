@@ -7,16 +7,16 @@
 %define filename_type {const std::string}
 %expect 0
 %defines
+
 %left LETTER DIGIT STRING UNDER_S NIL
-%left OR
-%left AND
-%left SUP_EQ INF_EQ EQUAL SUP INF DIF
-%left PLUS MINUS
+%right OR
+%right AND
+%right SUP_EQ INF_EQ EQUAL SUP INF DIF
+%right PLUS MINUS
 %left MUL DIV
-%left LPAR RPAR LBRACK RBRACK LBRACE RBRACE
+%right LPAR LBRACK LBRACE RPAR RBRACE RBRACK OF
 %left ASSIGN
 %right ELSE THEN
-%right OF
 %right DO
 
 %token
@@ -101,7 +101,8 @@ id :
     { $$ = $LETTER $2}
 
 id_exp:
-    id EQUAL exp
+
+  | id EQUAL exp
     { $$ = $1 $EQUAL $3 }
   | id EQUAL exp COMMA id_exp
     { $$ = $1 $EQUAL $3 $COMMA $5 }
@@ -117,7 +118,8 @@ integer :
 
 
 exp2:
-    exp
+
+  |  exp
     { $$ = $1 }
   | exp COMMA exp2
     { $$ = $1 $COMMA $3 }
@@ -131,26 +133,42 @@ exp :
     { $$ = $1 }
   | type-id LBRACK exp RBRACK OF exp
     { $$ = $1 $LBRACK $3 $RBRACK $OF $6 }
-  | type-id LBRACE RBRACE
-    { $$ = $1 $LBRACE $RBRACE }
   | type-id LBRACE id_exp RBRACE
     { $$ = $1 $LBRACE $3 $RBRACE }
   | NEW type-id
     { $$ = $NEW $2 }
   | lvalue
     { $$ = $1 }
-  | id LPAR RPAR
-    { $$ = $1 $LPAR $RPAR }
   | id LPAR exp2 RPAR
     { $$ = $1 $LPAR $3 $RPAR }
-  | lvalue DOT id LPAR RPAR
-    { $$ = $1 $DOT $3 $LPAR $RPAR }
   | lvalue DOT id LPAR exp2 RPAR
     { $$ = $1 $DOT $3 $LPAR $5 $RPAR }
   | MINUS exp
     { $$ = - $2 }
-  | exp op exp
+  | exp MINUS exp
+    { $$ = $1 - $3 }
+  | exp PLUS exp
+    { $$ = $1 + $3 }
+  | exp AND exp
+    { $$ = $1 & $3 }
+  | exp INF_EQ exp
     { $$ = $1 $2 $3 }
+  | exp SUP_EQ exp
+    { $$ = $1 $2 $3 }
+  | exp SUP exp
+    { $$ = $1 > $3 }
+  | exp INF exp
+    { $$ = $1 < $3 }
+  | exp DIF exp
+    { $$ = $1 $2 $3 }
+  | exp EQUAL exp
+    { $$ = $1 = $3 }
+  | exp DIV exp
+    { $$ = $1 / $3 }
+  | exp MUL exp
+    { $$ = $1 * $3 }
+  | exp OR exp
+    { $$ = $1 | $3 }
   | LPAR exps RPAR
     { $$ = $LPAR $2 $RPAR }
   | lvalue ASSIGN exp
@@ -169,7 +187,7 @@ exp :
     { $$ = $LET $2 $IN $4 $END }
 
 lvalue :
-    id
+    type-id
     { $$ = s1 }
   | lvalue DOT id
     { $$ = $1 $DOT $3 }
@@ -256,32 +274,6 @@ tyfields :
 type-id :
     id
     { $$ = $1}
-
-op:
-    MUL
-    { $$ = *}
-  | DIV
-    { $$ = /}
-  | PLUS
-    { $$ = +}
-  | MINUS
-    { $$ = -}
-  | INF_EQ
-    { $$ = <=}
-  | SUP_EQ
-    { $$ = >=}
-  | EQUAL
-    { $$ = =}
-  | DIF
-    { $$ = <>}
-  | INF
-    { $$ = <}
-  | SUP
-    { $$ = >}
-  | AND
-    { $$ = &}
-  | OR
-    { $$ = |}
 
 %%
 
