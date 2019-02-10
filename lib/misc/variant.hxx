@@ -42,7 +42,7 @@ namespace misc
   template <typename U>
   variant<T, Ts...>::operator const U&() const
   {
-  // FIXME: Some code was deleted here.
+      return *this;
   }
 
   template <typename T, typename... Ts>
