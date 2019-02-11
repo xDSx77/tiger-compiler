@@ -73,12 +73,9 @@ string          "\""([^\\]|\\.)*"\""
 {int}         {
                 int val = 0;
                 if (std::stoi(yytext))
-                    val = std::stoi(std::string(yytext));
-  // FIXME: Some code was deleted here (Decode, and check the value).
+                    val = std::stoi(yytext);
                 return TOKEN_VAL(INT, val);
               }
-{id}            return TOKEN(ID);
-{string}        return TOKEN(STRING);
 "if"            return TOKEN(IF);
 "nil"           return TOKEN(NIL);
 "then"          return TOKEN(THEN);
@@ -123,6 +120,9 @@ string          "\""([^\\]|\\.)*"\""
 ">"             return TOKEN(GT);
 "&"             return TOKEN(AND);
 "|"             return TOKEN(OR);
+{id}            return TOKEN_VAL(ID, yytext);
+{string}        return TOKEN_VAL(STRING, {yytext+1, yyleng-2});
+[ \t]+          tp.location_.step();
 \n+             tp.location_.line(yyleng); tp.location_.step();
 
 %%

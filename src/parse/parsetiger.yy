@@ -237,7 +237,7 @@ exp:
   INT
     { $$ = new ast::IntExp(@$, $1); }
 | NIL
-    { $$ = new ast::NilExp(); }
+    { $$ = new ast::NilExp(@$); }
 | STRING
     { $$ = new ast::StringExp(@$, $1); }
 | ID LBRACK exp RBRACK OF exp
@@ -279,7 +279,7 @@ exp:
 | exp OR exp
     { $$ = $1 "|" $3 }
 | LPAREN exps RPAREN
-    { $$ = "(" $2 ")"; }
+    { $$ = new ast::SeqExp(@$, $2); }
 | lvalue ASSIGN exp
     { $$ = $1 ":=" $3; }
 | IF exp THEN exp
@@ -302,8 +302,8 @@ lvalue:
     { $$ = $1; }
 
 lvalue_b:
-  ID OF LBRACK exp RBRACK
-    { $$ = $ID "of" "{" $4 "}"; }
+  ID LBRACK exp RBRACK
+    { $$ = $ID "{" $3 "}"; }
 | lvalue_b LBRACK exp RBRACK
     { $$ = $1 "{" $3 "}"; }
 
@@ -348,7 +348,11 @@ dec:
 | PRIMITIVE ID LPAREN tyfields RPAREN COLON ID
     { $$ = "primitive" $2 "(" $4 ")" ":" $7; }
 | IMPORT STRING
-    { $$ = "import" $STRING; }
+    {
+      $$ = tp.parse_import(take($2), @$);
+      if (!$$)
+        $$ = new ast::decs_list_type;
+    }
 
 vardec:
   VAR ID ASSIGN exp
@@ -399,5 +403,6 @@ tyfields:
 void
 parse::parser::error(const location_type& l, const std::string& m)
 {
-  // FIXME: Some code was deleted here.
+  tp.error_ << misc::Error::parse
+            << l << ": " << m << '\n';
 }
