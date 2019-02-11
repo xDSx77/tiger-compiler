@@ -25,6 +25,8 @@
 #include <parse/parsetiger.hh>
 #include <parse/tiger-parser.hh>
 
+#define YY_USER_ACTION tp.location_.columns(yyleng);
+
   // FIXME: Some code was deleted here.
 
 // Convenient shortcuts.
@@ -54,7 +56,9 @@ YY_FLEX_NAMESPACE_BEGIN
 
 /* Abbreviations.  */
 int             [0-9]+
-  /* FIXME: Some code was deleted here. */
+id              [a-zA-Z][a-zA-Z_0-9]*
+string          "\""([^\\]|\\.)*"\""
+
 %%
 %{
   // FIXME: Some code was deleted here (Local variables).
@@ -65,13 +69,62 @@ int             [0-9]+
 
  /* The rules.  */
 
+<<EOF>>         yyterminate();
 {int}         {
                 int val = 0;
+                if (std::stoi(yytext))
+                    val = std::stoi(std::string(yytext));
   // FIXME: Some code was deleted here (Decode, and check the value).
                 return TOKEN_VAL(INT, val);
               }
+{id}            return TOKEN(ID);
+{string}        return TOKEN(STRING);
+"if"            return TOKEN(IF);
+"nil"           return TOKEN(NIL);
+"then"          return TOKEN(THEN);
+"else"          return TOKEN(ELSE);
+"while"         return TOKEN(WHILE);
+"do"            return TOKEN(DO);
+"for"           return TOKEN(FOR);
+"to"            return TOKEN(TO);
+"break"         return TOKEN(BREAK);
+"let"           return TOKEN(LET);
+"in"            return TOKEN(IN);
+"end"           return TOKEN(END);
+"assign"        return TOKEN(ASSIGN);
+"type"          return TOKEN(TYPE);
+"class"         return TOKEN(CLASS);
+"extends"       return TOKEN(EXTENDS);
+"function"      return TOKEN(FUNCTION);
+"import"        return TOKEN(IMPORT);
+"primitive"     return TOKEN(PRIMITIVE);
+"var"           return TOKEN(VAR);
+"method"        return TOKEN(METHOD);
+"array"         return TOKEN(ARRAY);
+"."             return TOKEN(DOT);
+","             return TOKEN(COMMA);
+":"             return TOKEN(COLON);
+";"             return TOKEN(SEMICOLON);
+"*"             return TOKEN(MUL);
+"/"             return TOKEN(DIV);
+"+"             return TOKEN(PLUS);
+"-"             return TOKEN(MINUS);
+"("             return TOKEN(LPAR);
+")"             return TOKEN(RPAR);
+"["             return TOKEN(LBRACK);
+"]"             return TOKEN(RBRACK);
+"{"             return TOKEN(LBRACE);
+"}"             return TOKEN(RBRACE);
+">="            return TOKEN(SUP_EQ);
+"<="            return TOKEN(INF_EQ);
+"="             return TOKEN(EQUAL);
+"<>"            return TOKEN(DIF);
+"<"             return TOKEN(INF);
+">"             return TOKEN(SUP);
+"&"             return TOKEN(AND);
+"|"             return TOKEN(OR);
+\n+             tp.location_.line(yyleng); tp.location_.step();
 
-  /* FIXME: Some code was deleted here. */
 %%
 
 // Do not use %option noyywrap, because then flex generates the same
