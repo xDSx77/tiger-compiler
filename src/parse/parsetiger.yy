@@ -184,14 +184,14 @@
 %type <ast::Exp*> exp2
 %type <ast::Exp*> exp3
 %type <ast::Ty*> ty
-%type <ast::Ty::RecordTy*> tyfields
-%type <ast::Ty::RecordTy*> id_comma
+%type <ast::RecordTy*> tyfields
+%type <ast::RecordTy*> id_comma
 %type <ast::Dec*> dec
-%type <ast::Dec::VarDec*> vardec
+%type <ast::VarDec*> vardec
 %type <ast::FieldInit*> classfields
 %type <ast::Field*> classfield
-%type <ast::Exp::SeqExp*> lvalue
-%type <ast::Exp::SeqExp*> lvalue_b
+%type <ast::SeqExp*> lvalue
+%type <ast::SeqExp*> lvalue_b
 
 %left OR
 %left AND
