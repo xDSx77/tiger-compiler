@@ -90,7 +90,6 @@
 
   // FIXME: Some code was deleted here (Printers and destructors).
 
-
 /*-----------------------------------------.
 | Code output in the implementation file.  |
 `-----------------------------------------*/
@@ -215,7 +214,6 @@ program:
 | /* Parsing an imported file.  */
   decs
     { tp.ast_ = $1; }
-;
 
 id_exp:
   %empty

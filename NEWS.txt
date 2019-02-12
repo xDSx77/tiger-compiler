@@ -1,3 +1,8 @@
+New in 1.73, 2019-02-09
+
+* General Maintainance
+  - buildfarm: fix minors details 
+
 New in 1.72, 2019-02-03
 
 * General Maintainance
