@@ -37,6 +37,30 @@ namespace ast
 
 } // namespace ast
 
-
-  // FIXME: Some code was deleted here.
-
+std::string
+str(ast::OpExp::Oper oper);
+{
+  switch (oper)
+  {
+    case add:
+      return "+";
+    case sub:
+      return "-";
+    case mul:
+      return "*";
+    case div:
+      return "/";
+    case eq:
+      return "=";
+    case ne:
+      return "<>";
+    case lt:
+      return "<";
+    case le:
+      return "<=";
+    case gt:
+      return ">";
+    case ge:
+      return ">=";
+  }
+}

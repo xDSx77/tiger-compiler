@@ -14,7 +14,35 @@ namespace ast
   /// StringExp.
   class StringExp : public Exp
   {
-  // FIXME: Some code was deleted here.
+
+  public:
+    /** \name Ctor & dtor.
+     ** \{ */
+    /// Construct a StringExp node.
+    StringExp(const Location& location, std::string s);
+    StringExp(const StringExp&) = delete;
+    StringExp& operator=(const StringExp&) = delete;
+    /// Destroy a StringExp node.
+    virtual ~StringExp();
+    /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    void accept(ConstVisitor& v) const override;
+    /// Accept a non-const visitor \a v.
+    void accept(Visitor& v) override;
+    /// \}
+
+    /** \name Accessors.
+     ** \{ */
+    /// Return value of the string.
+    std::string value_get() const;
+    /** \} */
+
+  protected:
+    /// Value of the string.
+    std::string s_;
   };
 
 } // namespace ast
