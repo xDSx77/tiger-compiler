@@ -38,29 +38,29 @@ namespace ast
 } // namespace ast
 
 std::string
-str(ast::OpExp::Oper oper);
+str(ast::OpExp::Oper oper)
 {
   switch (oper)
   {
-    case add:
+    case ast::OpExp::Oper::add:
       return "+";
-    case sub:
+    case ast::OpExp::Oper::sub:
       return "-";
-    case mul:
+    case ast::OpExp::Oper::mul:
       return "*";
-    case div:
+    case ast::OpExp::Oper::div:
       return "/";
-    case eq:
+    case ast::OpExp::Oper::eq:
       return "=";
-    case ne:
+    case ast::OpExp::Oper::ne:
       return "<>";
-    case lt:
+    case ast::OpExp::Oper::lt:
       return "<";
-    case le:
+    case ast::OpExp::Oper::le:
       return "<=";
-    case gt:
+    case ast::OpExp::Oper::gt:
       return ">";
-    case ge:
+    case ast::OpExp::Oper::ge:
       return ">=";
   }
 }

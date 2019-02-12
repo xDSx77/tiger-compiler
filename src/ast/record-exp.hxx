@@ -10,12 +10,12 @@
 namespace ast
 {
 
-  inline const Ty::NameTy&
+  inline const NameTy&
   RecordExp::type_get() const
   {
     return *type_;
   }
-  inline Ty:NameTy&
+  inline NameTy&
   RecordExp::type_get()
   {
     return *type_;

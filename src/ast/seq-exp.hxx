@@ -17,7 +17,7 @@ namespace ast
   }
 
   inline Exp&
-  SeqExp::exp_get() const
+  SeqExp::exp_get()
   {
     return *exp_;
   }
