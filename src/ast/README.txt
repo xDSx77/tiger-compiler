@@ -30,7 +30,7 @@ Incomplete classes are tagged with a `*'.
     NilExp          ()
 *   ObjectExp
     OpExp           (Exp left, Oper oper, Exp right)
-*   RecordExp
+    RecordExp       (NameTy type, FieldInit field)
     SeqExp          (Exp exp)
     StringExp       (string s)
     WhileExp        (Exp test, Exp body)

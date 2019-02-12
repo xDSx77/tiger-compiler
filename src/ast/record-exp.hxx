@@ -10,7 +10,28 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  inline const Ty::NameTy&
+  RecordExp::type_get() const
+  {
+    return *type_;
+  }
+  inline Ty:NameTy&
+  RecordExp::type_get()
+  {
+    return *type_;
+  }
+
+  inline const FieldInit&
+  RecordExp::field_get() const
+  {
+    return *field_;
+  }
+  inline FieldInit&
+  RecordExp::field_get()
+  {
+    return *field_;
+  }
+
 
 } // namespace ast
 

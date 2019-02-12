@@ -10,6 +10,12 @@
 namespace ast
 {
 
+  inline const Exp&
+  SeqExp::exp_get() const
+  {
+    return *exp_;
+  }
+
   inline Exp&
   SeqExp::exp_get() const
   {

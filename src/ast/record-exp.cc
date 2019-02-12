@@ -10,7 +10,30 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  RecordExp::RecordExp(const Location& location, Ty::NameTy* type,
+                      FieldInit* field)
+    : Exp(location)
+    , type_(type)
+    , field_(field)
+  {}
+
+  RecordExp::~RecordExp()
+  {
+    delete type_;
+    delete field_;
+  }
+
+  void
+  RecordExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  RecordExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 

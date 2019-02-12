@@ -36,7 +36,9 @@ namespace ast
     /** Name Accessors.
      ** \{ */
     /// Return exp.
-    Exp& exp_get() const;
+    const Exp& exp_get() const;
+    /// Return exp.
+    Exp& exp_get();
     /** \} */
 
   protected:

@@ -11,7 +11,8 @@ namespace ast
 {
 
   SeqExp::SeqExp(const Location& location, Exp* exp)
-    : exp_(exp)
+    : Exp(location)
+    , exp_(exp)
   {}
 
   SeqExp::~SeqExp()
