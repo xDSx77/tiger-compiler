@@ -36,14 +36,14 @@ namespace misc
   inline const typename unique<T, C>::data_type&
   unique<T, C>::get() const
   {
-      return obj_;
+      return *obj_;
   }
 
   template <typename T, class C>
   inline
   unique<T, C>::operator const data_type&() const
   {
-      return T;
+      return get();
   }
 
   template <typename  T, class C>

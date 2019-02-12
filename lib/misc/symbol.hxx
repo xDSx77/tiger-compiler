@@ -13,25 +13,26 @@ namespace misc
   inline symbol&
   symbol::operator=(const symbol& rhs)
   {
-    return *this->symbol(rhs.obj_);
+    obj_ = rhs.obj_;
+    return *this;
   }
 
   inline bool
   symbol::operator==(const symbol& rhs) const
   {
-    return (this->obj_ == rhs.obj_);
+    return (*this->obj_ == rhs.get());
   }
 
   inline bool
   symbol::operator!=(const symbol& rhs) const
   {
-    return !(this->obj_ == rhs.obj_);
+    return !(*this->obj_ == rhs.get());
   }
 
   inline std::ostream&
   operator<<(std::ostream& ostr, const symbol& the)
   {
-    return ostr << the.obj_;
+    return ostr << the.get();
   }
 
 }
