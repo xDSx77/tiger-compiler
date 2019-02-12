@@ -10,7 +10,11 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  inline Exp&
+  SeqExp::exp_get() const
+  {
+    return *exp_;
+  }
 
 } // namespace ast
 

@@ -13,7 +13,35 @@ namespace ast
   /// SeqExp.
   class SeqExp : public Exp
   {
-  // FIXME: Some code was deleted here.
+
+  public:
+    /** \name Ctor & dtor.
+     ** \{ */
+    /// Construct a SeqExp node.
+    SeqExp(const Location& location, Exp* exp);
+    SeqExp(const SeqExp&) = delete;
+    SeqExp& operator=(const SeqExp&) = delete;
+    /// Destroy a SeqExp node.
+    virtual ~SeqExp();
+    /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    void accept(ConstVisitor& v) const override;
+    /// Accept a non-const visitor \a v.
+    void accept(Visitor& v) override;
+    /// \}
+
+    /** Name Accessors.
+     ** \{ */
+    /// Return exp.
+    Exp& exp_get() const;
+    /** \} */
+
+  protected:
+    /// Exp.
+    Exp* exp_;
   };
 
 } // namespace ast
