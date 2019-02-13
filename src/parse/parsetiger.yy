@@ -88,6 +88,7 @@
 # include <ast/decs-list.hh>
 }
 
+%destructor { delete $$; } exp
   // FIXME: Some code was deleted here (Printers and destructors).
 
 /*-----------------------------------------.
@@ -301,9 +302,9 @@ lvalue:
 
 lvalue_b:
   ID LBRACK exp RBRACK
-    { $$ = $ID "{" $3 "}"; }
+    { $$ = new SubsriptVar(@$, new SimpleVar(@1, $1), $3); }
 | lvalue_b LBRACK exp RBRACK
-    { $$ = $1 "{" $3 "}"; }
+    { $$ = new SubsriptVar(@$, $1, $3); }
 
 exp3:
   exp
@@ -349,7 +350,7 @@ dec:
     {
       $$ = tp.parse_import(take($2), @$);
       if (!$$)
-        $$ = new ast::decs_list_type;
+        $$ = new ast::DecsList;
     }
 
 vardec:
@@ -402,5 +403,5 @@ void
 parse::parser::error(const location_type& l, const std::string& m)
 {
   tp.error_ << misc::Error::parse
-            << l << ": " << m << '\n';
+            << l << ": " << m << std::endl;
 }

@@ -57,25 +57,75 @@ YY_FLEX_NAMESPACE_BEGIN
 /* Abbreviations.  */
 int             [0-9]+
 id              [a-zA-Z][a-zA-Z_0-9]*
-string          "\""([^\\]|\\.)*"\""
+/*string          "\""([^\\]|\\.)*"\""*/
 
 %%
 %{
-  // FIXME: Some code was deleted here (Local variables).
-
+  static int comments_ = 0;
+  std::string grown_string = "";
   // Each time yylex is called.
   tp.location_.step();
 %}
 
  /* The rules.  */
 
-<<EOF>>         yyterminate();
-{int}         {
-                int val = 0;
-                if (std::stoi(yytext))
-                    val = std::stoi(yytext);
-                return TOKEN_VAL(INT, val);
+"\""            grown_string.clear(); BEGIN SC_STRING;
+
+<SC_STRING>{ /* Handling of the strings. Initial " is eaten */
+  "\""        {
+                BEGIN INITIAL;
+                return TOKEN_VAL(STRING, grown_string);
               }
+  <<EOF>>     {
+                yy::parser::error(tp.location_, "Unterminated string");
+                yyterminate();
+              }
+  "\\a"         grown_string.append(1, "\\a");
+  "\\b"         grown_string.append(1, "\\b");
+  "\\f"         grown_string.append(1, "\\f");
+  "\\n"         grown_string.append(1, "\\n");
+  "\\r"         grown_string.append(1, "\\r");
+  "\\t"         grown_string.append(1, "\\t");
+  "\\v"         grown_string.append(1, "\\v");
+  \\int       {
+                if (strtol(yytext + 2, 0, 10) > 255)
+                {
+                  yy::parser::error(tp.location_, "Illegal octal value");
+                  yyterminate();
+                }
+                grown_string.append(1, strtol(yytext + 2, 0, 8));
+              }
+  [ \t]+        tp.location_.step();
+  \n+           tp.location_.line(yyleng); tp.location_.step();
+  \\x[0-9a-fA-F]{2}
+              {
+                grown_string.append(1, strtol(yytext + 2, 0, 16));
+              }
+  .             grown_string.append(1, yytext);
+}
+
+"/*"            comments_++; BEGIN SC_COMMENT;
+
+<SC_COMMENT>{
+  "/*"          comments_++; BEGIN SC_COMMENT;
+  <<EOF>>     {
+                yy::parser::error(tp.location_, "Unterminated comment");
+                yyterminate();
+              }
+  [ \t]+          tp.location_.step();
+  \n+             tp.location_.line(yyleng); tp.location_.step();
+  "*/"        {
+                comments_--;
+                if (comments_ == 0)
+                  BEGIN_INITIAL;
+              }
+}
+"*/"          {
+                yy::parser::error(tp.location_, "Unexpected end of comment");
+                yyterminate();
+              }
+<<EOF>>         yyterminate();
+{int}           return TOKEN_VAL(INT, std::stoi(yytext));
 "if"            return TOKEN(IF);
 "nil"           return TOKEN(NIL);
 "then"          return TOKEN(THEN);
@@ -121,7 +171,6 @@ string          "\""([^\\]|\\.)*"\""
 "&"             return TOKEN(AND);
 "|"             return TOKEN(OR);
 {id}            return TOKEN_VAL(ID, yytext);
-{string}        return TOKEN_VAL(STRING, {yytext+1, yyleng-2});
 [ \t]+          tp.location_.step();
 \n+             tp.location_.line(yyleng); tp.location_.step();
 

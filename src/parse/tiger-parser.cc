@@ -96,7 +96,13 @@ namespace parse
                  << &misc::error::exit;
       }
 
-  // FIXME: Some code was deleted here (Initialize the scanner and parser, then parse and close).
+    scanner_->scan_open(*in);
+    parser parser(*this);
+    parser.set_debug_level(parse_trace_p_);
+    decs_ = nullptr;
+    exp_ = nullptr;
+    parser.parse();
+    scanner_->scan_close();
     ast_type res = ast_;
     ast_ = static_cast<ast::Exp*>(nullptr);
 
