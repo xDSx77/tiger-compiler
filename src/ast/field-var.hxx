@@ -11,12 +11,12 @@ namespace ast
 {
 
   inline const Var&
-  CastVar::var_get() const
+  FieldVar::var_get() const
   {
     return *var_;
   }
   inline Var&
-  CastVar::var_get()
+  FieldVar::var_get()
   {
     return *var_;
   }

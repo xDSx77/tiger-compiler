@@ -15,7 +15,7 @@ namespace ast
   class FieldVar : public Var
   {
   // FIXME: Some code was deleted here.
-    FieldVar(const Location& Location, Var* var, const misc::symbol& name);
+    FieldVar(const Location& location, Var* var, const misc::symbol& name);
     FieldVar(const FieldVar&) = delete;
     FieldVar& operator=(const FieldVar&) = delete;
 
