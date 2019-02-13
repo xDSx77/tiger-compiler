@@ -17,12 +17,12 @@ namespace ast
     public:
     /** \name Ctor & dtor.
      ** \{ */
-    /// Construct a RecordExp node.
+    /// Construct a ArrayExp node.
     ArrayExp(const Location& location, Exp* exp ,NameTy* type);
     ArrayExp(const ArrayExp&) = delete;
     ArrayExp& operator=(const ArrayExp&) = delete;
-    /// Destroy a RecordExp node.
-    virtual ~RecordExp();
+    /// Destroy a ArrayExp node.
+    virtual ~ArrayExp();
     /** \} */
 
     /// \name Visitors entry point.
@@ -35,9 +35,9 @@ namespace ast
 
     /** \name Accessors.
      ** \{ */
-    // Return the cast expression.
+    /// Return the expression.
     const Exp& exp_get() const;
-    /// Return the cast expression.
+    /// Return the expression.
     Exp& exp_get();
     /// Return field.
     const FieldInit& field_get() const;
@@ -46,9 +46,9 @@ namespace ast
     /** \} */
 
     protected:
-    /// The cast expression.
+    /// The expression.
     Exp* exp_;
-    /// Type.
+    /// The type.
     NameTy* type_;
   };
 

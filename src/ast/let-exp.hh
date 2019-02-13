@@ -15,7 +15,42 @@ namespace ast
   /// LetExp.
   class LetExp : public Exp
   {
-  // FIXME: Some code was deleted here.
+  public:
+    /** \name Ctor & dtor.
+     ** \{ */
+    /// Construct a LetExp node.
+    LetExp(const Location& location, DecsList* decs, Exp* body);
+    LetExp(const LetExp&) = delete;
+    LetExp& operator=(const LetExp&) = delete;
+    /// Destroy a LetExp node.
+    virtual ~LetExp();
+    /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    void accept(ConstVisitor& v) const override;
+    /// Accept a non-const visitor \a v.
+    void accept(Visitor& v) override;
+    /// \}
+
+    /** \name Accessors.
+     ** \{ */
+    /// Return declarations of the let.
+    const DecsList& decs_get() const;
+    /// Return declarations of the let.
+    DecsList& decs_get();
+    /// Return expression in the let.
+    const Exp& body_get() const;
+    /// Return expression in the let.
+    Exp& body_get();
+    /** \} */
+
+  protected:
+    /// Declarations of the let.
+    DecsList* decs_;
+    /// Expression executed in the let.
+    Exp* body_;
   };
 
 } // namespace ast

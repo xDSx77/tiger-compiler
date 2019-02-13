@@ -9,7 +9,8 @@
 
 namespace ast
 {
-    CallExp::CallExp(const Location& location, Exp* body, FunctionDec* dec, const misc::symbol& name);
+    CallExp::CallExp(const Location& location, Exp* body, FunctionDec* dec,
+                    const misc::symbol& name);
     : Exp(location)
     , body_(body)
     , dec_(dec)

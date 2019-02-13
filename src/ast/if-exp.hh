@@ -10,17 +10,17 @@
 
 namespace ast
 {
-    /// WhileExp.
+    /// IfExp.
     class IfExp : public Exp
     {
     public:
     /** \name Ctor & dtor.
      ** \{ */
-    /// Construct a WhileExp node.
+    /// Construct a IfExp node.
       IfExp(const Location& location, Exp* test, Exp* body, Exp* body_2);
       IfExp(const IfExp&) = delete;
       IfExp& operator=(const IfExp&) = delete;
-      /// Destroy a WhileExp node.
+      /// Destroy a IfExp node.
       virtual ~IfExp();
       /** \} */
 
@@ -34,25 +34,25 @@ namespace ast
 
       /** \name Accessors.
        ** \{ */
-      /// Return exit condition of the loop.
+      /// Return condition of the if.
       const Exp& test_get() const;
-      /// Return exit condition of the loop.
+      /// Return condition of the if.
       Exp& test_get();
-      /// Return instructions executed in the loop.
+      /// Return instructions executed in the then.
       const Exp& body_get() const;
-      /// Return instructions executed in the loop.
+      /// Return instructions executed in the then.
       Exp& body_get();
-      /// Return instructions executed in the loop.
+      /// Return instructions executed in the else.
       const Exp& body_2_get() const;
-      /// Return instructions executed in the loop.
+      /// Return instructions executed in the else.
       Exp& body_2_get();
 
       /** \} */
 
   protected:
-    /// Exit condition of the loop.
+    /// Condition of the if.
     Exp* test_;
-    /// Instructions executed in the loop.
+    /// Instructions executed in the then.
     Exp* body_;
     /// Instructions executed in the else.
     Exp* body_2_;

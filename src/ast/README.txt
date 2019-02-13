@@ -17,7 +17,7 @@ Incomplete classes are tagged with a `*'.
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
-*   ArrayExp (Exp exp, NameTy type)
+*   ArrayExp        (Exp exp, NameTy type)
 *   AssignExp
 *   BreakExp
 *   CallExp
@@ -26,13 +26,13 @@ Incomplete classes are tagged with a `*'.
     ForExp          (VarDec vardec, Exp hi, Exp body)
 *   IfExp           (Exp test, Exp body,Exp body_2)
     IntExp          (int value)
-*   LetExp
+*   LetExp          (DecsList decs, Exp body)
     NilExp          ()
 *   ObjectExp
     OpExp           (Exp left, Oper oper, Exp right)
-    RecordExp       (NameTy type, FieldInit field)
-    SeqExp          (Exp exp)
-    StringExp       (string s)
+*   RecordExp       (NameTy type, FieldInit field)
+*   SeqExp          (Exp exp)
+*   StringExp       (string s)
     WhileExp        (Exp test, Exp body)
 
   /Ty/              ()
