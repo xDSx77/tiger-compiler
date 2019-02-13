@@ -176,6 +176,11 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<DecsList>& e)
   {
   // FIXME: Some code was deleted here.
+    e.push_front().location_.begin(d->location_get().end);
+    e.slipce_front().decs_.splice(decs_.begin(), ds.decs_get());
+    e.emplace_back().location_.end = d->location_get().end;
+    e.splice_back().decs_.splice(decs_.end(), ds.decs_get());
+    e.decs_().accept(*this);
   }
 
   template <template <typename> class Const>
