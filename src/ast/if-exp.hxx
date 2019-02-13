@@ -9,8 +9,10 @@
 
 namespace ast
 {
-
-  // FIXME: Some code was deleted here.
-
+  inline const Exp&
+  IfExp::if_get() const
+  {
+    return if_;
+  }
 } // namespace ast
 

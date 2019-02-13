@@ -9,7 +9,23 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  IfExp::IfExp(const Location& location, Exp* if)
+    : Exp(location)
+    , if_(if)
+  {}
+
+
+  void
+  IfExp::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
+
+  void
+  IfExp::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
 } // namespace ast
 
