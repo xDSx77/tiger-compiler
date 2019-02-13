@@ -9,11 +9,19 @@
 namespace ast
 {
 
-  IfExp::IfExp(const Location& location, Exp* if)
+  IfExp::IfExp(const Location& location, Exp* test, Exp* body, Exp body_2)
     : Exp(location)
-    , if_(if)
+    , test_(test)
+    , body_(body)
+    , body_2_(body_2)
   {}
 
+  IfExp::~IfExp()
+  {
+    delete test_;
+    delete body_;
+    delete body_2_;
+  }
 
   void
   IfExp::accept(ConstVisitor& v) const
@@ -26,6 +34,5 @@ namespace ast
   {
     v(*this);
   }
-
 } // namespace ast
 

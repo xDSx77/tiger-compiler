@@ -10,39 +10,53 @@
 
 namespace ast
 {
-
-  /// IfExp.
-  class IfExp : public Exp
-  {
-      public:
+    /// WhileExp.
+    class IfExp : public Exp
+    {
+    public:
     /** \name Ctor & dtor.
      ** \{ */
-    /// Construct an IfExp node.
-    IfExp(const Location& location, Exp* if);
-    IfExp(const IfExp&) = delete;
-    IfExp& operator=(const IfExp&) = delete;
-    /// Destroy an IfExp node.
-    /** \} */
+    /// Construct a WhileExp node.
+      IfExp(const Location& location, Exp* test, Exp* body, Exp* body_2);
+      IfExp(const IfExp&) = delete;
+      IfExp& operator=(const IfExp&) = delete;
+      /// Destroy a WhileExp node.
+      virtual ~IfExp();
+      /** \} */
 
-    /// \name Visitors entry point.
-    /// \{ */
-    /// Accept a const visitor \a v.
-    void accept(ConstVisitor& v) const override;
-    /// Accept a non-const visitor \a v.
-    void accept(Visitor& v) override;
-    /// \}
+      /// \name Visitors entry point.
+      /// \{ */
+      /// Accept a const visitor \a v.
+      void accept(ConstVisitor& v) const override;
+      /// Accept a non-const visitor \a v.
+      void accept(Visitor& v) override;
+      /// \}
 
-    /** \name Accessors.
-     ** \{ */
-    /// Return stored integer value.
-    int if_get() const;
-    /** \} */
+      /** \name Accessors.
+       ** \{ */
+      /// Return exit condition of the loop.
+      const Exp& test_get() const;
+      /// Return exit condition of the loop.
+      Exp& test_get();
+      /// Return instructions executed in the loop.
+      const Exp& body_get() const;
+      /// Return instructions executed in the loop.
+      Exp& body_get();
+      /// Return instructions executed in the loop.
+      const Exp& body_2_get() const;
+      /// Return instructions executed in the loop.
+      Exp& body_2_get();
+
+      /** \} */
 
   protected:
-    /// Stored if.
-    int if_;
+    /// Exit condition of the loop.
+    Exp* test_;
+    /// Instructions executed in the loop.
+    Exp* body_;
+    /// Instructions executed in the else.
+    Exp* body_2_;
   };
-
 } // namespace ast
 
 #include <ast/if-exp.hxx>
