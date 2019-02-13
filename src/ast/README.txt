@@ -24,7 +24,7 @@ Incomplete classes are tagged with a `*'.
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
-*   IfExp
+*   IfExp           (Exp if)
     IntExp          (int value)
 *   LetExp
     NilExp          ()
