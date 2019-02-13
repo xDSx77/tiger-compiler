@@ -13,14 +13,14 @@ Incomplete classes are tagged with a `*'.
   /Exp/             ()
     /Var/           ()
       CastVar       (Var var, Ty ty)
-*     FieldVar
+*     FieldVar      (Var var, symbol name)
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
 *   ArrayExp
 *   AssignExp
 *   BreakExp
-*   CallExp
+*   CallExp         (Exp body, FunctionDec dec, symbol name)
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
