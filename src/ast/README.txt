@@ -13,14 +13,14 @@ Incomplete classes are tagged with a `*'.
   /Exp/             ()
     /Var/           ()
       CastVar       (Var var, Ty ty)
-*     FieldVar      (Var var, symbol name)
+*     FieldVar
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
 *   ArrayExp (Exp exp, NameTy type)
 *   AssignExp
 *   BreakExp
-*   CallExp         (Exp body, FunctionDec dec, symbol name)
+*   CallExp
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
@@ -39,7 +39,7 @@ Incomplete classes are tagged with a `*'.
     ArrayTy         (NameTy base_type)
     ClassTy         (NameTy super, DecsList decs)
     NameTy          (symbol name)
-*   RecordTy
+*   RecordTy        (Field field, Ty ty)
 
   DecsList          (decs_type decs)
 
