@@ -18,7 +18,7 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a ArrayExp node.
-    ArrayExp(const Location& location, Exp* exp ,NameTy* type);
+    ArrayExp(const Location& location, Exp* exp, NameTy* type);
     ArrayExp(const ArrayExp&) = delete;
     ArrayExp& operator=(const ArrayExp&) = delete;
     /// Destroy a ArrayExp node.
@@ -40,9 +40,9 @@ namespace ast
     /// Return the expression.
     Exp& exp_get();
     /// Return field.
-    const FieldInit& field_get() const;
+    const NameTy& type_get() const;
     /// Return field.
-    FieldInit& field_get()
+    NameTy& type_get();
     /** \} */
 
     protected:

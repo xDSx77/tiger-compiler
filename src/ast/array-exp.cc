@@ -9,8 +9,7 @@
 namespace ast
 {
 
-    ArrayExp::ArrayExp(const Location& location, Exp* exp
-            NameTy* type,)
+  ArrayExp::ArrayExp(const Location& location, Exp* exp, NameTy* type)
     : Exp(location)
     , exp_(exp)
     , type_(type)
