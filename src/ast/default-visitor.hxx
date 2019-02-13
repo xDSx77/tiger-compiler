@@ -78,7 +78,6 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<CallExp>& e)
   {
   // FIXME: Some code was deleted here.
-    
     e.body_get().accept(*this);
     e.name_get().accept(*this);
   }
@@ -96,6 +95,8 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<RecordExp>& e)
   {
   // FIXME: Some code was deleted here.
+    e.field_().accept(*this);
+    e.type_get().accept(*this);
   }
 
   template <template <typename> class Const>
