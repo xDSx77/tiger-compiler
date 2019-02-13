@@ -14,7 +14,7 @@ namespace ast
     , name_(name)
   {}
 
-  FieldVar::~CastVar()
+  FieldVar::~FieldVar()
   {
     delete var_;
   }

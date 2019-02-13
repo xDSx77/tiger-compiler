@@ -31,21 +31,5 @@ namespace ast
   {
     name_ = name;
   }
-
-  inline const VarDec*
-  FieldVar::def_get() const
-  {
-    return def_;
-  }
-  inline VarDec*
-  FieldVar::def_get()
-  {
-    return def_;
-  }
-  inline void
-  FieldVar::def_set(VarDec* def)
-  {
-    def_ = def;
-  }
 } // namespace ast
 

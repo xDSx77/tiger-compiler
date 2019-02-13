@@ -27,14 +27,10 @@ namespace ast
 
     const misc::symbol& name_get() const;
     void name_set(const misc::symbol&);
-    const VarDec* def_get() const;
-    VarDec* def_get();
-    void def_set(VarDec*);
 
     protected:
         Var* var_;
         misc::symbol name_;
-        VarDec* def_ = nullptr;
   };
 
 } // namespace ast
