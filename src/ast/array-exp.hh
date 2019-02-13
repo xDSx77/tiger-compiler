@@ -14,14 +14,14 @@ namespace ast
   /// ArrayExp.
   class ArrayExp : public Exp
   {
-    public:
+  public:
     /** \name Ctor & dtor.
      ** \{ */
-    /// Construct a ArrayExp node.
+    /// Construct an ArrayExp node.
     ArrayExp(const Location& location, Exp* exp, NameTy* type);
     ArrayExp(const ArrayExp&) = delete;
     ArrayExp& operator=(const ArrayExp&) = delete;
-    /// Destroy a ArrayExp node.
+    /// Destroy an ArrayExp node.
     virtual ~ArrayExp();
     /** \} */
 
@@ -39,13 +39,13 @@ namespace ast
     const Exp& exp_get() const;
     /// Return the expression.
     Exp& exp_get();
-    /// Return field.
+    /// Return the type.
     const NameTy& type_get() const;
-    /// Return field.
+    /// Return the type.
     NameTy& type_get();
     /** \} */
 
-    protected:
+  protected:
     /// The expression.
     Exp* exp_;
     /// The type.

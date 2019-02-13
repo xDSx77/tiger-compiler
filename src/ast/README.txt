@@ -24,11 +24,11 @@ Incomplete classes are tagged with a `*'.
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
-*   IfExp           (Exp test, Exp body,Exp body_2)
+*   IfExp           (Exp test, Exp body, Exp body_2)
     IntExp          (int value)
 *   LetExp          (DecsList decs, Exp body)
     NilExp          ()
-*   ObjectExp
+*   ObjectExp       (Exp exp, NameTy type)
     OpExp           (Exp left, Oper oper, Exp right)
 *   RecordExp       (NameTy type, FieldInit field)
 *   SeqExp          (Exp exp)
