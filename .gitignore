@@ -11,8 +11,10 @@
 *.log
 *.status
 *.in
+*.la
 .deps
 .dirstamp
+.libs
 build-aux
 Makefile
 Doxyfile
@@ -25,8 +27,10 @@ position.hh
 stack.hh
 parsetiger.hh
 parsetiger.cc
+scantiger.cc
 version.cc
 prelude.cc
 configure
 run
 libtool
+tc

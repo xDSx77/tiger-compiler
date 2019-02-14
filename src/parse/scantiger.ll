@@ -27,8 +27,6 @@
 
 #define YY_USER_ACTION tp.location_.columns(yyleng);
 
-  // FIXME: Some code was deleted here.
-
 // Convenient shortcuts.
 #define TOKEN_VAL(Type, Value)                  \
   parser::make_ ## Type(Value, tp.location_)
@@ -77,31 +75,30 @@ id              [a-zA-Z][a-zA-Z_0-9]*
                 return TOKEN_VAL(STRING, grown_string);
               }
   <<EOF>>     {
-                yy::parser::error(tp.location_, "Unterminated string");
+                tp.error_ << misc::error::error_type::scan
+                          << tp.location_ << ": Unterminated string\n";
                 yyterminate();
               }
-  "\\a"         grown_string.append(1, "\\a");
-  "\\b"         grown_string.append(1, "\\b");
-  "\\f"         grown_string.append(1, "\\f");
-  "\\n"         grown_string.append(1, "\\n");
-  "\\r"         grown_string.append(1, "\\r");
-  "\\t"         grown_string.append(1, "\\t");
-  "\\v"         grown_string.append(1, "\\v");
+  "\\a"         grown_string.append("\\a");
+  "\\b"         grown_string.append("\\b");
+  "\\f"         grown_string.append("\\f");
+  "\\n"         grown_string.append("\\n");
+  "\\r"         grown_string.append("\\r");
+  "\\t"         grown_string.append("\\t");
+  "\\v"         grown_string.append("\\v");
   \\int       {
                 if (strtol(yytext + 2, 0, 10) > 255)
                 {
-                  yy::parser::error(tp.location_, "Illegal octal value");
+                  tp.error_ << misc::error::error_type::scan
+                            << tp.location_ <<  ": Illegal octal value\n";
                   yyterminate();
                 }
-                grown_string.append(1, strtol(yytext + 2, 0, 8));
+                grown_string.append(yytext + 2);
               }
   [ \t]+        tp.location_.step();
-  \n+           tp.location_.line(yyleng); tp.location_.step();
-  \\x[0-9a-fA-F]{2}
-              {
-                grown_string.append(1, strtol(yytext + 2, 0, 16));
-              }
-  .             grown_string.append(1, yytext);
+  \n+           tp.location_.lines(yyleng); tp.location_.step();
+  \\x[0-9a-fA-F]{2} grown_string.append(yytext + 2);
+  .             grown_string.append(yytext);
 }
 
 "/*"            comments_++; BEGIN SC_COMMENT;
@@ -109,19 +106,21 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 <SC_COMMENT>{
   "/*"          comments_++; BEGIN SC_COMMENT;
   <<EOF>>     {
-                yy::parser::error(tp.location_, "Unterminated comment");
+                tp.error_ << misc::error::error_type::scan
+                          << tp.location_ << ": Unterminated comment\n";
                 yyterminate();
               }
   [ \t]+          tp.location_.step();
-  \n+             tp.location_.line(yyleng); tp.location_.step();
+  \n+             tp.location_.lines(yyleng); tp.location_.step();
   "*/"        {
                 comments_--;
                 if (comments_ == 0)
-                  BEGIN_INITIAL;
+                  BEGIN INITIAL;
               }
 }
 "*/"          {
-                yy::parser::error(tp.location_, "Unexpected end of comment");
+                tp.error_ << misc::error::error_type::scan
+                          << tp.location_ << ": Unexpected end of comment\n";
                 yyterminate();
               }
 <<EOF>>         yyterminate();
@@ -172,7 +171,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 "|"             return TOKEN(OR);
 {id}            return TOKEN_VAL(ID, yytext);
 [ \t]+          tp.location_.step();
-\n+             tp.location_.line(yyleng); tp.location_.step();
+\n+             tp.location_.lines(yyleng); tp.location_.step();
 
 %%
 

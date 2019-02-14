@@ -96,13 +96,13 @@ namespace parse
                  << &misc::error::exit;
       }
 
-    scanner_->scan_open(*in);
+    scanner_->scan_open_(*in);
     parser parser(*this);
     parser.set_debug_level(parse_trace_p_);
-    decs_ = nullptr;
-    exp_ = nullptr;
+    /*decs_ = nullptr;
+    exp_ = nullptr;*/
     parser.parse();
-    scanner_->scan_close();
+    scanner_->scan_close_();
     ast_type res = ast_;
     ast_ = static_cast<ast::Exp*>(nullptr);
 

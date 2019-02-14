@@ -6,7 +6,8 @@
 %define api.value.type variant
 %define api.token.constructor
 %expect 0
-%skeleton "lalr1.cc"
+%skeleton "glr.cc"
+%glr-parser
 %define parse.error verbose
 %defines
 %debug
@@ -179,11 +180,11 @@
        EOF 0        "end of file"
 
 %type <ast::Exp*> exp
-%type <ast::Exp*> exps
+%type <ast::exps_type> exps
 %type <ast::DecsList*> decs
 %type <ast::Exp*> id_exp
 %type <ast::Exp*> exp2
-%type <ast::Exp*> exp3
+%type <ast::exps_type> exp3
 %type <ast::Ty*> ty
 %type <ast::RecordTy*> tyfields
 %type <ast::RecordTy*> id_comma
@@ -191,8 +192,8 @@
 %type <ast::VarDec*> vardec
 %type <ast::FieldInit*> classfields
 %type <ast::Field*> classfield
-%type <ast::SeqExp*> lvalue
-%type <ast::SeqExp*> lvalue_b
+%type <ast::Var*> lvalue
+%type <ast::Var*> lvalue_b
 
 %left OR
 %left AND
@@ -218,19 +219,19 @@ program:
 
 id_exp:
   %empty
-    { $$ = ""; }
+    /*{ $$ = ""; }*/
 | ID EQ exp
-    { $$ = $ID "=" $3; }
+    /*{ $$ = $ID "=" $3; }*/
 | ID EQ exp COMMA id_exp
-    { $$ = $ID "=" $3 "," $5; }
+    /*{ $$ = $ID "=" $3 "," $5; }*/
 
 exp2:
   %empty
-    { $$ = ""; }
+    /*{ $$ = ""; }*/
 | exp
-    { $$ = $1; }
+    /*{ $$ = $1; }*/
 | exp COMMA exp2
-    { $$ = $1 "," $3; }
+    /*{ $$ = $1 "," $3; }*/
 
 exp:
   INT
@@ -240,83 +241,86 @@ exp:
 | STRING
     { $$ = new ast::StringExp(@$, $1); }
 | ID LBRACK exp RBRACK OF exp
-    { $$ = $ID "[" $3 "]" "of" $6; }
+    /*{ $$ = $ID "[" $3 "]" "of" $6; }*/
 | ID LBRACE id_exp RBRACE
-    { $$ = $ID "{" $3 "}"; }
+    /*{ $$ = $ID "{" $3 "}"; }*/
 | NEW ID
-    { $$ = "new" $2; }
+    /*{ $$ = "new" $2; }*/
 | lvalue
-    { $$ = $1; }
+    /*{ $$ = $1; }*/
 | ID LPAREN exp2 RPAREN
-    { $$ = $ID "(" $3 ")"; }
+    /*{ $$ = $ID "(" $3 ")"; }*/
 | lvalue DOT ID LPAREN exp2 RPAREN
-    { $$ = $1 "." $ID "(" $5 ")"; }
+    /*{ $$ = $1 "." $ID "(" $5 ")"; }*/
 | MINUS exp
-    { $$ = "-" $2; }
+    /*{ $$ = "-" $2; }*/
 | exp MINUS exp
-    { $$ = $1 "-" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
-    { $$ = $1 "+" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
 | exp AND exp
-    { $$ = $1 "&" $3 }
+    /*{ $$ = ; }*/
 | exp LE exp
-    { $$ = $1 "<=" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
 | exp GE exp
-    { $$ = $1 ">=" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ge, $3); }
 | exp GT exp
-    { $$ = $1 ">" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::gt, $3); }
 | exp LT exp
-    { $$ = $1 "<" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::lt, $3); }
 | exp NE exp
-    { $$ = $1 "<>" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::ne, $3); }
 | exp EQ exp
-    { $$ = $1 "=" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::eq, $3); }
 | exp DIVIDE exp
-    { $$ = $1 "/" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::div, $3); }
 | exp TIMES exp
-    { $$ = $1 "*" $3 }
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
 | exp OR exp
-    { $$ = $1 "|" $3 }
+    /*{ $$ = ; }*/
 | LPAREN exps RPAREN
-    { $$ = new ast::SeqExp(@$, $2); }
+    /*{ $$ = new ast::SeqExp(@$, $2); }*/
 | lvalue ASSIGN exp
-    { $$ = $1 ":=" $3; }
+    /*{ $$ = $1 ":=" $3; }*/
 | IF exp THEN exp
-    { $$ = "if" $2 "then" $4; }
+    /*{ $$ = "if" $2 "then" $4; }*/
 | IF exp THEN exp ELSE exp
-    { $$ = "if" $2 "then" $4 "else" $6; }
+    /*{ $$ = "if" $2 "then" $4 "else" $6; }*/
 | WHILE exp DO exp
-    { $$ = "while" $2 "do" $4; }
+    /*{ $$ = "while" $2 "do" $4; }*/
 | FOR ID ASSIGN exp TO exp DO exp
-    { $$ = "for" $ID ":=" $4 "to" $6 "do" $8; }
+    /*{ $$ = "for" $ID ":=" $4 "to" $6 "do" $8; }*/
 | BREAK
-    { $$ = "break"; }
+    /*{ $$ = "break"; }*/
 | LET decs IN exps END
-    { $$ = "let" $2 "in" $4 "end"; }
+    /*{ $$ = "let" $2 "in" $4 "end"; }*/
 
 lvalue:
   ID
-    { $$ = $ID; }
+    /*{ $$ = $ID; }*/
 | lvalue_b
-    { $$ = $1; }
+    /*{ $$ = $1; }*/
 
 lvalue_b:
   ID LBRACK exp RBRACK
-    { $$ = new SubsriptVar(@$, new SimpleVar(@1, $1), $3); }
+    { $$ = new ast::SubscriptVar(@$, new ast::SimpleVar(@1, $1), $3); }
 | lvalue_b LBRACK exp RBRACK
-    { $$ = new SubsriptVar(@$, $1, $3); }
+    { $$ = new ast::SubscriptVar(@$, $1, $3); }
 
 exp3:
   exp
-    { $$ = $1; }
+    /*{ $$ = ; }*/
 | exp SEMI exp3
-    { $$ = $1 ";" $3; }
+    /*{ $$ = $1 ";" $3; }*/
 
 exps:
   %empty
-    { $$ = new ast::Exp(@$); }
+    {
+      ast::exps_type empty;
+      $$ = empty;
+    }
 | exp3
-    { $$ = new ast::Exp(@$, $1); }
+    { $$ = $1; }
 
 /*---------------.
 | Declarations.  |
@@ -327,81 +331,81 @@ decs:
   %empty
     { $$ = new ast::DecsList(@$); }
 | dec decs
-    { $$ = $1 $2; }
+    /*{ $$ = $1 $2; }*/
 
 dec:
   TYPE ID EQ ty
-    { $$ = "type" $ID "=" $4; }
+    /*{ $$ = "type" $ID "=" $4; }*/
 | CLASS ID LBRACE classfields RBRACE
-    { $$ = "class" $ID "{" $4 "}"; }
+    /*{ $$ = "class" $ID "{" $4 "}"; }*/
 | CLASS ID EXTENDS ID LBRACE classfields RBRACE
-    { $$ = "class" $2 "extends" $4 "{" $6 "}"; }
+    /*{ $$ = "class" $2 "extends" $4 "{" $6 "}"; }*/
 | vardec
-    { $$ = $1; }
+    /*{ $$ = $1; }*/
 | FUNCTION ID LPAREN tyfields RPAREN EQ exp
-    { $$ = "function" $ID "(" $4 ")" "=" $7; }
+    /*{ $$ = "function" $ID "(" $4 ")" "=" $7; }*/
 | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp
-    { $$ = "function" $2 "(" $4 ")" ":" $7 "=" $9; }
+    /*{ $$ = "function" $2 "(" $4 ")" ":" $7 "=" $9; }*/
 | PRIMITIVE ID LPAREN tyfields RPAREN
-    { $$ = "primitive" $ID "(" $4 ")"; }
+    /*{ $$ = "primitive" $ID "(" $4 ")"; }*/
 | PRIMITIVE ID LPAREN tyfields RPAREN COLON ID
-    { $$ = "primitive" $2 "(" $4 ")" ":" $7; }
+    /*{ $$ = "primitive" $2 "(" $4 ")" ":" $7; }*/
 | IMPORT STRING
-    {
+    /*{
       $$ = tp.parse_import(take($2), @$);
       if (!$$)
         $$ = new ast::DecsList;
-    }
+    }*/
 
 vardec:
   VAR ID ASSIGN exp
-    { $$ = "var" $ID ":=" $4; }
+    /*{ $$ = "var" $ID ":=" $4; }*/
 | VAR ID COLON ID ASSIGN exp
-    { $$ = "var" $2 ":" $4 ":=" $6; }
+    /*{ $$ = "var" $2 ":" $4 ":=" $6; }*/
 
 classfields:
   %empty
-    { $$ = "";}
+    /*{ $$ = "";}*/
 | classfield classfields
-    { $$ = $1 $2; }
+    /*{ $$ = $1 $2; }*/
 
 classfield:
   vardec
-    { $$ = $1; }
+    /*{ $$ = $1; }*/
 | METHOD ID LPAREN tyfields RPAREN EQ exp
-    { $$ = "method" $ID "(" $4 ")" "=" $7; }
+    /*{ $$ = "method" $ID "(" $4 ")" "=" $7; }*/
 | METHOD ID LPAREN tyfields RPAREN COLON ID EQ exp
-    { $$ = "method" $2 "(" $4 ")" ":" $7 "=" $9; }
+    /*{ $$ = "method" $2 "(" $4 ")" ":" $7 "=" $9; }*/
 
 ty:
   ID
-    { $$ = $ID; }
+    /*{ $$ = $ID; }*/
 | LBRACE tyfields RBRACE
-    { $$ = "{" $2 "}"; }
+    /*{ $$ = "{" $2 "}"; }*/
 | ARRAY OF ID
-    { $$ = "array" "of" $ID; }
+    /*{ $$ = "array" "of" $ID; }*/
 | CLASS LBRACE classfields RBRACE
-    { $$ = "class" "{" $3 "}"; }
+    /*{ $$ = "class" "{" $3 "}"; }*/
 | CLASS EXTENDS ID LBRACE classfields RBRACE
-    { $$ = "class" "extends" $ID "{" $5 "}"; }
+    /*{ $$ = "class" "extends" $ID "{" $5 "}"; }*/
 
 id_comma:
   %empty
-    { $$ = ""; }
+    /*{ $$ = ""; }*/
 | COMMA ID COLON ID id_comma
-    { $$ = "," $2 ":" $4 $5; }
+    /*{ $$ = "," $2 ":" $4 $5; }*/
 
 tyfields:
   %empty
-    { $$ = ""; }
+    /*{ $$ = ""; }*/
 | ID COLON ID id_comma
-    { $$ = $1 ":" $3 $4; }
+    /*{ $$ = $1 ":" $3 $4; }*/
 
 %%
 
 void
 parse::parser::error(const location_type& l, const std::string& m)
 {
-  tp.error_ << misc::Error::parse
+  tp.error_ << misc::error::error_type::parse
             << l << ": " << m << std::endl;
 }
