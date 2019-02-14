@@ -19,7 +19,7 @@ Incomplete classes are tagged with a `*'.
 
 *   ArrayExp        (Exp exp, NameTy type)
 *   AssignExp
-*   BreakExp
+*   BreakExp        (Exp exp)
 *   CallExp         (Exp body, FunctionDec dec, symbol name)
 *     MethodCallExp
     CastExp         (Exp exp, Ty ty)
