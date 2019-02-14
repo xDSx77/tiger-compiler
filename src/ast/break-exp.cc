@@ -8,7 +8,7 @@
 
 namespace ast
 {
-    BreakExp::BreakExp(const Location& location, Exp* exp, NameTy* type)
+    BreakExp::BreakExp(const Location& location, Exp* exp)
     : Exp(location)
     , exp_(exp)
     {}
