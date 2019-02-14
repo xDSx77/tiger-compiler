@@ -16,6 +16,7 @@
 .dirstamp
 .libs
 build-aux
+tests
 Makefile
 Doxyfile
 stamp-h1

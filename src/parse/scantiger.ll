@@ -67,7 +67,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 
  /* The rules.  */
 
-"\""            grown_string.clear(); BEGIN SC_STRING;
+"\""            /*grown_string.clear()*/; BEGIN SC_STRING;
 
 <SC_STRING>{ /* Handling of the strings. Initial " is eaten */
   "\""        {
@@ -75,8 +75,8 @@ id              [a-zA-Z][a-zA-Z_0-9]*
                 return TOKEN_VAL(STRING, grown_string);
               }
   <<EOF>>     {
-                tp.error_ << misc::error::error_type::scan
-                          << tp.location_ << ": Unterminated string\n";
+                tp.error_ << misc::error::error_type::scan << tp.location_
+                          << ": Unterminated string" << std::endl;
                 yyterminate();
               }
   "\\a"         grown_string.append("\\a");
@@ -89,8 +89,8 @@ id              [a-zA-Z][a-zA-Z_0-9]*
   \\int       {
                 if (strtol(yytext + 2, 0, 10) > 255)
                 {
-                  tp.error_ << misc::error::error_type::scan
-                            << tp.location_ <<  ": Illegal octal value\n";
+                  tp.error_ << misc::error::error_type::scan << tp.location_
+                            <<  ": Illegal octal value" << std::endl;
                   yyterminate();
                 }
                 grown_string.append(yytext + 2);
@@ -106,8 +106,8 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 <SC_COMMENT>{
   "/*"          comments_++; BEGIN SC_COMMENT;
   <<EOF>>     {
-                tp.error_ << misc::error::error_type::scan
-                          << tp.location_ << ": Unterminated comment\n";
+                tp.error_ << misc::error::error_type::scan << tp.location_
+                          << ": Unterminated comment" << std::endl;
                 yyterminate();
               }
   [ \t]+          tp.location_.step();
@@ -117,15 +117,17 @@ id              [a-zA-Z][a-zA-Z_0-9]*
                 if (comments_ == 0)
                   BEGIN INITIAL;
               }
+  .           ;
 }
 "*/"          {
-                tp.error_ << misc::error::error_type::scan
-                          << tp.location_ << ": Unexpected end of comment\n";
+                tp.error_ << misc::error::error_type::scan << tp.location_
+                          << ": Unexpected end of comment" << std::endl;
                 yyterminate();
               }
 <<EOF>>         yyterminate();
 {int}           return TOKEN_VAL(INT, std::stoi(yytext));
 "if"            return TOKEN(IF);
+"of"            return TOKEN(OF);
 "nil"           return TOKEN(NIL);
 "then"          return TOKEN(THEN);
 "else"          return TOKEN(ELSE);
