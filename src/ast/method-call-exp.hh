@@ -20,9 +20,46 @@ namespace ast
    ** factoring tool here.
    */
 
+  /// MethodCallExp.
   class MethodCallExp : public CallExp
   {
-  // FIXME: Some code was deleted here.
+  public:
+    /** \name Ctor & dtor.
+     ** \{ */
+    /// Construct a MethodCallExp node.
+    MethodCallExp(const Location& location, Var* var, MethodDec* method);
+    MethodCallExp(const MethodCallExp&) = delete;
+    MethodCallExp& operator=(const MethodCallExp&) = delete;
+    /// Destroy a MethodCallExp node.
+    virtual ~MethodCallExp();
+    /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    void accept(ConstVisitor& v) const override;
+    /// Accept a non-const visitor \a v.
+    void accept(Visitor& v) override;
+    /// \}
+
+    /** \name Accessors.
+     ** \{ */
+    /// Return variable.
+    const Var& var_get() const;
+    /// Return variable.
+    Var& var_get();
+    /// Return method declaration.
+    const MethodDec& method_get() const;
+    /// Return method declaration.
+    MethodDec& method_get();
+    /** \} */
+
+  protected:
+    /// Variable.
+    Var* var_;
+    /// Method Declaration.
+    MethodDec* method_;
+
   };
 
 } // namespace ast

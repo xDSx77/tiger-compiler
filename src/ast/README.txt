@@ -21,7 +21,7 @@ Incomplete classes are tagged with a `*'.
 *   AssignExp       (Exp exp, Var var)
 *   BreakExp        (Exp exp)
 *   CallExp         (Exp body, FunctionDec dec, symbol name)
-*     MethodCallExp
+*     MethodCallExp (Var var, MethodDec method)
     CastExp         (Exp exp, Ty ty)
     ForExp          (VarDec vardec, Exp hi, Exp body)
 *   IfExp           (Exp test, Exp body, Exp body_2)
