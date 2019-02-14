@@ -9,9 +9,10 @@
 namespace ast
 {
 
-  MethodCallExp::MethodCallExp(const Location& location, Var* var,
-                              MethodDec* method)
-    : Exp(location)
+  MethodCallExp::MethodCallExp(const Location& location, Exp* body,
+                              FunctionDec* dec, const misc::symbol& name,
+                              Var* var, MethodDec* method)
+    : CallExp(location, body, dec, name)
     , var_(var)
     , method_(method)
   {}

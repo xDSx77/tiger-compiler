@@ -27,7 +27,8 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a MethodCallExp node.
-    MethodCallExp(const Location& location, Var* var, MethodDec* method);
+    MethodCallExp(const Location& location, Exp* body, FunctionDec* dec,
+        const misc::symbol& name, Var* var, MethodDec* method);
     MethodCallExp(const MethodCallExp&) = delete;
     MethodCallExp& operator=(const MethodCallExp&) = delete;
     /// Destroy a MethodCallExp node.
