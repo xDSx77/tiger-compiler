@@ -55,7 +55,6 @@ YY_FLEX_NAMESPACE_BEGIN
 /* Abbreviations.  */
 int             [0-9]+
 id              [a-zA-Z][a-zA-Z_0-9]*
-/*string          "\""([^\\]|\\.)*"\""*/
 
 %%
 %{
@@ -67,7 +66,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 
  /* The rules.  */
 
-"\""            /*grown_string.clear()*/; BEGIN SC_STRING;
+"\""            grown_string.clear(); tp.location_.step(); BEGIN SC_STRING;
 
 <SC_STRING>{ /* Handling of the strings. Initial " is eaten */
   "\""        {
@@ -90,28 +89,26 @@ id              [a-zA-Z][a-zA-Z_0-9]*
                 if (strtol(yytext + 2, 0, 10) > 255)
                 {
                   tp.error_ << misc::error::error_type::scan << tp.location_
-                            <<  ": Illegal octal value" << std::endl;
+                            <<  ": illegal octal value" << std::endl;
                   yyterminate();
                 }
                 grown_string.append(yytext + 2);
               }
-  [ \t]+        tp.location_.step();
   \n+           tp.location_.lines(yyleng); tp.location_.step();
   \\x[0-9a-fA-F]{2} grown_string.append(yytext + 2);
   .             grown_string.append(yytext);
 }
 
-"/*"            comments_++; BEGIN SC_COMMENT;
+"/*"            comments_++; tp.location_.step(); BEGIN SC_COMMENT;
 
 <SC_COMMENT>{
   "/*"          comments_++; BEGIN SC_COMMENT;
   <<EOF>>     {
                 tp.error_ << misc::error::error_type::scan << tp.location_
-                          << ": Unterminated comment" << std::endl;
+                          << ": unexpected end of file in a comment" << std::endl;
                 yyterminate();
               }
-  [ \t]+          tp.location_.step();
-  \n+             tp.location_.lines(yyleng); tp.location_.step();
+  \n+           tp.location_.lines(yyleng);
   "*/"        {
                 comments_--;
                 if (comments_ == 0)
@@ -121,7 +118,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 }
 "*/"          {
                 tp.error_ << misc::error::error_type::scan << tp.location_
-                          << ": Unexpected end of comment" << std::endl;
+                          << ": unexpected end of comment" << std::endl;
                 yyterminate();
               }
 <<EOF>>         yyterminate();
@@ -149,6 +146,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*
 "var"           return TOKEN(VAR);
 "method"        return TOKEN(METHOD);
 "array"         return TOKEN(ARRAY);
+"new"           return TOKEN(NEW);
 "."             return TOKEN(DOT);
 ","             return TOKEN(COMMA);
 ":"             return TOKEN(COLON);

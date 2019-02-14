@@ -10,6 +10,23 @@
 namespace ast
 {
 
+  inline const misc::symbol&
+  FieldVar::name_get() const
+  {
+    return name_;
+  }
+  inline misc::symbol&
+  FieldVar::name_get()
+  {
+    return name_;
+  }
+
+  inline void
+  FieldVar::name_set(const misc::symbol& name)
+  {
+    name_ = name;
+  }
+
   inline const Var&
   FieldVar::var_get() const
   {
@@ -19,17 +36,6 @@ namespace ast
   FieldVar::var_get()
   {
     return *var_;
-  }
-
-  inline const misc::symbol&
-  FieldVar::name_get() const
-  {
-    return name_;
-  }
-  inline void
-  FieldVar::name_set(const misc::symbol& name)
-  {
-    name_ = name;
   }
 } // namespace ast
 

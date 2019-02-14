@@ -193,8 +193,10 @@
 %type <ast::FieldInit*> classfields
 %type <ast::Field*> classfield
 %type <ast::Var*> lvalue
-%type <ast::Var*> lvalue_b
+%type <ast::SubscriptVar*> lvalue_b
+%type <ast::FieldVar*> lvalue_c
 
+%left ID
 %left OR
 %left AND
 %left GE LE EQ GT LT NE
@@ -202,6 +204,7 @@
 %left TIMES DIVIDE
 %left LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE
 %left ASSIGN
+%left DOT
 %right ELSE THEN
 %right OF
 %right DO
@@ -250,7 +253,7 @@ exp:
     /*{ $$ = $1; }*/
 | ID LPAREN exp2 RPAREN
     /*{ $$ = $ID "(" $3 ")"; }*/
-| lvalue DOT ID LPAREN exp2 RPAREN
+| lvalue_c LPAREN exp2 RPAREN
     /*{ $$ = $1 "." $ID "(" $5 ")"; }*/
 | MINUS exp
     /*{ $$ = "-" $2; }*/
@@ -259,7 +262,7 @@ exp:
 | exp PLUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
 | exp AND exp
-    /*{ $$ = ; }*/
+    /*{ $$ = ; "}*/
 | exp LE exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
 | exp GE exp
@@ -297,15 +300,28 @@ exp:
 
 lvalue:
   ID
-    /*{ $$ = $ID; }*/
+    { $$ = new ast::SimpleVar(@$, $1); }
 | lvalue_b
-    /*{ $$ = $1; }*/
+    { $$ = $1; }
+| lvalue_c
+    { $$ = $1; }
+
 
 lvalue_b:
   ID LBRACK exp RBRACK
     { $$ = new ast::SubscriptVar(@$, new ast::SimpleVar(@1, $1), $3); }
 | lvalue_b LBRACK exp RBRACK
     { $$ = new ast::SubscriptVar(@$, $1, $3); }
+| lvalue_c LBRACK exp RBRACK
+    { $$ = new ast::SubscriptVar(@$, $1, $3); }
+
+lvalue_c:
+  ID DOT ID
+    { $$ = new ast::FieldVar(@$, $1, new ast::SimpleVar(@3, $3)); }
+| lvalue_c DOT ID
+    { $$ = new ast::FieldVar(@$, $3, $1); }
+| lvalue_b DOT ID
+    { $$ = new ast::FieldVar(@$, $3, $1); }
 
 exp3:
   exp

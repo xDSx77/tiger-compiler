@@ -15,7 +15,7 @@ namespace ast
   class FieldVar : public Var
   {
   public:
-    FieldVar(const Location& location, Var* var, const misc::symbol& name);
+    FieldVar(const Location& location, const misc::symbol& name, Var* var);
     FieldVar(const FieldVar&) = delete;
     FieldVar& operator=(const FieldVar&) = delete;
     virtual ~FieldVar();
@@ -23,15 +23,17 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
+    const misc::symbol& name_get() const;
+    misc::symbol& name_get();
+
+    void name_set(const misc::symbol&);
+
     const Var& var_get() const;
     Var& var_get();
 
-    const misc::symbol& name_get() const;
-    void name_set(const misc::symbol&);
-
   protected:
-    Var* var_;
     misc::symbol name_;
+    Var* var_;
   };
 
 } // namespace ast

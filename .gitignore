@@ -12,6 +12,8 @@
 *.status
 *.in
 *.la
+*.tig
+*.tih
 .deps
 .dirstamp
 .libs

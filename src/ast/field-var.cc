@@ -8,10 +8,10 @@
 
 namespace ast
 {
-  FieldVar::FieldVar(const Location& location, Var* var, const misc::symbol& name)
+  FieldVar::FieldVar(const Location& location, const misc::symbol& name, Var* var)
     : Var(location)
-    , var_(var)
     , name_(name)
+    , var_(var)
   {}
 
   FieldVar::~FieldVar()
