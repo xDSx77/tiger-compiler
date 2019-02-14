@@ -20,7 +20,7 @@ namespace ast
   {
     return *var_;
   }
-  // FIXME: Some code was deleted here.
+
   inline const misc::symbol&
   FieldVar::name_get() const
   {

@@ -9,26 +9,27 @@
 
 namespace ast
 {
-    RecordTy::RecordTy(const Location& location, Ty* ty,
-                      Field* fld)
-    : Exp(location)
+
+  RecordTy::RecordTy(const Location& location, Field* fld, Ty* ty)
+    : Ty(location)
     , fld_(fld)
     , ty_(ty)
   {}
-  CastExp::~CastExp()
+
+  RecordTy::~RecordTy()
   {
     delete fld_;
     delete ty_;
   }
 
   void
-  CastExp::accept(ConstVisitor& v) const
+  RecordTy::accept(ConstVisitor& v) const
   {
     v(*this);
   }
 
   void
-  CastExp::accept(Visitor& v)
+  RecordTy::accept(Visitor& v)
   {
     v(*this);
   }

@@ -9,31 +9,31 @@
 
 namespace ast
 {
-  inline const Exp&
-  CallExp::Exp_get() const
-  {
-    return *exp_;
-  }
-  inline Exp&
-  CallExp::Exp_get()
-  {
-    return *var_;
-  }
-  // FIXME: Some code was deleted here.
 
-  inline const Exp*
+
+  inline const Exp&
   CallExp::body_get() const
   {
-      return body_;
+    return *body_;
+  }
+  inline Exp&
+  CallExp::body_get()
+  {
+    return *body_;
   }
   inline void
-  CallExp::body_set(Exp*)
+  CallExp::body_set(Exp* body)
   {
-      body_ = body;
+    body_ = body;
   }
 
   inline const misc::symbol&
   CallExp::name_get() const
+  {
+    return name_;
+  }
+  inline misc::symbol&
+  CallExp::name_get()
   {
     return name_;
   }
@@ -43,15 +43,15 @@ namespace ast
     name_ = name;
   }
 
-  inline const FunctionDec*
+  inline const FunctionDec&
   CallExp::dec_get() const
   {
-    return dec_;
+    return *dec_;
   }
-  inline FunctionDec*
+  inline FunctionDec&
   CallExp::dec_get()
   {
-    return dec_;
+    return *dec_;
   }
 
 } // namespace ast

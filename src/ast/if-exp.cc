@@ -9,7 +9,7 @@
 namespace ast
 {
 
-  IfExp::IfExp(const Location& location, Exp* test, Exp* body, Exp body_2)
+  IfExp::IfExp(const Location& location, Exp* test, Exp* body, Exp* body_2)
     : Exp(location)
     , test_(test)
     , body_(body)

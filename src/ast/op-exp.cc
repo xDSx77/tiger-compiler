@@ -63,4 +63,5 @@ str(ast::OpExp::Oper oper)
     case ast::OpExp::Oper::ge:
       return ">=";
   }
+  return "";
 }

@@ -10,7 +10,7 @@
 namespace ast
 {
     CallExp::CallExp(const Location& location, Exp* body, FunctionDec* dec,
-                    const misc::symbol& name);
+                    const misc::symbol& name)
     : Exp(location)
     , body_(body)
     , dec_(dec)
@@ -32,9 +32,8 @@ namespace ast
     void
     CallExp::accept(Visitor& v)
     {
-        v(*this)
+        v(*this);
     }
-  // FIXME: Some code was deleted here.
 
 } // namespace ast
 

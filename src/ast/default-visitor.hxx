@@ -38,7 +38,6 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<FieldVar>& e)
   {
     e.var_get().accept(*this);
-    e.name_get().accept(*this);
   }
 
   template <template <typename> class Const>
@@ -77,7 +76,7 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<CallExp>& e)
   {
     e.body_get().accept(*this);
-    e.name_get().accept(*this);
+    e.dec_get().accept(*this);
   }
 
   template <template <typename> class Const>
@@ -154,7 +153,7 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<ArrayExp>& e)
   {
     e.exp_get().accept(*this);
-    e.field_get().accept(*this);
+    e.type_get().accept(*this);
   }
 
   template <template <typename> class Const>
@@ -177,11 +176,11 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<DecsList>& e)
   {
   // FIXME: Some code was deleted here.
-    e.push_front().location_.begin(d->location_get().end);
+    /*e.push_front().location_.begin(d->location_get().end);
     e.slipce_front().decs_.splice(decs_.begin(), ds.decs_get());
     e.emplace_back().location_.end = d->location_get().end;
     e.splice_back().decs_.splice(decs_.end(), ds.decs_get());
-    e.decs_().accept(*this);
+    e.decs_get().accept(*this);*/
   }
 
   template <template <typename> class Const>

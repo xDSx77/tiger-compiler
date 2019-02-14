@@ -8,7 +8,7 @@
 
 namespace ast
 {
-    FieldVar::FieldVar(const Location& location, Var* var, const misc::symbol& name)
+  FieldVar::FieldVar(const Location& location, Var* var, const misc::symbol& name)
     : Var(location)
     , var_(var)
     , name_(name)
@@ -30,6 +30,5 @@ namespace ast
   {
     v(*this);
   }
-  // FIXME: Some code was deleted here.
 } // namespace ast
 
