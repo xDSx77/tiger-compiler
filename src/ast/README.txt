@@ -18,7 +18,7 @@ Incomplete classes are tagged with a `*'.
       SubscriptVar  (Var var, Exp index)
 
 *   ArrayExp        (Exp exp, NameTy type)
-*   AssignExp
+*   AssignExp       (Exp exp, Var var)
 *   BreakExp        (Exp exp)
 *   CallExp         (Exp body, FunctionDec dec, symbol name)
 *     MethodCallExp
