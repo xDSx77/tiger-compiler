@@ -179,22 +179,24 @@
        WHILE        "while"
        EOF 0        "end of file"
 
-%type <ast::Exp*> exp
-%type <ast::exps_type> exps
+%type <ast::Dec*> dec
 %type <ast::DecsList*> decs
+%type <ast::exps_type> exps
+%type <ast::Exp*> exp
 %type <ast::Exp*> id_exp
 %type <ast::Exp*> exp2
 %type <ast::exps_type> exp3
+%type <ast::Field*> classfield
+%type <ast::FieldInit*> classfields
+%type <ast::FieldVar*> lvalue_c
 %type <ast::Ty*> ty
 %type <ast::RecordTy*> tyfields
 %type <ast::RecordTy*> id_comma
-%type <ast::Dec*> dec
-%type <ast::VarDec*> vardec
-%type <ast::FieldInit*> classfields
-%type <ast::Field*> classfield
-%type <ast::Var*> lvalue
 %type <ast::SubscriptVar*> lvalue_b
-%type <ast::FieldVar*> lvalue_c
+%type <ast::VarDec*> vardec
+%type <ast::Var*> lvalue
+
+
 
 
 %left ID
@@ -285,17 +287,17 @@ exp:
 | LPAREN exps RPAREN
     /*{ $$ = new ast::SeqExp(@$, $2); }*/
 | lvalue ASSIGN exp
-    /*{ $$ = $1 ":=" $3; }*/
+    /*{ $$ = new ast::AssignExp(@$,$1 ,$3); }*/
 | IF exp THEN exp
-    /*{ $$ = "if" $2 "then" $4; }*/
+    /*{ $$ = new ast::IfExp(@$,$2 ,$4 ,);  }*/
 | IF exp THEN exp ELSE exp
-    /*{ $$ = "if" $2 "then" $4 "else" $6; }*/
+    /*{ $$ = new ast::IfExp(@$,$2 ,$4 , $6); }*/
 | WHILE exp DO exp
-    /*{ $$ = "while" $2 "do" $4; }*/
+    /*{ $$ = new ast::WhileExp(@$,$2,$4); }*/
 | FOR ID ASSIGN exp TO exp DO exp
     /*{ $$ = "for" $ID ":=" $4 "to" $6 "do" $8; }*/
 | BREAK
-    /*{ $$ = "break"; }*/
+    /*{ $$ = new ast::BreakExp(@$,$1); }*/
 | LET decs IN exps END
     /*{ $$ = "let" $2 "in" $4 "end"; }*/
 
