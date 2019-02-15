@@ -196,16 +196,15 @@
 %type <ast::SubscriptVar*> lvalue_b
 %type <ast::FieldVar*> lvalue_c
 
-<<<<<<< Updated upstream
+
 %left ID
-=======
 %type <ast::Exp::IfExp*> if
 %type <ast::Exp::StringExp*> string
 %type <ast::Exp::ArrayExp*> array
 %type <ast::Exp::WhileExp> while
 %type <ast::Exp::ForExp> for
 
->>>>>>> Stashed changes
+
 %left OR
 %left AND
 %left GE LE EQ GT LT NE
@@ -259,13 +258,13 @@ exp:
 | NEW ID
     /*{ $$ = "new" $2; }*/
 | lvalue
-    /*{ $$ = $1; }*/
+    { $$ = new ast::Var(new ast::Var(@$, $1) ; }
 | ID LPAREN exp2 RPAREN
     /*{ $$ = $ID "(" $3 ")"; }*/
 | lvalue_c LPAREN exp2 RPAREN
     /*{ $$ = $1 "." $ID "(" $5 ")"; }*/
 | MINUS exp
-    { $$ = new ast::OpExp($@, ast::OpExp::Oper::sub, $2); }
+    { $$ = new ast::OpExp(@$, ast::OpExp::Oper::sub, $2); }
 | exp MINUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
@@ -289,7 +288,7 @@ exp:
 | exp TIMES exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
 | exp OR exp
-    /*{ $$ = ; }*/
+    { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::orop, $3); }
 | LPAREN exps RPAREN
     /*{ $$ = new ast::SeqExp(@$, $2); }*/
 | lvalue ASSIGN exp
@@ -334,7 +333,7 @@ lvalue_c:
 
 exp3:
   exp
-    /*{ $$ = ; }*/
+    { $$ = $1; }
 | exp SEMI exp3
     /*{ $$ = $1 ";" $3; }*/
 

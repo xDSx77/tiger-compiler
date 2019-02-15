@@ -42,6 +42,10 @@ str(ast::OpExp::Oper oper)
 {
   switch (oper)
   {
+    case ast::OpExp::Oper::andop:
+      return "&";
+    case ast::OpExp::Oper::orop:
+      return "|";
     case ast::OpExp::Oper::add:
       return "+";
     case ast::OpExp::Oper::sub:
