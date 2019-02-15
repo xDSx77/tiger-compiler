@@ -196,7 +196,16 @@
 %type <ast::SubscriptVar*> lvalue_b
 %type <ast::FieldVar*> lvalue_c
 
+<<<<<<< Updated upstream
 %left ID
+=======
+%type <ast::Exp::IfExp*> if
+%type <ast::Exp::StringExp*> string
+%type <ast::Exp::ArrayExp*> array
+%type <ast::Exp::WhileExp> while
+%type <ast::Exp::ForExp> for
+
+>>>>>>> Stashed changes
 %left OR
 %left AND
 %left GE LE EQ GT LT NE
@@ -232,7 +241,7 @@ exp2:
   %empty
     /*{ $$ = ""; }*/
 | exp
-    /*{ $$ = $1; }*/
+    { $$ = new ast::OpExp($@, $1); }
 | exp COMMA exp2
     /*{ $$ = $1 "," $3; }*/
 
@@ -256,7 +265,7 @@ exp:
 | lvalue_c LPAREN exp2 RPAREN
     /*{ $$ = $1 "." $ID "(" $5 ")"; }*/
 | MINUS exp
-    /*{ $$ = "-" $2; }*/
+    { $$ = new ast::OpExp($@, ast::OpExp::Oper::sub, $2); }
 | exp MINUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
