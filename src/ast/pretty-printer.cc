@@ -73,72 +73,68 @@ namespace ast
 
   // faire ca pour toute les fonctions
   void
-  PrettyPrinter::operator()(const CallExp e)
+  PrettyPrinter::operator()(const CallExp& e)
   {
       ostr_ << e.body_get() << e.dec_get();
   }
 
+  /*
   void
-  PrettyPrinter::operator()(const 0pExp e)
+  PrettyPrinter::operator()(const 0pExp& e)
   {
       ostr_ << e.left_get() << e.right_get();
   }
-
+  */
 
   void
-  PrettyPrinter::operator()(const RecordExp e)
+  PrettyPrinter::operator()(const RecordExp& e)
   {
-      ostr_ << e.field_get() << e.right_get();
+      ostr_ << e.field_get() << e.type_get();
   }
 
   void
-  PrettyPrinter::operator()(const SeqExp e)
+  PrettyPrinter::operator()(const SeqExp& e)
   {
       ostr_ << e.exp_get();
   }
 
   void
-  PrettyPrinter::operator()(const IfExp e)
+  PrettyPrinter::operator()(const IfExp& e)
   {
       ostr_ << e.test_get() << e.body_get() << e.body_2_get();
   }
 
   void
-  PrettyPrinter::operator()(const WhileExp e)
+  PrettyPrinter::operator()(const WhileExp& e)
   {
     ostr_ << e.test_get() << e.body_get();
   }
 
   void
-  PrettyPrinter::operator()(const ForExp e)
+  PrettyPrinter::operator()(const ForExp& e)
   {
       ostr_ << e.vardec_get() << e.hi_get() << e.body_get();
   }
 
   void
-  PrettyPrinter::operator()(const LetExp e)
+  PrettyPrinter::operator()(const LetExp& e)
   {
       ostr_ << e.decs_get() << e.body_get();
   }
 
   void
-  PrettyPrinter::operator()(const ArrayExp e)
+  PrettyPrinter::operator()(const ArrayExp& e)
   {
     ostr_ << e.exp_get() << e.type_get();
   }
 
   void
-  PrettyPrinter::operator()(const CastExp e)
-  {
-    ostr_ <<  e.exp_get() << e.ty_get();
-  }
-
-  void
-  PrettyPrinter::operator()(const FieldInit e)
+  PrettyPrinter::operator()(const FieldInit& e)
   {
       ostr_ << e.init_get();
   }
 
+  /*
   void
   PrettyPrinter::operator()(const DecsList e)
   {
@@ -174,14 +170,15 @@ namespace ast
   PrettyPrinter::operator()(const RecordTy e)
   {
   }
-
+*/
   void
-  PrettyPrinter::operator()(const ArrayTy e)
+  PrettyPrinter::operator()(const ArrayTy& e)
   {
       ostr_ << e.base_type_get();
   }
+
   void
-  PrettyPrinter::operator()(const Field e)
+  PrettyPrinter::operator()(const Field& e)
   {
       ostr_ << e.type_name_get();
   }
