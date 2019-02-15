@@ -13,14 +13,16 @@ namespace ast
   /// BreakExp.
   class BreakExp : public Exp
   {
+  public :
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a BreakExp node.
-    public :
     BreakExp(const Location& location);
     BreakExp(const BreakExp&) = delete;
     BreakExp& operator=(const BreakExp&) = delete;
+    /// Destroy an BreakExp node.
     /** \} */
+
     /// \name Visitors entry point.
     /// \{ */
     /// Accept a const visitor \a v.

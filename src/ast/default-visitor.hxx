@@ -91,7 +91,8 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<RecordExp>& e)
   {
-    e.field_get().accept(*this);
+    for (int i = 0; i < e.fieldinits_get().size(); i++)
+      e.fieldinits_get()[i]->accept(*this);
     e.type_get().accept(*this);
   }
 
@@ -152,8 +153,9 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<ArrayExp>& e)
   {
-    e.exp_get().accept(*this);
     e.type_get().accept(*this);
+    e.size_get().accept(*this);
+    e.value_get().accept(*this);
   }
 
   template <template <typename> class Const>

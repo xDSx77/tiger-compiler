@@ -11,17 +11,6 @@ namespace ast
 {
 
 
-  inline const Exp&
-  ArrayExp::exp_get() const
-  {
-    return *exp_;
-  }
-  inline Exp&
-  ArrayExp::exp_get()
-  {
-    return *exp_;
-  }
-
   inline const NameTy&
   ArrayExp::type_get() const
   {
@@ -33,5 +22,26 @@ namespace ast
     return *type_;
   }
 
+  inline const Exp&
+  ArrayExp::size_get() const
+  {
+    return *size_;
+  }
+  inline Exp&
+  ArrayExp::size_get()
+  {
+    return *size_;
+  }
+
+  inline const Exp&
+  ArrayExp::value_get() const
+  {
+    return *value_;
+  }
+  inline Exp&
+  ArrayExp::value_get()
+  {
+    return *value_;
+  }
 } // namespace ast
 

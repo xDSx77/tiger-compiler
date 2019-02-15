@@ -17,7 +17,7 @@ Incomplete classes are tagged with a `*'.
       SimpleVar     (symbol name)
       SubscriptVar  (Var var, Exp index)
 
-*   ArrayExp        (Exp exp, NameTy type)
+*   ArrayExp        (NameTy type, Exp size, Exp value)
 *   AssignExp       (Exp exp, Var var)
 *   BreakExp        (Exp exp)
 *   CallExp         (Exp body, FunctionDec dec, symbol name)

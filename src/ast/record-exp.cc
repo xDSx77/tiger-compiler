@@ -11,16 +11,17 @@ namespace ast
 {
 
   RecordExp::RecordExp(const Location& location, NameTy* type,
-                      FieldInit* field)
+                      fieldinits_type fieldinits)
     : Exp(location)
     , type_(type)
-    , field_(field)
+    , fieldinits_(fieldinits)
   {}
 
   RecordExp::~RecordExp()
   {
     delete type_;
-    delete field_;
+    for (int i = 0; i < fieldinits_.size(); i++)
+      delete fieldinits_[i];
   }
 
   void

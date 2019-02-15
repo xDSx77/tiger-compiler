@@ -21,15 +21,15 @@ namespace ast
     return *type_;
   }
 
-  inline const FieldInit&
-  RecordExp::field_get() const
+  inline const fieldinits_type&
+  RecordExp::fieldinits_get() const
   {
-    return *field_;
+    return fieldinits_;
   }
-  inline FieldInit&
-  RecordExp::field_get()
+  inline fieldinits_type&
+  RecordExp::fieldinits_get()
   {
-    return *field_;
+    return fieldinits_;
   }
 
 

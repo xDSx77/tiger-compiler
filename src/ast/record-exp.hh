@@ -20,7 +20,7 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a RecordExp node.
-    RecordExp(const Location& location, NameTy* type, FieldInit* field);
+    RecordExp(const Location& location, NameTy* type, fieldinits_type fieldinits);
     RecordExp(const RecordExp&) = delete;
     RecordExp& operator=(const RecordExp&) = delete;
     /// Destroy a RecordExp node.
@@ -37,21 +37,21 @@ namespace ast
 
     /** \name Accessors.
      ** \{ */
-    /// Return type.
+    /// Return the type of the record.
     const NameTy& type_get() const;
-    /// Return type.
+    /// Return the type of the record.
     NameTy& type_get();
-    /// Return field.
-    const FieldInit& field_get() const;
-    /// Return field.
-    FieldInit& field_get();
+    /// Return the inits field of the record.
+    const fieldinits_type& fieldinits_get() const;
+    /// Return the inits field of the record.
+    fieldinits_type& fieldinits_get();
     /** \} */
 
   protected:
-    /// Type.
+    /// The Type of the record.
     NameTy* type_;
-    /// Field.
-    FieldInit* field_;
+    /// The inits field of the record.
+    fieldinits_type fieldinits_;
   };
 
 } // namespace ast

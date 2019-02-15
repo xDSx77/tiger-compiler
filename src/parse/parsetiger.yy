@@ -183,8 +183,8 @@
 %type <ast::DecsList*> decs
 %type <ast::exps_type> exps
 %type <ast::Exp*> exp
-%type <ast::Exp*> id_exp
-%type <ast::Exp*> exp2
+%type <ast::fieldinits_type> id_exp
+%type <ast::exps_type> exp2
 %type <ast::exps_type> exp3
 %type <ast::Field*> classfield
 %type <ast::FieldInit*> classfields
@@ -225,11 +225,25 @@ program:
 
 id_exp:
   %empty
-    /*{ $$ = ""; }*/
+    {
+      ast::fieldinits_type empty;
+      $$ = empty;
+    }
 | ID EQ exp
-    /*{ $$ = $ID "=" $3; }*/
+    {
+      ast::fieldinits_type fields;
+      ast::FieldInit* field = new ast::FieldInit(@1, $1, $3);
+      fields.emplace_back(field);
+      $$ = fields;
+    }
 | ID EQ exp COMMA id_exp
-    /*{ $$ = $ID "=" $3 "," $5; }*/
+    {
+      ast::fieldinits_type fields;
+      ast::FieldInit* field = new ast::FieldInit(@1, $1, $3);
+      fields.emplace_back(field);
+      fields.insert(fields.end(), $$.begin(), $$.end());
+      $$ = fields;
+    }
 
 exp2:
   %empty
@@ -247,9 +261,9 @@ exp:
 | STRING
     { $$ = new ast::StringExp(@$, $1); }
 | ID LBRACK exp RBRACK OF exp
-    /*{ $$ = $ID "[" $3 "]" "of" $6; }*/
+    { $$ = new ast::ArrayExp(@$, new ast::NameTy(@1, $ID), $3, $6); }
 | ID LBRACE id_exp RBRACE
-    /*{ $$ = $ID "{" $3 "}"; }*/
+    { $$ = new ast::RecordExp(@$, new ast::NameTy(@1, $ID), $3); }
 | NEW ID
     /*{ $$ = "new" $2; }*/
 | lvalue
