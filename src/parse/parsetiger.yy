@@ -299,7 +299,7 @@ exp:
 | BREAK
     /*{ $$ = new ast::BreakExp(@$,$1); }*/
 | LET decs IN exps END
-    /*{ $$ = "let" $2 "in" $4 "end"; }*/
+    /*{ $$ = new ast::LetExp(@$,$2,$4); }*/
 
 lvalue:
   ID
