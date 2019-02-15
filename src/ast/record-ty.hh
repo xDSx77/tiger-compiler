@@ -14,6 +14,7 @@ namespace ast
   /// RecordTy.
   class RecordTy : public Ty
   {
+    public:
       /** \class ast::CastExp
    ** \brief Cast the type of an expression to a given type.
    **
