@@ -259,7 +259,7 @@ exp:
 | lvalue_c LPAREN exp2 RPAREN
     /*{ $$ = $1 "." $ID "(" $5 ")"; }*/
 | MINUS exp
-    /*{ $$ = new ast::OpExp(@$, ast::OpExp::Oper::sub, $2); }*/
+    /*{ $$ = new ast::OpExp(@$,nullptr, ast::OpExp::Oper::sub, $2); }*/
 | exp MINUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
@@ -295,7 +295,7 @@ exp:
 | WHILE exp DO exp
     /*{ $$ = new ast::WhileExp(@$,$2,$4); }*/
 | FOR ID ASSIGN exp TO exp DO exp
-    /*{ $$ = "for" $ID ":=" $4 "to" $6 "do" $8; }*/
+    /*{ $$ = new ast::ForExp(@$,$2,$4);  }*/
 | BREAK
     { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END
