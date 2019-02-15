@@ -13,7 +13,8 @@ namespace ast
   /// BreakExp.
   class BreakExp : public Exp
   {
-    BreakExp(const Location& location, Exp* exp);
+    public :
+    BreakExp(const Location& location);
     BreakExp(const BreakExp&) = delete;
     BreakExp& operator=(const BreakExp&) = delete;
     /// Destroy an ArrayExp node.
@@ -26,17 +27,6 @@ namespace ast
     /// Accept a non-const visitor \a v.
     void accept(Visitor& v) override;
     /// \}
-    /** \name Accessors.
-     ** \{ */
-    /// Return the expression.
-    const Exp& exp_get() const;
-    /// Return the expression.
-    Exp& exp_get();
-    /// Return the type.
-
-    protected:
-    /// The expression.
-    Exp* exp_;
   };
 
 } // namespace ast

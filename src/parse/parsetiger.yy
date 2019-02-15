@@ -289,7 +289,7 @@ exp:
 | lvalue ASSIGN exp
     /*{ $$ = new ast::AssignExp(@$,$1 ,$3); }*/
 | IF exp THEN exp
-    /*{ $$ = new ast::IfExp(@$,$2 ,$4 ,);  }*/
+    { $$ = new ast::IfExp(@$,$2 ,$4 ,nullptr);  }
 | IF exp THEN exp ELSE exp
     /*{ $$ = new ast::IfExp(@$,$2 ,$4 , $6); }*/
 | WHILE exp DO exp
@@ -297,7 +297,7 @@ exp:
 | FOR ID ASSIGN exp TO exp DO exp
     /*{ $$ = "for" $ID ":=" $4 "to" $6 "do" $8; }*/
 | BREAK
-    /*{ $$ = new ast::BreakExp(@$,$1); }*/
+    { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END
     /*{ $$ = new ast::LetExp(@$,$2,$4); }*/
 

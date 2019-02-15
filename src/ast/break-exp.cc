@@ -8,16 +8,10 @@
 
 namespace ast
 {
-    BreakExp::BreakExp(const Location& location, Exp* exp)
+    BreakExp::BreakExp(const Location& location)
     : Exp(location)
-    , exp_(exp)
     {}
 
-    BreakExp::~BreakExp()
-    {
-        delete exp_;
-
-    }
     void
     BreakExp::accept(ConstVisitor& v) const
     {

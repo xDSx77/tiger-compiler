@@ -12,15 +12,7 @@
 
 namespace ast
 {
-  inline const Exp&
-  BreakExp::exp_get() const
-  {
-    return *exp_;
-  }
-  inline Exp&
-  BreakExp::exp_get()
-  {
-    return *exp_;
-  }
+
+
 } // namespace ast
 
