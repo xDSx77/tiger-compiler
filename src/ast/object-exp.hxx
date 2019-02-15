@@ -11,17 +11,6 @@ namespace ast
 {
 
 
-  inline const Exp&
-  ObjectExp::exp_get() const
-  {
-    return *exp_;
-  }
-  inline Exp&
-  ObjectExp::exp_get()
-  {
-    return *exp_;
-  }
-
   inline const NameTy&
   ObjectExp::type_get() const
   {

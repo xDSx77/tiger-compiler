@@ -9,18 +9,17 @@
 
 namespace ast
 {
-    CallExp::CallExp(const Location& location, Exp* body, FunctionDec* dec,
-                    const misc::symbol& name)
+    CallExp::CallExp(const Location& location, const misc::symbol& name,
+                    exps_type exps)
     : Exp(location)
-    , body_(body)
-    , dec_(dec)
     , name_(name)
+    , exps_(exps)
     {}
 
     CallExp::~CallExp()
     {
-        delete body_;
-        delete dec_;
+        for (unsigned i = 0; i < exps_.size(); i++)
+          delete exps_[i];
     }
 
     void

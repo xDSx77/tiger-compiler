@@ -11,22 +11,6 @@ namespace ast
 {
 
 
-  inline const Exp&
-  CallExp::body_get() const
-  {
-    return *body_;
-  }
-  inline Exp&
-  CallExp::body_get()
-  {
-    return *body_;
-  }
-  inline void
-  CallExp::body_set(Exp* body)
-  {
-    body_ = body;
-  }
-
   inline const misc::symbol&
   CallExp::name_get() const
   {
@@ -43,15 +27,15 @@ namespace ast
     name_ = name;
   }
 
-  inline const FunctionDec&
-  CallExp::dec_get() const
+  inline const exps_type&
+  CallExp::exps_get() const
   {
-    return *dec_;
+    return exps_;
   }
-  inline FunctionDec&
-  CallExp::dec_get()
+  inline exps_type&
+  CallExp::exps_get()
   {
-    return *dec_;
+    return exps_;
   }
 
 } // namespace ast

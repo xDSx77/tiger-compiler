@@ -22,17 +22,6 @@ namespace ast
     return *var_;
   }
 
-  inline const MethodDec&
-  MethodCallExp::method_get() const
-  {
-    return *method_;
-  }
-  inline MethodDec&
-  MethodCallExp::method_get()
-  {
-    return *method_;
-  }
-
 
 } // namespace ast
 

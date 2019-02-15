@@ -238,20 +238,28 @@ id_exp:
     }
 | ID EQ exp COMMA id_exp
     {
-      ast::fieldinits_type fields;
       ast::FieldInit* field = new ast::FieldInit(@1, $1, $3);
-      fields.emplace_back(field);
-      fields.insert(fields.end(), $$.begin(), $$.end());
-      $$ = fields;
+      $5.insert($5.begin(), field);
+      $$ = $5;
     }
 
 exp2:
   %empty
-    /*{ $$ = ""; }*/
+    {
+      ast::exps_type empty;
+      $$ = empty;
+    }
 | exp
-    /*{ $$ = $1; }*/
+    {
+      ast::exps_type exps;
+      exps.emplace_back($1);
+      $$ = exps;
+    }
 | exp COMMA exp2
-    /*{ $$ = $1 "," $3; }*/
+    {
+      $3.insert($3.begin(), $1);
+      $$ = $3;
+    }
 
 exp:
   INT
@@ -265,15 +273,15 @@ exp:
 | ID LBRACE id_exp RBRACE
     { $$ = new ast::RecordExp(@$, new ast::NameTy(@1, $ID), $3); }
 | NEW ID
-    /*{ $$ = "new" $2; }*/
+    { $$ = new ast::ObjectExp(@$, new ast::NameTy(@1, $ID)); }
 | lvalue
     { $$ = $1; }
 | ID LPAREN exp2 RPAREN
-    /*{ $$ = $ID "(" $3 ")"; }*/
+    { $$ = new ast::CallExp(@$, $1, $3); }
 | lvalue_c LPAREN exp2 RPAREN
-    /*{ $$ = $1 "." $ID "(" $5 ")"; }*/
+    { $$ = new ast::MethodCallExp(@$, $1->name_get(), $3, $1); }
 | MINUS exp
-    /*{ $$ = new ast::OpExp(@$,nullptr, ast::OpExp::Oper::sub, $2); }*/
+    { $$ = new ast::OpExp(@$, nullptr, ast::OpExp::Oper::sub, $2); }
 | exp MINUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
@@ -303,13 +311,13 @@ exp:
 | lvalue ASSIGN exp
     /*{ $$ = new ast::AssignExp(@$,$1 ,$3); }*/
 | IF exp THEN exp
-    { $$ = new ast::IfExp(@$,$2 ,$4 ,nullptr);  }
+    { $$ = new ast::IfExp(@$, $2, $4, nullptr);  }
 | IF exp THEN exp ELSE exp
-    /*{ $$ = new ast::IfExp(@$,$2 ,$4 , $6); }*/
+    { $$ = new ast::IfExp(@$, $2 ,$4, $6); }
 | WHILE exp DO exp
-    /*{ $$ = new ast::WhileExp(@$,$2,$4); }*/
+    { $$ = new ast::WhileExp(@$, $2, $4); }
 | FOR ID ASSIGN exp TO exp DO exp
-    /*{ $$ = new ast::ForExp(@$,$2,$4);  }*/
+    { $$ = new ast::ForExp(@$, new ast::VarDec(@1, $2, nullptr, $4), $6, $8); }
 | BREAK
     { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END

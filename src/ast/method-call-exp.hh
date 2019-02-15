@@ -27,8 +27,8 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a MethodCallExp node.
-    MethodCallExp(const Location& location, Exp* body, FunctionDec* dec,
-        const misc::symbol& name, Var* var, MethodDec* method);
+    MethodCallExp(const Location& location, const misc::symbol& name,
+                  exps_type exps, Var* var);
     MethodCallExp(const MethodCallExp&) = delete;
     MethodCallExp& operator=(const MethodCallExp&) = delete;
     /// Destroy a MethodCallExp node.
@@ -49,17 +49,11 @@ namespace ast
     const Var& var_get() const;
     /// Return variable.
     Var& var_get();
-    /// Return method declaration.
-    const MethodDec& method_get() const;
-    /// Return method declaration.
-    MethodDec& method_get();
     /** \} */
 
   protected:
     /// Variable.
     Var* var_;
-    /// Method Declaration.
-    MethodDec* method_;
 
   };
 

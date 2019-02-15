@@ -16,8 +16,7 @@ namespace ast
   class CallExp : public Exp
   {
   public:
-    CallExp(const Location& location, Exp* body, FunctionDec* dec,
-        const misc::symbol& name);
+    CallExp(const Location& location, const misc::symbol& name, exps_type exps);
     CallExp(const CallExp&) = delete;
     CallExp& operator=(const CallExp&) = delete;
 
@@ -25,21 +24,16 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     void accept(Visitor& v) override;
 
-    const FunctionDec& dec_get() const;
-    FunctionDec& dec_get();
-
-    const Exp& body_get() const;
-    Exp& body_get();
-    void body_set(Exp* body);
-
     const misc::symbol& name_get() const;
     misc::symbol& name_get();
     void name_set(const misc::symbol& name);
 
+    const exps_type& exps_get() const;
+    exps_type& exps_get();
+
   protected:
-    Exp* body_;
-    FunctionDec* dec_;
     misc::symbol name_;
+    exps_type exps_;
   };
 } // namespace ast
 

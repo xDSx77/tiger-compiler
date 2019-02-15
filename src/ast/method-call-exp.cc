@@ -9,18 +9,15 @@
 namespace ast
 {
 
-  MethodCallExp::MethodCallExp(const Location& location, Exp* body,
-                              FunctionDec* dec, const misc::symbol& name,
-                              Var* var, MethodDec* method)
-    : CallExp(location, body, dec, name)
+  MethodCallExp::MethodCallExp(const Location& location,
+                              const misc::symbol& name, exps_type exps, Var* var)
+    : CallExp(location, name, exps)
     , var_(var)
-    , method_(method)
   {}
 
   MethodCallExp::~MethodCallExp()
   {
     delete var_;
-    delete method_;
   }
 
   void
