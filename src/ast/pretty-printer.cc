@@ -70,13 +70,19 @@ namespace ast
     ostr_ << "_cast(" << e.exp_get() << ", " << e.ty_get() << ')';
   }
 
+  //Elias moved that way
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
-    ostr_ << e.name_get();
+    ostr_ << e.name_get() << '(';
+    for (size_t i = 0; i < e.exps_get().size(); i++)
+    {
+        ostr << e.exps_get()[i];
+    }
+    ostr << ')';
   }
 
-
+  //Elias moved that way
   void
   PrettyPrinter::operator()(const OpExp& e)
   {
