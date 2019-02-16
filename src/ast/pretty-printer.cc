@@ -70,7 +70,6 @@ namespace ast
     ostr_ << "_cast(" << e.exp_get() << ", " << e.ty_get() << ')';
   }
 
-  //Elias moved that way
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
@@ -82,7 +81,6 @@ namespace ast
     ostr_ << ')';
   }
 
-  //Elias moved that way
   void
   PrettyPrinter::operator()(const OpExp& e)
   {
@@ -113,43 +111,49 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
+    ostr_ << '[';
     for (unsigned i = 0; i < e.fieldinits_get().size(); i++)
     {
         ostr_ << e.fieldinits_get()[i];
     }
+    ostr_ << ']';
   }
 
   void
   PrettyPrinter::operator()(const SeqExp& e)
   {
+      ostr_ << '(';
       for (unsigned i = 0; i < e.exps_get().size(); ++i)
       {
         ostr_ << e.exps_get()[i];
       }
+      ostr_ << ')';
   }
 
   void
   PrettyPrinter::operator()(const AssignExp& e)
   {
-    ostr_ << e.var_get() << e.exp_get();
+    ostr_ << e.var_get() << ":=" << e.exp_get();
   }
 
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
-    ostr_ << e.test_get() << e.body_get() << e.body_2_get();
+    ostr_ << "if" << e.test_get() << "then";
+    if(e.body_2_get())
+        ostr_ << "else" << e.body_2_get();
   }
 
   void
   PrettyPrinter::operator()(const WhileExp& e)
   {
-    ostr_ << e.test_get() << e.body_get();
+    ostr_ << "while" << e.test_get() << "do" << e.body_get();
   }
 
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << e.vardec_get() << e.hi_get() << e.body_get();
+    ostr_ << "for" << e.vardec_get() << ":=" << e.hi_get() << "do" << e.body_get();
   }
 
   void
@@ -163,13 +167,15 @@ namespace ast
   void
   PrettyPrinter::operator()(const ArrayExp& e)
   {
-    ostr_ << e.type_get();
+    ostr_ << e.type_get() << '[' << e.size_get() << ']' << "of" << e.value_get();
   }
 
   void
   PrettyPrinter::operator()(const FieldInit& e)
   {
-      ostr_ << e.init_get();
+    ostr_ << "";
+    ostr_ << e.name_get() << "="  << e.init_get();
+    ostr_ << e.name_get() << "="  << e.init_get() << "," << "id_exp";
   }
 
   /*

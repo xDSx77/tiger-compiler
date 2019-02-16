@@ -84,7 +84,6 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<OpExp>& e)
   {
     e.left_get().accept(*this);
-    e.oper_get().accept(*this);
     e.right_get().accept(*this);
   }
 
@@ -119,7 +118,7 @@ namespace ast
   {
     e.test_get().accept(*this);
     e.body_get().accept(*this);
-    e.body_2_get().accept(*this);
+    e.body_2_get()->accept(*this);
   }
 
   template <template <typename> class Const>
