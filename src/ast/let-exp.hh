@@ -19,7 +19,7 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a LetExp node.
-    LetExp(const Location& location, DecsList* decs, Exp* body);
+    LetExp(const Location& location, DecsList* decs, exps_type exps);
     LetExp(const LetExp&) = delete;
     LetExp& operator=(const LetExp&) = delete;
     /// Destroy a LetExp node.
@@ -41,16 +41,16 @@ namespace ast
     /// Return declarations of the let.
     DecsList& decs_get();
     /// Return expression in the let.
-    const Exp& body_get() const;
+    const exps_type& exps_get() const;
     /// Return expression in the let.
-    Exp& body_get();
+    exps_type& exps_get();
     /** \} */
 
   protected:
     /// Declarations of the let.
     DecsList* decs_;
-    /// Expression executed in the let.
-    Exp* body_;
+    /// Expressions executed in the let.
+    exps_type exps_;
   };
 
 } // namespace ast

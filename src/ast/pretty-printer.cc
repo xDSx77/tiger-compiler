@@ -75,33 +75,33 @@ namespace ast
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
-      ostr_ << e.name_get();
+    ostr_ << e.name_get();
   }
 
   /*
   void
   PrettyPrinter::operator()(const 0pExp& e)
   {
-      ostr_ << e.left_get() << e.right_get();
+    ostr_ << e.left_get() << e.right_get();
   }
   */
 
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
-      ostr_ << e.type_get();
+    ostr_ << e.type_get();
   }
 /*
   void
   PrettyPrinter::operator()(const SeqExp& e)
   {
-      ostr_ << e.exps_get();
+    ostr_ << e.exps_get();
   }
 */
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
-      ostr_ << e.test_get() << e.body_get() << e.body_2_get();
+    ostr_ << e.test_get() << e.body_get() << e.body_2_get();
   }
 
   void
@@ -113,13 +113,15 @@ namespace ast
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-      ostr_ << e.vardec_get() << e.hi_get() << e.body_get();
+    ostr_ << e.vardec_get() << e.hi_get() << e.body_get();
   }
 
   void
   PrettyPrinter::operator()(const LetExp& e)
   {
-      ostr_ << e.decs_get() << e.body_get();
+    ostr_ << e.decs_get();
+    for (unsigned j = 0; j < e.exps_get().size(); j++)
+      ostr_ << e.exps_get()[j];
   }
 
   void

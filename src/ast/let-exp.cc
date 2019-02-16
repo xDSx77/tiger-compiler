@@ -9,16 +9,17 @@
 namespace ast
 {
 
-  LetExp::LetExp(const Location& location, DecsList* decs, Exp* body)
+  LetExp::LetExp(const Location& location, DecsList* decs, exps_type exps)
     : Exp(location)
     , decs_(decs)
-    , body_(body)
+    , exps_(exps)
   {}
 
   LetExp::~LetExp()
   {
     delete decs_;
-    delete body_;
+    for (unsigned i = 0; i < exps_.size(); i++)
+      delete exps_[i];
   }
 
   void

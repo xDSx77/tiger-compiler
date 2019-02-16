@@ -9,16 +9,7 @@
 
 namespace ast
 {
-  inline const Exp&
-  AssignExp::exp_get() const
-  {
-    return *exp_;
-  }
-  inline Exp&
-  AssignExp::exp_get()
-  {
-    return *exp_;
-  }
+
   inline const Var&
   AssignExp::var_get() const
   {
@@ -29,5 +20,17 @@ namespace ast
   {
     return *var_;
   }
+
+  inline const Exp&
+  AssignExp::exp_get() const
+  {
+    return *exp_;
+  }
+  inline Exp&
+  AssignExp::exp_get()
+  {
+    return *exp_;
+  }
+
 } // namespace ast
 

@@ -18,7 +18,7 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a AssignExp node.
-    AssignExp(const Location& location, Exp* exp, Var* var);
+    AssignExp(const Location& location, Var* var, Exp* exp);
     AssignExp(const AssignExp&) = delete;
     AssignExp& operator=(const AssignExp&) = delete;
     /// Destroy a SubscriptVar node.
@@ -35,21 +35,21 @@ namespace ast
 
     /** \name Accessors.
      ** \{ */
-    /// Return the offset expression.
-    const Exp& exp_get() const;
-    /// Return the offset expression.
-    Exp& exp_get();
     /// Return the mother variable.
     const Var& var_get() const;
     /// Return the mother variable.
     Var& var_get();
+    /// Return the offset expression.
+    const Exp& exp_get() const;
+    /// Return the offset expression.
+    Exp& exp_get();
     /** \} */
 
   protected:
-    /// The offset expression.
-    Exp* exp_;
     /// The mother variable.
     Var* var_;
+    /// The offset expression.
+    Exp* exp_;
   };
 
 } // namespace ast

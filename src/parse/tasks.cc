@@ -45,7 +45,7 @@ namespace parse::tasks
       if (!result.first)
         task_error().exit();
 
-  // FIXME: Some code was deleted here.
+      ast::tasks::the_program = std::unique_ptr<ast::DecsList>(result.first);
   }
 
   void

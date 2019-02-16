@@ -21,15 +21,15 @@ namespace ast
     return *decs_;
   }
 
-  inline const Exp&
-  LetExp::body_get() const
+  inline const exps_type&
+  LetExp::exps_get() const
   {
-    return *body_;
+    return exps_;
   }
-  inline Exp&
-  LetExp::body_get()
+  inline exps_type&
+  LetExp::exps_get()
   {
-    return *body_;
+    return exps_;
   }
 
 } // namespace ast

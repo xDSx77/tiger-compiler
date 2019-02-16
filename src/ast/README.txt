@@ -18,7 +18,7 @@ Incomplete classes are tagged with a `*'.
       SubscriptVar  (Var var, Exp index)
 
 *   ArrayExp        (NameTy type, Exp size, Exp value)
-*   AssignExp       (Exp exp, Var var)
+*   AssignExp       (Var var, Exp exp)
 *   BreakExp        (Exp exp)
 *   CallExp         (symbol name, exps_type exps)
 *     MethodCallExp (Var var)
@@ -26,7 +26,7 @@ Incomplete classes are tagged with a `*'.
     ForExp          (VarDec vardec, Exp hi, Exp body)
 *   IfExp           (Exp test, Exp body, Exp body_2)
     IntExp          (int value)
-*   LetExp          (DecsList decs, Exp body)
+*   LetExp          (DecsList decs, exps_type exps)
     NilExp          ()
 *   ObjectExp       (Exp exp, NameTy type)
     OpExp           (Exp left, Oper oper, Exp right)

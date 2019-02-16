@@ -8,17 +8,16 @@
 
 namespace ast
 {
-  AssignExp::AssignExp(const Location& location, Exp* exp,
-                             Var* var)
+  AssignExp::AssignExp(const Location& location, Var* var, Exp* exp)
     : Exp(location)
-    , exp_(exp)
     , var_(var)
+    , exp_(exp)
   {}
 
   AssignExp::~AssignExp()
   {
-    delete exp_;
     delete var_;
+    delete exp_;
   }
 
   void

@@ -307,9 +307,9 @@ exp:
 | exp OR exp
     /*{ $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::orop, $3); }*/
 | LPAREN exps RPAREN
-    /*{ $$ = new ast::SeqExp(@$, $2); }*/
+    { $$ = new ast::SeqExp(@$, $2); }
 | lvalue ASSIGN exp
-    /*{ $$ = new ast::AssignExp(@$,$1 ,$3); }*/
+    { $$ = new ast::AssignExp(@$, $1, $3); }
 | IF exp THEN exp
     { $$ = new ast::IfExp(@$, $2, $4, nullptr);  }
 | IF exp THEN exp ELSE exp
@@ -321,7 +321,7 @@ exp:
 | BREAK
     { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END
-    /*{ $$ = new ast::LetExp(@$,$2,$4); }*/
+    { $$ = new ast::LetExp(@$, $2, $4); }
 
 lvalue:
   ID
@@ -350,9 +350,16 @@ lvalue_c:
 
 exp3:
   exp
-    /*{ $$ = $1; }*/
+    {
+      ast::exps_type exps;
+      exps.emplace_back($1);
+      $$ = exps;
+    }
 | exp SEMI exp3
-    /*{ $$ = $1 ";" $3; }*/
+    {
+      $3.insert($3.begin(), $1);
+      $$ = $3;
+    }
 
 exps:
   %empty
@@ -372,7 +379,10 @@ decs:
   %empty
     { $$ = new ast::DecsList(@$); }
 | dec decs
-    /*{ $$ = $1 $2; }*/
+    {
+      /*$3.push_front($1);*/
+      $$ = $3;
+    }
 
 dec:
   TYPE ID EQ ty
