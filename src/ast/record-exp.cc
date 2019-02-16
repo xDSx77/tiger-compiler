@@ -20,7 +20,7 @@ namespace ast
   RecordExp::~RecordExp()
   {
     delete type_;
-    for (int i = 0; i < fieldinits_.size(); i++)
+    for (unsigned i = 0; i < fieldinits_.size(); i++)
       delete fieldinits_[i];
   }
 
