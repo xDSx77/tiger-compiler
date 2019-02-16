@@ -20,13 +20,13 @@ namespace misc
   inline bool
   symbol::operator==(const symbol& rhs) const
   {
-    return (*this->obj_ == rhs.get());
+    return obj_ == rhs.obj_;
   }
 
   inline bool
   symbol::operator!=(const symbol& rhs) const
   {
-    return !(*this->obj_ == rhs.get());
+    return !(obj_ == rhs.obj_);
   }
 
   inline std::ostream&
