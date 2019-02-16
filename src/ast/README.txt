@@ -31,7 +31,7 @@ Incomplete classes are tagged with a `*'.
 *   ObjectExp       (Exp exp, NameTy type)
     OpExp           (Exp left, Oper oper, Exp right)
 *   RecordExp       (NameTy type, fieldinits_type field)
-*   SeqExp          (Exp exp)
+*   SeqExp          (exps_type exps)
 *   StringExp       (string s)
     WhileExp        (Exp test, Exp body)
 
@@ -39,7 +39,7 @@ Incomplete classes are tagged with a `*'.
     ArrayTy         (NameTy base_type)
     ClassTy         (NameTy super, DecsList decs)
     NameTy          (symbol name)
-*   RecordTy        (Field field)
+*   RecordTy        (fields_type fields)
 
   DecsList          (decs_type decs)
 

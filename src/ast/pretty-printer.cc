@@ -32,8 +32,6 @@ namespace ast
     }
   }
 
-
-
   PrettyPrinter::PrettyPrinter(std::ostream& ostr)
     : ostr_(ostr)
   {}
@@ -76,7 +74,7 @@ namespace ast
     ostr_ << e.name_get() << '(';
     for (size_t i = 0; i < e.exps_get().size(); i++)
     {
-        ostr_ << e.exps_get()[i];
+      ostr_ << e.exps_get()[i];
     }
     ostr_ << ')';
   }
@@ -114,7 +112,7 @@ namespace ast
     ostr_ << '[';
     for (unsigned i = 0; i < e.fieldinits_get().size(); i++)
     {
-        ostr_ << e.fieldinits_get()[i];
+      ostr_ << e.fieldinits_get()[i];
     }
     ostr_ << ']';
   }
@@ -188,14 +186,14 @@ namespace ast
   void
   PrettyPrinter::operator()(const Dec& e)
   {
-      ostr_ << e.name_get();
+    ostr_ << e.name_get();
   }
   */
 
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-      ostr_ << e.type_name_get();
+    ostr_ << e.type_name_get();
   }
 
   void
@@ -219,19 +217,20 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
-      ostr_ << e.field_get();
+    for (unsigned i = 0; i < e.fields_get().size(); i++)
+      ostr_ << e.fields_get()[i];
   }
 
   void
   PrettyPrinter::operator()(const ArrayTy& e)
   {
-      ostr_ << e.base_type_get();
+    ostr_ << e.base_type_get();
   }
 
   void
   PrettyPrinter::operator()(const Field& e)
   {
-      ostr_ << e.type_name_get();
+    ostr_ << e.type_name_get();
   }
 
 } // namespace ast

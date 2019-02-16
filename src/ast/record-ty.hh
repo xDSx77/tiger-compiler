@@ -15,18 +15,12 @@ namespace ast
   class RecordTy : public Ty
   {
     public:
-      /** \class ast::CastExp
-   ** \brief Cast the type of an expression to a given type.
-   **
-   ** This node is only used in the bounds checking transformation
-   ** (see desugar::bounds_checks_add).  You don't need to worry
-   ** about it (nor about the `cast' keyword) if you don't implement
-   ** this option.
-   */
-    RecordTy(const Location& location, Field* fld);
+    /** \name Ctor & dtor
+     ** \{ */
+    RecordTy(const Location& location, fields_type fields);
     RecordTy(const RecordTy&) = delete;
     RecordTy& operator=(const RecordTy&) = delete;
-    /// Destroy a CastExp node.
+    /// Destroy a RecordTy node.
     virtual ~RecordTy();
     /** \} */
 
@@ -40,15 +34,15 @@ namespace ast
 
     /** \name Accessors.
      ** \{ */
+    /// Return fields.
+    const fields_type& fields_get() const;
     /// Return field.
-    const Field& field_get() const;
-    /// Return field.
-    Field& field_get();
+    fields_type& fields_get();
     /** \} */
 
   protected:
     /// The field of the record.
-    Field* fld_;
+    fields_type fields_;
   };
 
 } // namespace ast

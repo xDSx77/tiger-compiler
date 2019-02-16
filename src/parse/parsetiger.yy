@@ -89,7 +89,7 @@
 # include <ast/decs-list.hh>
 }
 
-%destructor { delete $$; } exp
+%destructor { delete $$; } dec decs exp classfield lvalue ty vardec
   // FIXME: Some code was deleted here (Printers and destructors).
 
 /*-----------------------------------------.
@@ -179,27 +179,24 @@
        WHILE        "while"
        EOF 0        "end of file"
 
-%type <ast::Dec*> dec
+%type <ast::Decs*> dec
 %type <ast::DecsList*> decs
 %type <ast::exps_type> exps
 %type <ast::Exp*> exp
 %type <ast::fieldinits_type> id_exp
 %type <ast::exps_type> exp2
 %type <ast::exps_type> exp3
-%type <ast::Field*> classfield
-%type <ast::fields_type> classfields
+%type <ast::Decs*> classfield
+%type <ast::DecsList*> classfields
 %type <ast::FieldVar*> lvalue_c
 %type <ast::Ty*> ty
-%type <std::vector<ast::RecordTy*>> tyfield
-%type <std::vector<ast::RecordTy*>> tyfields
+%type <ast::RecordTy*> tyfield
+%type <ast::RecordTy*> tyfields
 %type <ast::VarDecs*> tyfield_decs
 %type <ast::VarDecs*> tyfields_decs
 %type <ast::SubscriptVar*> lvalue_b
 %type <ast::VarDec*> vardec
 %type <ast::Var*> lvalue
-
-
-
 
 %left ID
 %left OR
@@ -289,7 +286,10 @@ exp:
 | exp PLUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
 | exp AND exp
-    /*{ $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::andop, $3); "}*/
+    {
+      $$ = new ast::IfExp(@$, $1, new ast::IfExp(@3, $3,
+      new ast::StringExp(@3, "true"), nullptr), new ast::StringExp(@3, "false"));
+    }
 | exp LE exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
 | exp GE exp
@@ -307,7 +307,11 @@ exp:
 | exp TIMES exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
 | exp OR exp
-    /*{ $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::orop, $3); }*/
+    {
+      $$ = new ast::IfExp(@$, $1, new ast::StringExp(@1, "true"),
+        new ast::IfExp(@3, $3, new ast::StringExp(@3, "true"),
+          new ast::StringExp(@3, "false")));
+    }
 | LPAREN exps RPAREN
     { $$ = new ast::SeqExp(@$, $2); }
 | lvalue ASSIGN exp
@@ -381,39 +385,82 @@ decs:
   %empty
     { $$ = new ast::DecsList(@$); }
 | dec decs
-    /*{
-      $2.push_front($1);
+    {
+      $2->push_front($1);
       $$ = $2;
-    }*/
+    }
 
 dec:
   TYPE ID EQ ty
-    { $$ = new ast::TypeDec(@$, $ID, $4); }
+    {
+      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $ID, $4);
+      typedecs->push_front(*typedec);
+      $$ = typedecs;
+    }
 | CLASS ID LBRACE classfields RBRACE
-    /*{ $$ = new ast:: ; }*/
+    {
+      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4));
+      typedecs->push_front(*typedec);
+      $$ = typedecs;
+    }
 | CLASS ID EXTENDS ID LBRACE classfields RBRACE
-    /*{ $$ = new ast:: ; }*/
+    {
+      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, new ast::NameTy(@4, $4), $6));
+      typedecs->push_front(*typedec);
+      $$ = typedecs;
+    }
 | vardec
-    { $$ = $1; }
+    {
+      ast::VarDecs* vardecs = new ast::VarDecs(@$);
+      vardecs->push_front(*$1);
+      $$ = vardecs;
+    }
 | FUNCTION ID LPAREN tyfield_decs RPAREN EQ exp
-    { $$ = new ast::FunctionDec(@$, $2, $4, nullptr, $7); }
+    {
+      ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* functiondec = new ast::FunctionDec(@$, $2, $4, nullptr, $7);
+      functiondecs->push_front(*functiondec);
+      $$ = functiondecs;
+    }
 | FUNCTION ID LPAREN tyfield_decs RPAREN COLON ID EQ exp
-    { $$ = new ast::FunctionDec(@$, $2, $4, new ast::NameTy(@7, $7), $9); }
+    {
+      ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* functiondec = new ast::FunctionDec(@$, $2, $4, new ast::NameTy(@7, $7), $9);
+      functiondecs->push_front(*functiondec);
+      $$ = functiondecs;
+    }
 | PRIMITIVE ID LPAREN tyfield_decs RPAREN
-    { $$ = new ast::FunctionDec(@$, $2, $4, nullptr, nullptr); }
+    {
+      ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* functiondec = new ast::FunctionDec(@$, $2, $4, nullptr, nullptr);
+      functiondecs->push_front(*functiondec);
+      $$ = functiondecs;
+    }
 | PRIMITIVE ID LPAREN tyfield_decs RPAREN COLON ID
-    { $$ = new ast::FunctionDec(@$, $2, $4, new ast::NameTy(@7, $7), nullptr); }
-/*| IMPORT STRING*/
-    /*{
-      $$ = tp.parse_import(take($2), @$);
+    {
+      ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* functiondec = new ast::FunctionDec(@$, $2, $4, new ast::NameTy(@7, $7), nullptr);
+      functiondecs->push_front(*functiondec);
+      $$ = functiondecs;
+    }
+| IMPORT STRING
+    {
+      ast::DecsList* decs = tp.parse_import($2, @$);
+      $$ = decs->decs_get().front();
       if (!$$)
-        $$ = new ast::DecsList(@$);
-    }*/
+      {
+        decs = new ast::DecsList(@$);
+        $$ = decs->decs_get().front();
+      }
+    }
 
 tyfields_decs:
   %empty
     {
-      ast::VarDecs* empty;
+      ast::VarDecs* empty = new ast::VarDecs(@$);
       $$ = empty;
     }
 | COMMA ID COLON ID tyfields_decs
@@ -427,7 +474,7 @@ tyfields_decs:
 tyfield_decs:
   %empty
     {
-      ast::VarDecs* empty;
+      ast::VarDecs* empty = new ast::VarDecs(@$);
       $$ = empty;
     }
 | ID COLON ID tyfields_decs
@@ -446,61 +493,80 @@ vardec:
 
 classfields:
   %empty
-    {
-      ast::fields_type empty;
-      $$ = empty;
-    }
+    { $$ = new ast::DecsList(@$); }
 | classfield classfields
     {
-      $2.insert($2.begin(), $1);
+      $2->push_front($1);
       $$ = $2;
     }
 
 classfield:
   vardec
-    /*{ $$ = new ast::Field(@$, nullptr, $1->type_name_get()); }*/
+    {
+      ast::VarDecs* vardecs = new ast::VarDecs(@$);
+      vardecs->push_front(*$1);
+      $$ = vardecs;
+    }
 | METHOD ID LPAREN tyfield_decs RPAREN EQ exp
-    /*{ $$ = new ast::MethodDec(@$, $2, $4, nullptr, $7); }*/
+    {
+      ast::MethodDecs* methoddecs = new ast::MethodDecs(@$);
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, $4, nullptr, $7);
+      methoddecs->push_front(*methoddec);
+      $$ = methoddecs;
+    }
 | METHOD ID LPAREN tyfield_decs RPAREN COLON ID EQ exp
-    /*{ $$ = new ast::MethodDec(@$, $2, $4, new ast::NameTy(@7, $7), $9); }*/
+    {
+      ast::MethodDecs* methoddecs = new ast::MethodDecs(@$);
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, $4, new ast::NameTy(@7, $7), $9);
+      methoddecs->push_front(*methoddec);
+      $$ = methoddecs;
+    }
 
 ty:
   ID
     { $$ = new ast::NameTy(@$, $ID); }
 | LBRACE tyfield RBRACE
-    /*{ $$ = $2; }*/
+    { $$ = $2; }
 | ARRAY OF ID
     { $$ = new ast::ArrayTy(@$, new ast::NameTy(@3, $3)); }
 | CLASS LBRACE classfields RBRACE
-    /*{ $$ = new ast::ClassTy(@$, nullptr, DECSLIST); }*/
+    { $$ = new ast::ClassTy(@$, nullptr, $3); }
 | CLASS EXTENDS ID LBRACE classfields RBRACE
-    /*{ $$ = new ast::ClassTy(@$, new ast::NameTy(@3, $3), DECSLIST); }*/
+    { $$ = new ast::ClassTy(@$, new ast::NameTy(@3, $3), $5); }
 
 tyfields:
   %empty
     {
-      std::vector<ast::RecordTy*> empty;
+      ast::fields_type fields;
+      ast::RecordTy* empty = new ast::RecordTy(@$, fields);
       $$ = empty;
     }
 | COMMA ID COLON ID tyfields
     {
-      ast::RecordTy* record = new ast::RecordTy(@$,
-          new ast::Field(@1, $2, new ast::NameTy(@4, $4)));
-      $5.insert($5.begin(), record);
+      ast::fields_type fields;
+      ast::Field* field =  new ast::Field(@1, $2, new ast::NameTy(@4, $4));
+      fields.insert(fields.begin(), field);
+      ast::RecordTy* record = new ast::RecordTy(@$, fields);
+      $5->fields_get().insert($5->fields_get().end(), record->fields_get().begin(),
+          record->fields_get().end());
       $$ = $5;
     }
 
 tyfield:
   %empty
     {
-      std::vector<ast::RecordTy*> empty;
+      ast::fields_type fields;
+      ast::RecordTy* empty = new ast::RecordTy(@$, fields);
       $$ = empty;
     }
 | ID COLON ID tyfields
     {
-      ast::RecordTy* record = new ast::RecordTy(@$,
-          new ast::Field(@1, $1, new ast::NameTy(@3, $3)));
-      $4.insert($4.begin(), record);
+      ast::fields_type fields;
+      ast::Field* field = new ast::Field(@1, $1, new ast::NameTy(@3, $3));
+      fields.insert(fields.begin(), field);
+      ast::RecordTy* record = new ast::RecordTy(@$, fields);
+      $4->fields_get().insert($4->fields_get().end(), record->fields_get().begin(),
+          record->fields_get().end());
       $$ = $4;
     }
 

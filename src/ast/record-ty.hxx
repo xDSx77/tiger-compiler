@@ -10,15 +10,15 @@
 namespace ast
 {
 
-  inline const Field&
-  RecordTy::field_get() const
+  inline const fields_type&
+  RecordTy::fields_get() const
   {
-    return *fld_;
+    return fields_;
   }
-  inline Field&
-  RecordTy::field_get()
+  inline fields_type&
+  RecordTy::fields_get()
   {
-    return *fld_;
+    return fields_;
   }
 
 } // namespace ast
