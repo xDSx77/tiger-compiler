@@ -78,26 +78,31 @@ namespace ast
     ostr_ << e.name_get();
   }
 
-  /*
+
   void
-  PrettyPrinter::operator()(const 0pExp& e)
+  PrettyPrinter::operator()(const OpExp& e)
   {
     ostr_ << e.left_get() << e.right_get();
   }
-  */
 
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
-    ostr_ << e.type_get();
+    for (unsigned i = 0; i < e.fieldinits_get().size(); i++)
+    {
+        ostr_ << e.fieldinits_get()[i];
+    }
   }
-/*
+
   void
   PrettyPrinter::operator()(const SeqExp& e)
   {
-    ostr_ << e.exps_get();
+      for (unsigned i = 0; i < e.exps_get().size(); ++i)
+      {
+        ostr_ << e.exps_get()[i];
+      }
   }
-*/
+
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
@@ -136,40 +141,46 @@ namespace ast
       ostr_ << e.init_get();
   }
 
-  /*
   void
-  PrettyPrinter::operator()(const DecsList e)
+  PrettyPrinter::operator()(const DecsList& e)
+  {
+    for (unsigned i = 0; i < e.decs_get().size(); ++i)
+    {
+       ostr_ << e.decs_get()[i];
+    }
+  }
+
+  void
+  PrettyPrinter::operator()(const Decs& e)
+  {
+    for (unsigned i = 0; i < e.decs_get().size(); ++i)
+    {
+  }
+
+/*
+  void
+  PrettyPrinter::operator()(const VarDecs& e)
   {
   }
 
   void
-  PrettyPrinter::operator()(const Decs e)
+  PrettyPrinter::operator()(const FunctionDecs& e)
   {
   }
 
   void
-  PrettyPrinter::operator()(const VarDecs e)
+  PrettyPrinter::operator()(const TypeDec& e)
+
+  void
+  PrettyPrinter::operator()(const TypeDecs& e)
+
+  void
+  PrettyPrinter::operator()(const NameTy& e)
   {
   }
 
   void
-  PrettyPrinter::operator()(const FunctionDecs e)
-  {
-  }
-
-  void
-  PrettyPrinter::operator()(const TypeDec e)
-
-  void
-  PrettyPrinter::operator()(const TypeDecs e)
-
-  void
-  PrettyPrinter::operator()(const NameTy e)
-  {
-  }
-
-  void
-  PrettyPrinter::operator()(const RecordTy e)
+  PrettyPrinter::operator()(const RecordTy& e)
   {
   }
 */

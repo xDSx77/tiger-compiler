@@ -39,10 +39,11 @@ namespace ast
     void operator()(const ForExp& e) override;
     void operator()(const WhileExp& e) override;
     void operator()(const IfExp& e) override;
-    /*void operator()(const SeqExp& e) override;*/
+    void operator()(const SeqExp& e) override;
     void operator()(const RecordExp& e) override;
-    /*void operator()(const 0pExp7 e) override;*/
+    void operator()(const OpExp& e) override;
     void operator()(const CallExp& e) override;
+    void operator()(const DecsList& e) override;
     /// \}
 
   private:
