@@ -86,7 +86,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const OpExp& e)
   {
-    ostr_ << e.left_get() << ' ' << << e.right_get();
+    ostr_ << e.left_get() << e.right_get();
   }
 
   void
