@@ -75,7 +75,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
-      ostr_ << e.body_get() << e.dec_get();
+      ostr_ << e.name_get();
   }
 
   /*
@@ -89,15 +89,15 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
-      ostr_ << e.field_get() << e.type_get();
+      ostr_ << e.type_get();
   }
-
+/*
   void
   PrettyPrinter::operator()(const SeqExp& e)
   {
-      ostr_ << e.exp_get();
+      ostr_ << e.exps_get();
   }
-
+*/
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
@@ -125,7 +125,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const ArrayExp& e)
   {
-    ostr_ << e.exp_get() << e.type_get();
+    ostr_ << e.type_get();
   }
 
   void
