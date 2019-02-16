@@ -38,7 +38,6 @@ namespace ast
     : ostr_(ostr)
   {}
 
-
   void
   PrettyPrinter::operator()(const SimpleVar& e)
   {
@@ -71,7 +70,6 @@ namespace ast
     ostr_ << "_cast(" << e.exp_get() << ", " << e.ty_get() << ')';
   }
 
-  // faire ca pour toute les fonctions
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
@@ -101,6 +99,12 @@ namespace ast
       {
         ostr_ << e.exps_get()[i];
       }
+  }
+
+  void
+  PrettyPrinter::operator()(const AssignExp& e)
+  {
+    ostr_ << e.var_get() << e.exp_get();
   }
 
   void
@@ -140,48 +144,51 @@ namespace ast
   {
       ostr_ << e.init_get();
   }
-/*
+
+  /*
   void
   PrettyPrinter::operator()(const DecsList& e)
   {
-    for (unsigned i = 0; i < e.decs_get().size(); ++i)
-    {
-       ostr_ << e.decs_get()[i];
-    }
+    ostr_ << e.decs_get();
   }
 
   void
-  PrettyPrinter::operator()(const Decs& e)
+  PrettyPrinter::operator()(const Dec& e)
   {
+      ostr_ << e.name_get();
   }
-*/
-/*
+  */
+
   void
-  PrettyPrinter::operator()(const VarDecs& e)
+  PrettyPrinter::operator()(const VarDec& e)
   {
+      ostr_ << e.type_name_get();
   }
 
   void
-  PrettyPrinter::operator()(const FunctionDecs& e)
+  PrettyPrinter::operator()(const FunctionDec& e)
   {
+    ostr_ << e.body_get() << e.formals_get();
   }
 
   void
   PrettyPrinter::operator()(const TypeDec& e)
-
-  void
-  PrettyPrinter::operator()(const TypeDecs& e)
+  {
+    ostr_ << e.ty_get();
+  }
 
   void
   PrettyPrinter::operator()(const NameTy& e)
   {
+    ostr_ << e.name_get() << e.def_get();
   }
 
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
+      ostr_ << e.ty_get() << e.field_get();
   }
-*/
+
   void
   PrettyPrinter::operator()(const ArrayTy& e)
   {

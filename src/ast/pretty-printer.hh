@@ -30,21 +30,42 @@ namespace ast
     void operator()(const FieldVar& e) override;
     void operator()(const SubscriptVar& e) override;
     void operator()(const CastVar& e) override;
-    void operator()(const CastExp& e) override;
-    void operator()(const ArrayTy& e) override;
-    void operator()(const Field& e) override;
-    void operator()(const FieldInit& e) override;
-    void operator()(const ArrayExp& e) override;
-    void operator()(const LetExp& e) override;
-    void operator()(const ForExp& e) override;
-    void operator()(const WhileExp& e) override;
-    void operator()(const IfExp& e) override;
-    void operator()(const SeqExp& e) override;
-    void operator()(const RecordExp& e) override;
-    void operator()(const OpExp& e) override;
+
+
     void operator()(const CallExp& e) override;
-   /*void operator()(const DecsList& e) override;
-    void operator()(const Decs& e) override;*/
+    void operator()(const OpExp& e) override;
+    void operator()(const RecordExp& e) override;
+    void operator()(const SeqExp& e) override;
+    void operator()(const AssignExp& e) override;
+    void operator()(const IfExp& e) override;
+    void operator()(const WhileExp& e) override;
+    void operator()(const ForExp& e) override;
+    void operator()(const LetExp& e) override;
+    void operator()(const ArrayExp& e) override;
+    void operator()(const CastExp& e) override;
+    void operator()(const FieldInit& e) override;
+
+    /// Visit a list of function, type and/or variables declarations
+    /*void operator()(const DecsList& e) override;*/
+
+    /// Visit a Decs chunks.
+    /*void operator()(const Dec& e) override;*/
+
+    /// Visit Var declarations.
+    void operator()(const VarDec& e) override;
+
+    /// Visit Function declarations.
+    void operator()(const FunctionDec& e) override;
+
+    /// Visit Type declarations.
+    void operator()(const TypeDec& e) override;
+
+
+    void operator()(const NameTy& e) override;
+    void operator()(const RecordTy& e) override;
+    void operator()(const ArrayTy& e) override;
+
+    void operator()(const Field& e) override;
     /// \}
 
   private:
