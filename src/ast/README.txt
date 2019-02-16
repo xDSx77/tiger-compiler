@@ -39,7 +39,7 @@ Incomplete classes are tagged with a `*'.
     ArrayTy         (NameTy base_type)
     ClassTy         (NameTy super, DecsList decs)
     NameTy          (symbol name)
-*   RecordTy        (Field field, Ty ty)
+*   RecordTy        (Field field)
 
   DecsList          (decs_type decs)
 

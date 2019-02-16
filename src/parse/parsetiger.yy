@@ -288,7 +288,7 @@ exp:
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
-/*| exp AND exp*/
+| exp AND exp
     /*{ $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::andop, $3); "}*/
 | exp LE exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
@@ -306,7 +306,7 @@ exp:
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::div, $3); }
 | exp TIMES exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
-/*| exp OR exp*/
+| exp OR exp
     /*{ $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::orop, $3); }*/
 | LPAREN exps RPAREN
     { $$ = new ast::SeqExp(@$, $2); }
@@ -380,7 +380,7 @@ exps:
 decs:
   %empty
     { $$ = new ast::DecsList(@$); }
-/*| dec decs*/
+| dec decs
     /*{
       $2.push_front($1);
       $$ = $2;
@@ -389,9 +389,9 @@ decs:
 dec:
   TYPE ID EQ ty
     { $$ = new ast::TypeDec(@$, $ID, $4); }
-/*| CLASS ID LBRACE classfields RBRACE*/
+| CLASS ID LBRACE classfields RBRACE
     /*{ $$ = new ast:: ; }*/
-/*| CLASS ID EXTENDS ID LBRACE classfields RBRACE*/
+| CLASS ID EXTENDS ID LBRACE classfields RBRACE
     /*{ $$ = new ast:: ; }*/
 | vardec
     { $$ = $1; }
@@ -411,16 +411,32 @@ dec:
     }*/
 
 tyfields_decs:
-  /*%empty*/
-    /*{ $$ = ; }*/
-/*| COMMA ID COLON ID tyfields_decs*/
-    /*{ $$ = ; }*/
+  %empty
+    {
+      ast::VarDecs* empty;
+      $$ = empty;
+    }
+| COMMA ID COLON ID tyfields_decs
+    {
+      ast::VarDec* vardec = new ast::VarDec(@$, $2, new ast::NameTy(@4, $4),
+          nullptr);
+      $5->push_front(*vardec);
+      $$ = $5;
+    }
 
 tyfield_decs:
-  /*%empty*/
-    /*{ $$ = ; }*/
-/*| ID COLON ID tyfields_decs*/
-    /*{ $$ = ; }*/
+  %empty
+    {
+      ast::VarDecs* empty;
+      $$ = empty;
+    }
+| ID COLON ID tyfields_decs
+    {
+      ast::VarDec* vardec = new ast::VarDec(@$, $1, new ast::NameTy(@3, $3),
+          nullptr);
+      $4->push_front(*vardec);
+      $$ = $4;
+    }
 
 vardec:
   VAR ID ASSIGN exp
@@ -442,40 +458,51 @@ classfields:
 
 classfield:
   vardec
-    { $$ = new ast::Field(@$, nullptr, $1->type_name_get()); }
-/*| METHOD ID LPAREN tyfield RPAREN EQ exp*/
-    /*{
-      $$ = new ast::MethodDec(@$, $2, VARDECS, $4, $7);
-    }*/
-/*| METHOD ID LPAREN tyfield RPAREN COLON ID EQ exp*/
-    /*{
-      $$ = new ast::MethodDec(@$, $2, VARDECS, $4, $7);
-    }*/
+    /*{ $$ = new ast::Field(@$, nullptr, $1->type_name_get()); }*/
+| METHOD ID LPAREN tyfield_decs RPAREN EQ exp
+    /*{ $$ = new ast::MethodDec(@$, $2, $4, nullptr, $7); }*/
+| METHOD ID LPAREN tyfield_decs RPAREN COLON ID EQ exp
+    /*{ $$ = new ast::MethodDec(@$, $2, $4, new ast::NameTy(@7, $7), $9); }*/
 
 ty:
   ID
     { $$ = new ast::NameTy(@$, $ID); }
-/*| LBRACE tyfields RBRACE*/
+| LBRACE tyfield RBRACE
     /*{ $$ = $2; }*/
 | ARRAY OF ID
     { $$ = new ast::ArrayTy(@$, new ast::NameTy(@3, $3)); }
-/*| CLASS LBRACE classfields RBRACE*/
+| CLASS LBRACE classfields RBRACE
     /*{ $$ = new ast::ClassTy(@$, nullptr, DECSLIST); }*/
-/*| CLASS EXTENDS ID LBRACE classfields RBRACE*/
+| CLASS EXTENDS ID LBRACE classfields RBRACE
     /*{ $$ = new ast::ClassTy(@$, new ast::NameTy(@3, $3), DECSLIST); }*/
 
 tyfields:
-/*  %empty*/
-    /*{ $$ = ; }*/
-/*| COMMA ID COLON ID tyfields*/
-    /*{ $$ = ; }*/
+  %empty
+    {
+      std::vector<ast::RecordTy*> empty;
+      $$ = empty;
+    }
+| COMMA ID COLON ID tyfields
+    {
+      ast::RecordTy* record = new ast::RecordTy(@$,
+          new ast::Field(@1, $2, new ast::NameTy(@4, $4)));
+      $5.insert($5.begin(), record);
+      $$ = $5;
+    }
 
 tyfield:
-/*  %empty*/
-    /*{ $$ = ; }*/
-/*| ID COLON ID tyfields*/
-    /*{ $$ = ; }*/
-
+  %empty
+    {
+      std::vector<ast::RecordTy*> empty;
+      $$ = empty;
+    }
+| ID COLON ID tyfields
+    {
+      ast::RecordTy* record = new ast::RecordTy(@$,
+          new ast::Field(@1, $1, new ast::NameTy(@3, $3)));
+      $4.insert($4.begin(), record);
+      $$ = $4;
+    }
 
 %%
 

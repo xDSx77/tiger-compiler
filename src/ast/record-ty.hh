@@ -23,7 +23,7 @@ namespace ast
    ** about it (nor about the `cast' keyword) if you don't implement
    ** this option.
    */
-    RecordTy(const Location& location, Field* fld, Ty* ty);
+    RecordTy(const Location& location, Field* fld);
     RecordTy(const RecordTy&) = delete;
     RecordTy& operator=(const RecordTy&) = delete;
     /// Destroy a CastExp node.
@@ -45,17 +45,10 @@ namespace ast
     /// Return field.
     Field& field_get();
     /** \} */
-    /// Return the target type.
-    const Ty& ty_get() const;
-    /// Return the target type.
-    Ty& ty_get();
-    /** \} */
 
   protected:
-    /// Field.
+    /// The field of the record.
     Field* fld_;
-    /// The target type.
-    Ty* ty_;
   };
 
 } // namespace ast

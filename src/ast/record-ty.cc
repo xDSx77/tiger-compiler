@@ -10,16 +10,14 @@
 namespace ast
 {
 
-  RecordTy::RecordTy(const Location& location, Field* fld, Ty* ty)
+  RecordTy::RecordTy(const Location& location, Field* fld)
     : Ty(location)
     , fld_(fld)
-    , ty_(ty)
   {}
 
   RecordTy::~RecordTy()
   {
     delete fld_;
-    delete ty_;
   }
 
   void
