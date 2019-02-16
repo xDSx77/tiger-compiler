@@ -86,7 +86,28 @@ namespace ast
   void
   PrettyPrinter::operator()(const OpExp& e)
   {
-    ostr_ << e.left_get() << e.right_get();
+    ostr_ << e.left_get() << ' ';
+    if (e.oper_get() == ast::OpExp::Oper add)
+        ostr_ << '+';
+    else if (e.oper_get() == ast::OpExp::Oper sub)
+        ostr_ << '-';
+    else if (e.oper_get() == ast::OpExp::Oper mul)
+        ostr_ << '*';
+    else if (e.oper_get() == ast::OpExp::Oper div)
+        ostr_ << '/';
+    else if (e.oper_get() == ast::OpExp::Oper eq)
+        ostr_ << '=';
+    else if (e.oper_get() == ast::OpExp::Oper ne)
+        ostr << "<>";
+    else if (e.oper_get() == ast::OpExp::Oper lt)
+        ostr << '<';
+    else if (e.oper_get() == ast::OpExp::Oper le)
+        ostr << "<=";
+    else if (e.oper_get() == ast::OpExp::Oper gt)
+        ostr << '>';
+    else if (e.oper_get() == ast::OpExp::Oper ge)
+        ostr << ">=";
+    ostr_ << ' ' << e.right_get();
   }
 
   void
@@ -192,7 +213,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
-      ostr_ << e.ty_get() << e.field_get();
+      ostr_ << e.field_get();
   }
 
   void
