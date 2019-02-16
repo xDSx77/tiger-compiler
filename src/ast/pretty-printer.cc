@@ -77,16 +77,16 @@ namespace ast
     ostr_ << e.name_get() << '(';
     for (size_t i = 0; i < e.exps_get().size(); i++)
     {
-        ostr << e.exps_get()[i];
+        ostr_ << e.exps_get()[i];
     }
-    ostr << ')';
+    ostr_ << ')';
   }
 
   //Elias moved that way
   void
   PrettyPrinter::operator()(const OpExp& e)
   {
-    ostr_ << e.left_get() << e.right_get();
+    ostr_ << e.left_get() << ' ' << << e.right_get();
   }
 
   void
