@@ -140,7 +140,7 @@ namespace ast
   {
       ostr_ << e.init_get();
   }
-
+/*
   void
   PrettyPrinter::operator()(const DecsList& e)
   {
@@ -153,10 +153,8 @@ namespace ast
   void
   PrettyPrinter::operator()(const Decs& e)
   {
-    for (unsigned i = 0; i < e.decs_get().size(); ++i)
-    {
   }
-
+*/
 /*
   void
   PrettyPrinter::operator()(const VarDecs& e)

@@ -43,7 +43,8 @@ namespace ast
     void operator()(const RecordExp& e) override;
     void operator()(const OpExp& e) override;
     void operator()(const CallExp& e) override;
-    void operator()(const DecsList& e) override;
+   /*void operator()(const DecsList& e) override;
+    void operator()(const Decs& e) override;*/
     /// \}
 
   private:
