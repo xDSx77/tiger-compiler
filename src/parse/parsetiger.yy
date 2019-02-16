@@ -379,10 +379,10 @@ decs:
   %empty
     { $$ = new ast::DecsList(@$); }
 | dec decs
-    {
-      /*$3.push_front($1);*/
-      $$ = $3;
-    }
+    /*{
+      $2.push_front($1);
+      $$ = $2;
+    }*/
 
 dec:
   TYPE ID EQ ty
