@@ -5,7 +5,7 @@
 %define api.prefix {parse}
 %define api.value.type variant
 %define api.token.constructor
-%expect 0
+%expect 1
 %skeleton "glr.cc"
 %glr-parser
 %define parse.error verbose
@@ -178,6 +178,9 @@
        VAR          "var"
        WHILE        "while"
        EOF 0        "end of file"
+       EXP          "_exp"
+       LVALUE       "_lvalue"
+       NAMETY       "_namety"
 
 %type <ast::Decs*> dec
 %type <ast::DecsList*> decs
@@ -328,6 +331,8 @@ exp:
     { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END
     { $$ = new ast::LetExp(@$, $2, $4); }
+| CAST LPAREN exp COMMA ty RPAREN
+| EXP LPAREN INT RPAREN
 
 lvalue:
   ID
@@ -336,7 +341,8 @@ lvalue:
     { $$ = $1; }
 | lvalue_c
     { $$ = $1; }
-
+| CAST LPAREN lvalue COMMA ty RPAREN
+| LVALUE LPAREN INT RPAREN
 
 lvalue_b:
   ID LBRACK exp RBRACK
@@ -381,9 +387,11 @@ exps:
 `---------------*/
 
 %token DECS "_decs";
+
 decs:
   %empty
     { $$ = new ast::DecsList(@$); }
+| DECS LPAREN INT RPAREN decs
 | dec decs
     {
       $2->push_front($1);

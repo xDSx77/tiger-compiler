@@ -54,6 +54,11 @@ YY_FLEX_NAMESPACE_BEGIN
 
 /* Abbreviations.  */
 int             [0-9]+
+cast            _cast
+decs            _decs
+exp             _exp
+lvalue          _lvalue
+namety          _namety
 id              [a-zA-Z][a-zA-Z_0-9]*
 
 %%
@@ -122,6 +127,11 @@ id              [a-zA-Z][a-zA-Z_0-9]*
                 yyterminate();
               }
 <<EOF>>         yyterminate();
+cast            return TOKEN(CAST);
+decs            return TOKEN(DECS);
+exp             return TOKEN(EXP);
+lvalue          return TOKEN(LVALUE);
+namety          return TOKEN(NAMETY);
 {int}           return TOKEN_VAL(INT, std::stoi(yytext));
 "if"            return TOKEN(IF);
 "of"            return TOKEN(OF);
