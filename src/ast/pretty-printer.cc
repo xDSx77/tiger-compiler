@@ -193,30 +193,34 @@ namespace ast
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-    ostr_ << e.type_name_get();
+    ostr_ << "for" << e.type_name_get() << ":=" << e.init_get()[0] << "to"
+        << e.init_get()[1] << "do" << e.init_get()[2];
   }
 
   void
   PrettyPrinter::operator()(const FunctionDec& e)
   {
-    ostr_ << e.body_get() << e.formals_get();
+    ostr_ << "function" << e.formals_get() << '(' << e.result_get() << ')'
+        << "=" << e.body_get();
   }
 
   void
   PrettyPrinter::operator()(const TypeDec& e)
   {
-    ostr_ << e.ty_get();
+    ostr_ << "type" << e.name_get() << "=" << e.ty_get();
   }
 
   void
   PrettyPrinter::operator()(const NameTy& e)
   {
-    ostr_ << e.name_get() << e.def_get();
+    ostr_ << "array" << "of" << e.name_get();
+    ostr_ << "class" << '(' << e.def_get() << ')';
   }
 
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
+      ostr_ << "," << ":";
     for (unsigned i = 0; i < e.fields_get().size(); i++)
       ostr_ << e.fields_get()[i];
   }
@@ -224,13 +228,14 @@ namespace ast
   void
   PrettyPrinter::operator()(const ArrayTy& e)
   {
-    ostr_ << e.base_type_get();
+    ostr_ << "array" << "of";
+    ostr_ << '(' << e.base_type_get() << ')';
   }
 
   void
   PrettyPrinter::operator()(const Field& e)
   {
-    ostr_ << e.type_name_get();
+    ostr_ << "," << e.name_get() << ":" << e.type_name_get();
   }
 
 } // namespace ast
