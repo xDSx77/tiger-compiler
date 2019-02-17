@@ -203,8 +203,8 @@
 %type <ast::Var*> lvalue
 
 %left ID
-%left OR
 %left AND
+%left OR
 %left GE LE EQ GT LT NE
 %left PLUS MINUS
 %left TIMES DIVIDE
@@ -212,6 +212,7 @@
 %left ASSIGN
 %left DOT
 %right ELSE THEN
+%right IN
 %right OF
 %right DO
 
@@ -333,7 +334,9 @@ exp:
 | LET decs IN exps END
     { $$ = new ast::LetExp(@$, $2, $4); }
 | CAST LPAREN exp COMMA ty RPAREN
+    { $$ = new ast::CastExp(@$, $3, $5); }
 | EXP LPAREN INT RPAREN
+    { $$ = metavar<ast::Exp>(tp, $3); }
 
 lvalue:
   ID
@@ -343,7 +346,9 @@ lvalue:
 | lvalue_c
     { $$ = $1; }
 | CAST LPAREN lvalue COMMA ty RPAREN
+    { $$ = new ast::CastVar(@$, $3, $5); }
 | LVALUE LPAREN INT RPAREN
+    { $$ = metavar<ast::Var>(tp, $3); }
 
 lvalue_b:
   ID LBRACK exp RBRACK
@@ -393,6 +398,10 @@ decs:
   %empty
     { $$ = new ast::DecsList(@$); }
 | DECS LPAREN INT RPAREN decs
+    {
+      $5->splice_front(*(metavar<ast::DecsList>(tp, $3)));
+      $$ = $5;
+    }
 | dec decs
     {
       $2->push_front($1);
@@ -581,6 +590,7 @@ type-id:
   ID
     { $$ = new ast::NameTy(@$, $ID); }
 | NAMETY LPAREN INT RPAREN
+    { $$ = metavar<ast::NameTy>(tp, $3); }
 
 %%
 
