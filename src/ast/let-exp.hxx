@@ -24,12 +24,12 @@ namespace ast
   inline const exps_type&
   LetExp::exps_get() const
   {
-    return exps_;
+    return *exps_;
   }
   inline exps_type&
   LetExp::exps_get()
   {
-    return exps_;
+    return *exps_;
   }
 
 } // namespace ast

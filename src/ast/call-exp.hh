@@ -16,7 +16,7 @@ namespace ast
   class CallExp : public Exp
   {
   public:
-    CallExp(const Location& location, const misc::symbol& name, exps_type exps);
+    CallExp(const Location& location, const misc::symbol& name, exps_type* exps);
     CallExp(const CallExp&) = delete;
     CallExp& operator=(const CallExp&) = delete;
 
@@ -33,7 +33,7 @@ namespace ast
 
   protected:
     misc::symbol name_;
-    exps_type exps_;
+    exps_type* exps_;
   };
 } // namespace ast
 

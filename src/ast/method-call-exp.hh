@@ -28,7 +28,7 @@ namespace ast
      ** \{ */
     /// Construct a MethodCallExp node.
     MethodCallExp(const Location& location, const misc::symbol& name,
-                  exps_type exps, Var* var);
+                  exps_type* exps, Var* var);
     MethodCallExp(const MethodCallExp&) = delete;
     MethodCallExp& operator=(const MethodCallExp&) = delete;
     /// Destroy a MethodCallExp node.

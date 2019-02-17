@@ -18,7 +18,7 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a SeqExp node.
-    SeqExp(const Location& location, exps_type exps);
+    SeqExp(const Location& location, exps_type* exps);
     SeqExp(const SeqExp&) = delete;
     SeqExp& operator=(const SeqExp&) = delete;
     /// Destroy a SeqExp node.
@@ -43,7 +43,7 @@ namespace ast
 
   protected:
     /// Exp.
-    exps_type exps_;
+    exps_type* exps_;
   };
 
 } // namespace ast

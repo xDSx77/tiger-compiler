@@ -10,7 +10,7 @@ namespace ast
 {
 
   MethodCallExp::MethodCallExp(const Location& location,
-                              const misc::symbol& name, exps_type exps, Var* var)
+                              const misc::symbol& name, exps_type* exps, Var* var)
     : CallExp(location, name, exps)
     , var_(var)
   {}

@@ -10,15 +10,16 @@
 namespace ast
 {
 
-  SeqExp::SeqExp(const Location& location, exps_type exps)
+  SeqExp::SeqExp(const Location& location, exps_type* exps)
     : Exp(location)
     , exps_(exps)
   {}
 
   SeqExp::~SeqExp()
   {
-    for (unsigned i = 0; i < exps_.size(); i++)
-      delete exps_[i];
+    ast::exps_type& cp = *exps_;
+    for (unsigned i = 0; i < cp.size(); i++)
+      delete cp[i];
   }
 
   void

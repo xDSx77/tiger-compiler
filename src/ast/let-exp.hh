@@ -19,7 +19,8 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a LetExp node.
-    LetExp(const Location& location, DecsList* decs, exps_type exps);
+    LetExp(const Location& location, DecsList* decs, exps_type* exps);
+    LetExp(const Location& location, DecsList* decs, Exp* exp);
     LetExp(const LetExp&) = delete;
     LetExp& operator=(const LetExp&) = delete;
     /// Destroy a LetExp node.
@@ -50,7 +51,7 @@ namespace ast
     /// Declarations of the let.
     DecsList* decs_;
     /// Expressions executed in the let.
-    exps_type exps_;
+    exps_type* exps_;
   };
 
 } // namespace ast

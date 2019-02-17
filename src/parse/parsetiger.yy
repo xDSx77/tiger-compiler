@@ -184,11 +184,11 @@
 
 %type <ast::Decs*> dec
 %type <ast::DecsList*> decs
-%type <ast::exps_type> exps
+%type <ast::exps_type*> exps
 %type <ast::Exp*> exp
 %type <ast::fieldinits_type> id_exp
-%type <ast::exps_type> exp2
-%type <ast::exps_type> exp3
+%type <ast::exps_type*> exp2
+%type <ast::exps_type*> exp3
 %type <ast::Decs*> classfield
 %type <ast::DecsList*> classfields
 %type <ast::FieldVar*> lvalue_c
@@ -249,18 +249,18 @@ id_exp:
 exp2:
   %empty
     {
-      ast::exps_type empty;
+      ast::exps_type* empty = new ast::exps_type();
       $$ = empty;
     }
 | exp
     {
-      ast::exps_type exps;
-      exps.emplace_back($1);
+      ast::exps_type* exps = new ast::exps_type();
+      exps->emplace_back($1);
       $$ = exps;
     }
 | exp COMMA exp2
     {
-      $3.insert($3.begin(), $1);
+      $3->insert($3->begin(), $1);
       $$ = $3;
     }
 
@@ -364,20 +364,20 @@ lvalue_c:
 exp3:
   exp
     {
-      ast::exps_type exps;
-      exps.emplace_back($1);
+      ast::exps_type* exps = new ast::exps_type();
+      exps->emplace_back($1);
       $$ = exps;
     }
 | exp SEMI exp3
     {
-      $3.insert($3.begin(), $1);
+      $3->insert($3->begin(), $1);
       $$ = $3;
     }
 
 exps:
   %empty
     {
-      ast::exps_type empty;
+      ast::exps_type* empty = new ast::exps_type();
       $$ = empty;
     }
 | exp3

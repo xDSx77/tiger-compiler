@@ -10,7 +10,7 @@
 namespace ast
 {
     CallExp::CallExp(const Location& location, const misc::symbol& name,
-                    exps_type exps)
+                    exps_type* exps)
     : Exp(location)
     , name_(name)
     , exps_(exps)
@@ -18,20 +18,21 @@ namespace ast
 
     CallExp::~CallExp()
     {
-        for (unsigned i = 0; i < exps_.size(); i++)
-          delete exps_[i];
+      ast::exps_type& cp = *exps_;
+      for (unsigned i = 0; i < cp.size(); i++)
+        delete cp[i];
     }
 
     void
     CallExp::accept(ConstVisitor& v) const
     {
-        v(*this);
+      v(*this);
     }
 
     void
     CallExp::accept(Visitor& v)
     {
-        v(*this);
+      v(*this);
     }
 
 } // namespace ast
