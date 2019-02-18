@@ -13,37 +13,36 @@ namespace misc
 
   template <typename T, class C>
   unique<T, C>::unique(const data_type& s)
-        : obj_ (&s)
+    : obj_ (&*(object_set_instance().insert(s).first))
   {}
 
   template <typename T, class C>
   typename unique<T, C>::object_set_type&
   unique<T, C>::object_set_instance()
   {
-      static std::set<T, C> singleton;
-      return singleton;
+    static std::set<T, C> singleton;
+    return singleton;
   }
 
   template <typename T, class C>
   typename unique<T, C>::object_size_type
   unique<T, C>::object_map_size()
   {
-      std::set<T, C> seto = object_set_instance();
-      return seto.size();
+    return object_set_instance().size();
   }
 
   template <typename T, class C>
   inline const typename unique<T, C>::data_type&
   unique<T, C>::get() const
   {
-      return *obj_;
+    return *obj_;
   }
 
   template <typename T, class C>
   inline
   unique<T, C>::operator const data_type&() const
   {
-      return get();
+    return get();
   }
 
   template <typename  T, class C>

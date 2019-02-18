@@ -5,7 +5,7 @@
 %define api.prefix {parse}
 %define api.value.type variant
 %define api.token.constructor
-%expect 1
+%expect 2
 %skeleton "glr.cc"
 %glr-parser
 %define parse.error verbose
@@ -89,8 +89,19 @@
 # include <ast/decs-list.hh>
 }
 
-%destructor { delete $$; } dec decs exp classfield lvalue ty vardec
-  // FIXME: Some code was deleted here (Printers and destructors).
+%destructor { delete $$; } <ast::Decs*>
+                           <ast::DecsList*>
+                           <ast::exps_type*>
+                           <ast::Exp*>
+                           /*<ast::fieldinits_type>*/
+                           <ast::FieldVar*>
+                           <ast::Ty*>
+                           <ast::NameTy*>
+                           <ast::RecordTy*>
+                           <ast::VarDecs*>
+                           <ast::SubscriptVar*>
+                           <ast::VarDec*>
+                           <ast::Var*>
 
 /*-----------------------------------------.
 | Code output in the implementation file.  |
@@ -202,19 +213,17 @@
 %type <ast::VarDec*> vardec
 %type <ast::Var*> lvalue
 
-%left ID
 %left AND
 %left OR
 %left GE LE EQ GT LT NE
 %left PLUS MINUS
 %left TIMES DIVIDE
-%left LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE
 %left ASSIGN
-%left DOT
-%right ELSE THEN
-%right IN
-%right OF
-%right DO
+%nonassoc DOT
+%nonassoc THEN
+%nonassoc ELSE
+%nonassoc OF
+%nonassoc DO
 
 %start program
 
@@ -543,12 +552,12 @@ ty:
     { $$ = $1; }
 | LBRACE tyfield RBRACE
     { $$ = $2; }
-| ARRAY OF ID
-    { $$ = new ast::ArrayTy(@$, new ast::NameTy(@3, $3)); }
+| ARRAY OF type-id
+    { $$ = new ast::ArrayTy(@$, $3); }
 | CLASS LBRACE classfields RBRACE
     { $$ = new ast::ClassTy(@$, nullptr, $3); }
-| CLASS EXTENDS ID LBRACE classfields RBRACE
-    { $$ = new ast::ClassTy(@$, new ast::NameTy(@3, $3), $5); }
+| CLASS EXTENDS type-id LBRACE classfields RBRACE
+    { $$ = new ast::ClassTy(@$, $3, $5); }
 
 tyfields:
   %empty

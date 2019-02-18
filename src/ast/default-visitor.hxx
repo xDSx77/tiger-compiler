@@ -180,7 +180,8 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<DecsList>& e)
   {
-    e.accept(*this);
+    for (auto i = *(e.decs_get().begin()); i != *(e.decs_get().end()); i++)
+      i->accept(*this);
   }
 
   template <template <typename> class Const>
@@ -265,7 +266,8 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<RecordTy>& e)
   {
-    e.accept(*this);
+    for (unsigned i = 0; i < e.fields_get().size(); i++)
+      e.fields_get()[i]->accept(*this);
   }
 
   template <template <typename> class Const>
