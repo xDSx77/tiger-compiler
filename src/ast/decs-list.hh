@@ -15,6 +15,9 @@ namespace ast
   {
   public:
     using decs_type = std::list<Decs*>;
+    using decs_function = std::list<Decs*>;
+    using decs_method = std::list<Decs*>;
+    using decs_var = std::list<Decs*>;
 
     /// Prepend \a d.
     void push_front(Decs* d);
@@ -59,6 +62,9 @@ namespace ast
   protected:
     /// Declarations.
     DecsList::decs_type decs_;
+    DecsList::decs_function func_;
+    DecsList::decs_method method_;
+    DecsList::decs_var var_;
   };
 
 } // namespace ast
