@@ -19,31 +19,31 @@ namespace ast
   namespace
   {
     /// Output \a e on \a ostr.
-    inline
+    /*inline
     std::ostream&
     operator<<(std::ostream& ostr, const Escapable& e)
     {
       if (escapes_display(ostr)
   // FIXME: Some code was deleted here.
-          )
-        ostr << "/* escaping */ ";
+          )*/
+        //ostr << "/* escaping */ ";
 
-      return ostr;
-    }
+      /*return ostr;
+    }*/
 
     /// \brief Output \a e on \a ostr.
     ///
     /// Used to factor the output of the name declared,
     /// and its possible additional attributes.
-    inline
+    /*inline
     std::ostream&
     operator<<(std::ostream& ostr, const Dec& e)
     {
       ostr << e.name_get();
-      if (bindings_display(ostr))
-        ostr << " /* " << &e << " */";
-      return ostr;
-    }
+      if (bindings_display(ostr))*/
+        //ostr << " /* " << &e << " */";
+      /*return ostr;
+    }*/
   }
 
   PrettyPrinter::PrettyPrinter(std::ostream& ostr)
@@ -167,15 +167,17 @@ namespace ast
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << "for" << e.vardec_get() << ":=" << e.hi_get() << "do" << e.body_get();
+    ostr_ << "for" << e.vardec_get() << ":=" << e.hi_get() << "do" << std::endl
+    << e.body_get() << std::endl;
   }
 
   void
   PrettyPrinter::operator()(const LetExp& e)
   {
+    ostr_ << "let" << std::endl;
     ostr_ << e.decs_get();
-    for (unsigned j = 0; j < e.exps_get().size(); j++)
-      ostr_ << e.exps_get()[j];
+    ostr_ << "in" << std::endl;
+    ostr_ << e.exp_get() << std::endl;
   }
 
   void
@@ -189,16 +191,15 @@ namespace ast
   {
     ostr_ << "";
     ostr_ << e.name_get() << "="  << e.init_get();
-    ostr_ << e.name_get() << "="  << e.init_get() << "," << "id_exp";
   }
 
-  /*
+
   void
   PrettyPrinter::operator()(const DecsList& e)
   {
-    ostr_ << e.decs_get();
+    ostr_ << misc::separate(e.decs_get(), misc::iendl);
   }
-
+ /*
   void
   PrettyPrinter::operator()(const Dec& e)
   {
@@ -209,8 +210,8 @@ namespace ast
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-    ostr_ << "for" << e.type_name_get() << ":=" << e.init_get()[0] << "to"
-        << e.init_get()[1] << "do" << e.init_get()[2];
+    ostr_ << "var" << e.name_get() << ":" << e.type_name_get() << ":="
+        << e.init_get() << std::endl;
   }
 
   void

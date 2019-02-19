@@ -46,7 +46,7 @@ namespace ast
     void operator()(const FieldInit& e) override;
 
     /// Visit a list of function, type and/or variables declarations
-    /*void operator()(const DecsList& e) override;*/
+    void operator()(const DecsList& e) override;
 
     /// Visit a Decs chunks.
     /*void operator()(const Dec& e) override;*/
