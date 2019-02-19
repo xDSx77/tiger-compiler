@@ -18,9 +18,13 @@ namespace ast
 
     CallExp::~CallExp()
     {
-      ast::exps_type& cp = *exps_;
-      for (unsigned i = 0; i < cp.size(); i++)
-        delete cp[i];
+      if (exps_)
+      {
+        ast::exps_type& cp = *exps_;
+        for (unsigned i = 0; i < cp.size(); i++)
+          delete cp[i];
+      }
+      delete exps_;
     }
 
     void

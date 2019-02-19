@@ -195,11 +195,11 @@
 
 %type <ast::Decs*> dec
 %type <ast::DecsList*> decs
-%type <ast::exps_type*> exps
+%type <ast::SeqExp*> exps
 %type <ast::Exp*> exp
 %type <ast::fieldinits_type> id_exp
 %type <ast::exps_type*> exp2
-%type <ast::exps_type*> exp3
+%type <ast::SeqExp*> exp3
 %type <ast::Decs*> classfield
 %type <ast::DecsList*> classfields
 %type <ast::FieldVar*> lvalue_c
@@ -327,7 +327,7 @@ exp:
           new ast::StringExp(@3, "false")));
     }
 | LPAREN exps RPAREN
-    { $$ = new ast::SeqExp(@$, $2); }
+    { $$ = $2; }
 | lvalue ASSIGN exp
     { $$ = new ast::AssignExp(@$, $1, $3); }
 | IF exp THEN exp
@@ -380,18 +380,19 @@ exp3:
     {
       ast::exps_type* exps = new ast::exps_type();
       exps->emplace_back($1);
-      $$ = exps;
+      ast::SeqExp* exp = new ast::SeqExp(@$, exps);
+      $$ = exp;
     }
 | exp SEMI exp3
     {
-      $3->insert($3->begin(), $1);
+      $3->exps_get().insert($3->exps_get().begin(), $1);
       $$ = $3;
     }
 
 exps:
   %empty
     {
-      ast::exps_type* empty = new ast::exps_type();
+      ast::SeqExp* empty = new ast::SeqExp(@$, nullptr);
       $$ = empty;
     }
 | exp3

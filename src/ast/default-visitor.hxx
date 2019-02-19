@@ -148,8 +148,7 @@ namespace ast
   GenDefaultVisitor<Const>::operator()(const_t<LetExp>& e)
   {
     e.decs_get().accept(*this);
-    for (unsigned i = 0; e.exps_get().size(); i++)
-      e.exps_get()[i]->accept(*this);
+    e.exp_get().accept(*this);
   }
 
   template <template <typename> class Const>
