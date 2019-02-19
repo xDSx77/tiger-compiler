@@ -1,3 +1,5 @@
+Bump 1.74, 2019-02-15 for tc-3
+
 New in 1.73, 2019-02-09
 
 * General Maintainance
