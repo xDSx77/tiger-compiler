@@ -369,7 +369,7 @@ lvalue_b:
 
 lvalue_c:
   ID DOT ID
-    { $$ = new ast::FieldVar(@$, $1, new ast::SimpleVar(@3, $3)); }
+    { $$ = new ast::FieldVar(@$, $3, new ast::SimpleVar(@1, $1)); }
 | lvalue_c DOT ID
     { $$ = new ast::FieldVar(@$, $3, $1); }
 | lvalue_b DOT ID
