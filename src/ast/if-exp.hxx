@@ -29,15 +29,15 @@ namespace ast
     {
         return *body_;
     }
-    inline const Exp*
+    inline const Exp&
     IfExp::body_2_get() const
     {
-        return body_2_;
+        return *body_2_;
     }
-    inline Exp*
+    inline Exp&
     IfExp::body_2_get()
     {
-        return body_2_;
+        return *body_2_;
     }
 
 } // namespace ast

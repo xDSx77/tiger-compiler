@@ -43,9 +43,9 @@ namespace ast
       /// Return instructions executed in the then.
       Exp& body_get();
       /// Return instructions executed in the else.
-      const Exp* body_2_get() const;
+      const Exp& body_2_get() const;
       /// Return instructions executed in the else.
-      Exp* body_2_get();
+      Exp& body_2_get();
 
       /** \} */
 

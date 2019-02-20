@@ -401,7 +401,7 @@ exp3:
 exps:
   %empty
     {
-      ast::SeqExp* empty = new ast::SeqExp(@$, nullptr);
+      ast::SeqExp* empty = new ast::SeqExp(@$, new ast::exps_type());
       $$ = empty;
     }
 | exp3

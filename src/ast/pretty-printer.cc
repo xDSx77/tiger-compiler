@@ -139,10 +139,9 @@ namespace ast
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
-    ostr_ << "if " << e.test_get() << " then" << std::endl << e.body_get()
-          << std::endl;
-    if (e.body_2_get())
-      ostr_ << "else" << std::endl << e.body_2_get() << std::endl;
+    ostr_ << "if (" << e.test_get() << ')' << misc::iendl
+          << "then" << e.body_get() << misc::iendl
+          << "else (" << e.body_2_get() << ')' << misc::iendl;
   }
 
   void
@@ -162,8 +161,8 @@ namespace ast
   void
   PrettyPrinter::operator()(const LetExp& e)
   {
-    ostr_ << "let" << std::endl << e.decs_get() << std::endl << "in"
-          << std::endl << e.exp_get() << std::endl << "end" << std::endl;
+    ostr_ << "let" << misc::incendl << e.decs_get() << misc::decendl << "in"
+          << misc::incendl << e.exp_get() << misc::decendl << "end";
   }
 
   void
@@ -196,50 +195,61 @@ namespace ast
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-    ostr_ << "var " << e.name_get() << " : " << e.type_name_get() << " := "
-          << e.init_get() << std::endl;
+    ostr_ << e.name_get();
+    if (e.type_name_get())
+      ostr_ << " : " << *(e.type_name_get());
+    if (e.init_get())
+      ostr_ << " := " << *(e.init_get());
   }
 
   void
   PrettyPrinter::operator()(const FunctionDec& e)
   {
-    ostr_ << "function " << e.name_get() << '('
-          << misc::separate(e.formals_get().decs_get(), ',') << ')';
-    if (e.result_get())
-      ostr_ << " : " << e.result_get();
     if (e.body_get())
-      ostr_ << " = " << e.body_get();
-    ostr_ << std::endl;
+    {
+      ostr_ << "function " << e.name_get() << '('
+            << misc::separate(e.formals_get().decs_get(), ", ") << ')';
+    }
+    else
+    {
+      ostr_ << "primitive " << e.name_get() << '('
+            << misc::separate(e.formals_get().decs_get(), ", ") << ')';
+    }
+    if (e.result_get())
+      ostr_ << " : " << *(e.result_get());
+    if (e.body_get())
+      ostr_ << " = " << misc::incendl << "(" << misc::incendl << *(e.body_get())
+            << misc::decendl << ")" << misc::decindent;
   }
 
   void
   PrettyPrinter::operator()(const TypeDec& e)
   {
-    ostr_ << "type " << e.name_get() << " = " << e.ty_get() << std::endl;
+    ostr_ << "type " << e.name_get() << " = " << e.ty_get();
   }
 
   void
   PrettyPrinter::operator()(const NameTy& e)
   {
-    ostr_ <<  e.name_get() << std::endl;
+    ostr_ << e.name_get();
   }
 
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
-    ostr_ << misc::separate(e.fields_get(), ',') << std::endl;
+    ostr_ << misc::separate(e.fields_get(), ',');
   }
 
   void
   PrettyPrinter::operator()(const ArrayTy& e)
   {
-    ostr_ << " array of " << e.base_type_get() << std::endl;
+    ostr_ << "array of " << e.base_type_get();
   }
 
   void
   PrettyPrinter::operator()(const Field& e)
   {
-    ostr_ << e.name_get() << " : " << e.type_name_get() << std::endl;
+    ostr_ << e.name_get() << " : " << e.type_name_get();
   }
 
   /*void

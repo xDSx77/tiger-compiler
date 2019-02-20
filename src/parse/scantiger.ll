@@ -59,7 +59,7 @@ decs            _decs
 exp             _exp
 lvalue          _lvalue
 namety          _namety
-id              [a-zA-Z][a-zA-Z_0-9]*
+id              [a-zA-Z][a-zA-Z_0-9]*|_main
 
 %%
 %{
