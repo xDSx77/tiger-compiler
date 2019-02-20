@@ -29,6 +29,17 @@ namespace bind
   // FIXME: Some code was deleted here (Two passes: once on headers, then on bodies).
   }
 
+  template <class D>
+  void
+  Binder::visit_dec_header(D& e)
+  {
+  }
+
+  template <class D>
+  void
+  Binder::visit_dec_body(D& e)
+  {
+  }
   /* These specializations are in bind/binder.hxx, so that derived
      visitors can use them (otherwise, they wouldn't see them).  */
 
