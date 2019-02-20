@@ -326,6 +326,8 @@ exp:
         new ast::IfExp(@3, $3, new ast::StringExp(@3, "true"),
           new ast::StringExp(@3, "false")));
     }
+| exp error exp
+    {/*Node to create or not */}
 | LPAREN exps RPAREN
     { $$ = $2; }
 | lvalue ASSIGN exp
@@ -366,6 +368,11 @@ lvalue_b:
     { $$ = new ast::SubscriptVar(@$, $1, $3); }
 | lvalue_c LBRACK exp RBRACK
     { $$ = new ast::SubscriptVar(@$, $1, $3); }
+| lvalue_b LBRACK error RBRACK
+    {/* Node to create */}
+| lvalue_c LBRACK error RBRACK
+    {/* Node to create */}
+
 
 lvalue_c:
   ID DOT ID
@@ -374,6 +381,8 @@ lvalue_c:
     { $$ = new ast::FieldVar(@$, $3, $1); }
 | lvalue_b DOT ID
     { $$ = new ast::FieldVar(@$, $3, $1); }
+| error DOT
+    {/* Node to create */}
 
 exp3:
   exp
@@ -460,6 +469,8 @@ dec:
       functiondecs->push_front(*functiondec);
       $$ = functiondecs;
     }
+| FUNCTION ID LPAREN error RPAREN
+    { /* Node to create or not */}
 | PRIMITIVE ID LPAREN tyfield_decs RPAREN
     {
       ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
@@ -474,6 +485,8 @@ dec:
       functiondecs->push_front(*functiondec);
       $$ = functiondecs;
     }
+| PRIMITIVE ID LPAREN error RPAREN
+    { /* Node to create or not */}
 | IMPORT STRING
     {
       ast::DecsList* decs = tp.parse_import($2, @$);
@@ -516,6 +529,8 @@ vardec:
     { $$ = new ast::VarDec(@$, $ID, nullptr, $4); }
 | VAR ID COLON type-id ASSIGN exp
     { $$ = new ast::VarDec(@$, $2, $4, $6); }
+| VAR ID error exp
+    { /*Node to create or not */}
 
 classfields:
   %empty
@@ -547,6 +562,8 @@ classfield:
       methoddecs->push_front(*methoddec);
       $$ = methoddecs;
     }
+| METHOD ID LPAREN error exp
+    { /*Node to create or not */}
 
 ty:
   type-id
