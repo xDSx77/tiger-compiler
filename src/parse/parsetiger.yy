@@ -326,10 +326,10 @@ exp:
         new ast::IfExp(@3, $3, new ast::StringExp(@3, "true"),
           new ast::StringExp(@3, "false")));
     }
-| exp error exp
-    {/*Node to create or not */}
 | LPAREN exps RPAREN
     { $$ = $2; }
+| LPAREN error RPAREN
+    { $$ = nullptr; }
 | lvalue ASSIGN exp
     { $$ = new ast::AssignExp(@$, $1, $3); }
 | IF exp THEN exp
@@ -369,9 +369,9 @@ lvalue_b:
 | lvalue_c LBRACK exp RBRACK
     { $$ = new ast::SubscriptVar(@$, $1, $3); }
 | lvalue_b LBRACK error RBRACK
-    {/* Node to create */}
+    {$$ = new ast::SubscriptVar(@$, $1, nullptr);}
 | lvalue_c LBRACK error RBRACK
-    {/* Node to create */}
+    {$$ = new ast::SubscriptVar(@$, $1, nullptr);}
 
 
 lvalue_c:
@@ -381,8 +381,8 @@ lvalue_c:
     { $$ = new ast::FieldVar(@$, $3, $1); }
 | lvalue_b DOT ID
     { $$ = new ast::FieldVar(@$, $3, $1); }
-| error DOT
-    {/* Node to create */}
+| error DOT ID
+    {$$ = new ast::FieldVar(@$, $3, nullptr); }
 
 exp3:
   exp
@@ -469,8 +469,14 @@ dec:
       functiondecs->push_front(*functiondec);
       $$ = functiondecs;
     }
-| FUNCTION ID LPAREN error RPAREN
-    { /* Node to create or not */}
+| FUNCTION ID LPAREN error RPAREN COLON type-id EQ exp
+    {
+      ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* functiondec = new ast::FunctionDec(@$, $2,
+      nullptr, $7, $9);
+      functiondecs->push_front(*functiondec);
+      $$ = functiondecs;
+    }
 | PRIMITIVE ID LPAREN tyfield_decs RPAREN
     {
       ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
@@ -529,8 +535,6 @@ vardec:
     { $$ = new ast::VarDec(@$, $ID, nullptr, $4); }
 | VAR ID COLON type-id ASSIGN exp
     { $$ = new ast::VarDec(@$, $2, $4, $6); }
-| VAR ID error exp
-    { /*Node to create or not */}
 
 classfields:
   %empty
@@ -562,8 +566,14 @@ classfield:
       methoddecs->push_front(*methoddec);
       $$ = methoddecs;
     }
-| METHOD ID LPAREN error exp
-    { /*Node to create or not */}
+| METHOD ID LPAREN error RPAREN EQ exp
+    {
+      ast::MethodDecs* methoddecs = new ast::MethodDecs(@$);
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2,nullptr ,
+      nullptr, $7);
+      methoddecs->push_front(*methoddec);
+      $$ = methoddecs;
+    }
 
 ty:
   type-id
