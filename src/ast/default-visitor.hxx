@@ -118,7 +118,7 @@ namespace ast
   {
     e.test_get().accept(*this);
     e.body_get().accept(*this);
-    e.body_2_get().accept(*this);
+    e.body_2_get()->accept(*this);
   }
 
   template <template <typename> class Const>
