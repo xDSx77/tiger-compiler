@@ -269,5 +269,29 @@ namespace ast
   {
     ostr_ << "break" << std::endl;
   }*/
+  
+  /*void
+  PrettyPrinter::operator()(const IntExp& e)
+  {
+    ostr_ << e.value_get();
+  }
+  
+  void
+  PrettyPrinter::operator()(const NilExp& e)
+  {
+   //je sais pas à quoi sa ressemble faites svp :(
+  }
+  
+  void
+  PrettyPrinter::operator()(const ObjectExp& e)
+  {
+    ostr_ << e.type_get().name_get();
+  }
+  
+  void
+  PrettyPrinter::operator()(const StringExp& e)
+  {
+    ostr_ << "\"" << e.value_get() << "\"";
+  }*/
 
 } // namespace ast
