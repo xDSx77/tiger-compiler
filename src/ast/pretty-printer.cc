@@ -186,9 +186,9 @@ namespace ast
   }
  /*
   void
-  PrettyPrinter::operator()(const Dec& e)
+  PrettyPrinter::operator()(const AnyDec& e)
   {
-    ostr_ << e.name_get();
+    misc::separate(e.decs_get(), ";");
   }
   */
 
