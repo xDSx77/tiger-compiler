@@ -140,8 +140,12 @@ namespace ast
   PrettyPrinter::operator()(const IfExp& e)
   {
     ostr_ << "if (" << e.test_get() << ')' << misc::iendl
-          << "then" << e.body_get() << misc::iendl
-          << "else (" << e.body_2_get() << ')' << misc::iendl;
+          << "then " << e.body_get() << misc::iendl;
+    if (e.body_2_get())
+    {
+      const ast::Exp* exp2 = e.body_2_get();
+      ostr_ << "else (" << *exp2 << ')' << misc::iendl;
+    }
   }
 
   void
@@ -264,34 +268,41 @@ namespace ast
     ostr_ << e.name_get() << " : " << e.type_name_get();
   }
 
-  /*void
+  void
   PrettyPrinter::operator()(const BreakExp& e)
   {
     ostr_ << "break" << std::endl;
-  }*/
-  
-  /*void
+  }
+
+  void
+  PrettyPrinter::operator()(const MethodCallExp& e)
+  {
+    ostr_ << e.var_get() << '.' << e.name_get() << '('
+          << misc::separate(e.exps_get(), ',') << ')' << std::endl;
+  }
+
+  void
   PrettyPrinter::operator()(const IntExp& e)
   {
     ostr_ << e.value_get();
   }
-  
+
   void
   PrettyPrinter::operator()(const NilExp& e)
   {
-   //je sais pas à quoi sa ressemble faites svp :(
+    ostr_ << "nil";
   }
-  
+
   void
   PrettyPrinter::operator()(const ObjectExp& e)
   {
     ostr_ << e.type_get().name_get();
   }
-  
+
   void
   PrettyPrinter::operator()(const StringExp& e)
   {
     ostr_ << "\"" << e.value_get() << "\"";
-  }*/
+  }
 
 } // namespace ast
