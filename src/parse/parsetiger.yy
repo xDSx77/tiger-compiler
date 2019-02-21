@@ -492,7 +492,12 @@ dec:
       $$ = functiondecs;
     }
 | PRIMITIVE ID LPAREN error RPAREN
-    { /* Node to create or not */}
+    {
+      ast::FunctionDecs* functiondecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* functiondec = new ast::FunctionDec(@$, $2, nullptr, nullptr, nullptr);
+      functiondecs->push_front(*functiondec);
+      $$ = functiondecs;
+    }
 | IMPORT STRING
     {
       ast::DecsList* decs = tp.parse_import($2, @$);
