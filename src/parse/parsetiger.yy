@@ -325,9 +325,8 @@ exp:
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::mul, $3); }
 | exp OR exp
     {
-      $$ = new ast::IfExp(@$, $1, new ast::StringExp(@1, "true"),
-        new ast::IfExp(@3, $3, new ast::StringExp(@3, "true"),
-          new ast::StringExp(@3, "false")));
+      $$ = new ast::IfExp(@$, $1, new ast::IntExp(@$,1),
+        new ast::IfExp(@3, $3 , new ast::IntExp(@$,1), new ast::IntExp(@$,0)));
     }
 | LPAREN exps RPAREN
     { $$ = $2; }
