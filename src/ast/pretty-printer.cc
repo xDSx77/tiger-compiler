@@ -158,8 +158,8 @@ namespace ast
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << "for " << e.vardec_get() << " := " << e.hi_get() << " do" << std::endl
-          << e.body_get() << std::endl;
+    ostr_ << "for " << e.vardec_get() << " to " << e.hi_get() << " do" << misc::iendl
+          << e.body_get() << misc::iendl;
   }
 
   void
