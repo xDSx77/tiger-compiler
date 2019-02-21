@@ -459,7 +459,7 @@ importdec :
 
 
 typedec :
-      TYPE ID EQ ty
+  TYPE ID EQ ty
     {
       ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
       ast::TypeDec* typedec = new ast::TypeDec(@$, $ID, $4);
