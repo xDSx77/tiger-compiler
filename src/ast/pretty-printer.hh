@@ -55,14 +55,14 @@ namespace ast
     void operator()(const DecsList& e) override;
 
     /// Visit a Decs chunks.
-    void operator()(const AnyDec& e) override;
+    /*void operator()(const AnyDecs& e) override;*/
 
     /// Visit Var declarations.
     void operator()(const VarDec& e) override;
 
     /// Visit Function declarations.
     void operator()(const FunctionDec& e) override;
-    /*void operator()(const MethodDec& e) override;*/
+    void operator()(const MethodDec& e) override;
 
     /// Visit Type declarations.
     void operator()(const TypeDec& e) override;

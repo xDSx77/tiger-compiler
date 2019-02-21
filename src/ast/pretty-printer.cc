@@ -184,9 +184,10 @@ namespace ast
   {
     ostr_ << misc::separate(e.decs_get(), misc::iendl);
   }
- /*
+
+  /*
   void
-  PrettyPrinter::operator()(const AnyDec& e)
+  PrettyPrinter::operator()(const AnyDecs& e)
   {
     ostr_ << misc::separate(e.decs_get(), ";");
   }
@@ -218,8 +219,19 @@ namespace ast
     if (e.result_get())
       ostr_ << " : " << *(e.result_get());
     if (e.body_get())
-      ostr_ << " = " << misc::incendl << "(" << misc::incendl << *(e.body_get())
-            << misc::decendl << ")" << misc::decindent;
+      ostr_ << " = " << misc::incendl << '(' << misc::incendl << *(e.body_get())
+            << misc::decendl << ')' << misc::decindent;
+  }
+
+  void
+  PrettyPrinter::operator()(const MethodDec& e)
+  {
+    ostr_ << "method " << e.name_get() << '('
+          << misc::separate(e.formals_get().decs_get(), ", ") << ')';
+    if (e.result_get())
+      ostr_ << " : " << *(e.result_get());
+    ostr_ << " = " << misc::incendl << '(' << misc::incendl << *(e.body_get())
+          << misc::decendl << ')' << misc::decindent;
   }
 
   void
