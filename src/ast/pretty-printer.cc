@@ -188,7 +188,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const AnyDec& e)
   {
-    misc::separate(e.decs_get(), ";");
+    ostr_ << misc::separate(e.decs_get(), ";");
   }
   */
 
