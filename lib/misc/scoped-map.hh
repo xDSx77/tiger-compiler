@@ -22,13 +22,14 @@ namespace misc
   class scoped_map
   {
   protected:
-    using scoped_map_t = std::map<Key, Data>;
+    using scoped_map_t = std::vector<std::map<Key, Data>*>;
 
   public:
-    scoped_map() = default;
-    virtual ~scoped_map() = default;
+    scoped_map();
+    ~scoped_map();
     void put(const Key& key, const Data& value);
-    //Data get(const Key& key) const;
+    Data get(const Key& key) const;
+    std::ostream& dump(std::ostream& ostr) const;
     void scope_begin();
     void scope_end();
 
@@ -39,11 +40,7 @@ namespace misc
   template <typename Key, typename Data>
   std::ostream&
   operator<<(std::ostream& ostr, const scoped_map<Key, Data>& tbl);
-/*
-  template <typename Key, typename Data>
-  std::ostream&
-  dump(std::ostream& ostr) const;
-*/
+
 } // namespace misc
 
 #include <misc/scoped-map.hxx>
