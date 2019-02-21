@@ -55,7 +55,7 @@ namespace ast
     void operator()(const DecsList& e) override;
 
     /// Visit a Decs chunks.
-    /*void operator()(const Dec& e) override;*/
+    void operator()(const AnyDec& e) override;
 
     /// Visit Var declarations.
     void operator()(const VarDec& e) override;
