@@ -303,8 +303,9 @@ exp:
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::add, $3); }
 | exp AND exp
     {
-      $$ = new ast::IfExp(@$, $1, new ast::IfExp(@3, $3,
-      new ast::StringExp(@3, "true"), nullptr), new ast::StringExp(@3, "false"));
+      $$ = new ast::IfExp(@$, $1,
+      new ast::OpExp(@$,$3,ast::OpExp::Oper::ne,new ast::IntExp(@$,0)),
+      new ast::IntExp(@$,0));
     }
 | exp LE exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::le, $3); }
