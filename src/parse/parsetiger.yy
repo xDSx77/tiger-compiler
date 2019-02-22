@@ -330,7 +330,7 @@ exp:
 | LPAREN exps RPAREN
     { $$ = $2; }
 | LPAREN error RPAREN
-    { $$ = nullptr; }
+    { $$ = new ast::SeqExp(@$,new ast::exps_type()); }
 | lvalue ASSIGN exp
     { $$ = new ast::AssignExp(@$, $1, $3); }
 | IF exp THEN exp
