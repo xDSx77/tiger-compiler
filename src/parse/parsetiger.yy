@@ -89,11 +89,13 @@
 # include <ast/decs-list.hh>
 }
 
-%destructor { delete $$; } <ast::Decs*>
-                           <ast::DecsList*>
+%destructor { delete $$; } <ast::DecsList*>
+                           <ast::FunctionDecs*>
+                           <ast::TypeDecs*>
+                           <ast::SeqExp*>
+                           <ast::MethodDecs*>
                            <ast::exps_type*>
                            <ast::Exp*>
-                           /*<ast::fieldinits_type>*/
                            <ast::FieldVar*>
                            <ast::Ty*>
                            <ast::NameTy*>
@@ -192,16 +194,15 @@
        WHILE        "while"
        EOF 0        "end of file"
 
-/*%type <ast::Decs*> dec*/
-%type <ast::FunctionDec*> funcdec
-%type <ast::TypeDec*> typedec
+%type <ast::FunctionDecs*> funcdecs
+%type <ast::TypeDecs*> typedecs
 %type <ast::DecsList*> decs
 %type <ast::SeqExp*> exps
 %type <ast::Exp*> exp
 %type <ast::fieldinits_type> id_exp
 %type <ast::exps_type*> exp2
 %type <ast::SeqExp*> exp3
-%type <ast::Decs*> classfield
+%type <ast::MethodDecs*> classfield_method
 %type <ast::DecsList*> importdec
 %type <ast::DecsList*> classfields
 %type <ast::FieldVar*> lvalue_c
@@ -212,7 +213,7 @@
 %type <ast::VarDecs*> tyfield_decs
 %type <ast::VarDecs*> tyfields_decs
 %type <ast::SubscriptVar*> lvalue_b
-%type <ast::VarDec*> vardec
+%type <ast::VarDecs*> vardecs
 %type <ast::Var*> lvalue
 
 %left AND
@@ -226,6 +227,11 @@
 %nonassoc ELSE
 %nonassoc OF
 %nonassoc DO
+%nonassoc CLASS FUNCTION PRIMITIVE METHOD TYPE
+%nonassoc END_TYPE
+%nonassoc END_FUNCTION
+%nonassoc END_METHOD
+%nonassoc END_VAR
 
 %start program
 
@@ -370,9 +376,9 @@ lvalue_b:
 | lvalue_c LBRACK exp RBRACK
     { $$ = new ast::SubscriptVar(@$, $1, $3); }
 | lvalue_b LBRACK error RBRACK
-    {$$ = new ast::SubscriptVar(@$, $1, nullptr);}
+    { $$ = new ast::SubscriptVar(@$, $1, nullptr);}
 | lvalue_c LBRACK error RBRACK
-    {$$ = new ast::SubscriptVar(@$, $1, nullptr);}
+    { $$ = new ast::SubscriptVar(@$, $1, nullptr);}
 
 
 lvalue_c:
@@ -383,7 +389,7 @@ lvalue_c:
 | lvalue_b DOT ID
     { $$ = new ast::FieldVar(@$, $3, $1); }
 | error DOT ID
-    {$$ = new ast::FieldVar(@$, $3, nullptr); }
+    { $$ = new ast::FieldVar(@$, $3, nullptr); }
 
 exp3:
   exp
@@ -421,25 +427,19 @@ decs:
       $5->splice_front(*(metavar<ast::DecsList>(tp, $3)));
       $$ = $5;
     }
-| typedec decs
+| typedecs decs
     {
-      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
-      typedecs->push_front(*$1);
-      $2->push_front(typedecs);
+      $2->push_front($1);
       $$ = $2;
     }
-| vardec decs
+| vardecs decs
     {
-      ast::VarDecs* vardecs = new ast::VarDecs(@$);
-      vardecs->push_front(*$1);
-      $2->push_front(vardecs);
+      $2->push_front($1);
       $$ = $2;
     }
-| funcdec decs
+| funcdecs decs
     {
-      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
-      funcdecs->push_front(*$1);
-      $2->push_front(funcdecs);
+      $2->push_front($1);
       $$ = $2;
     }
 | importdec decs
@@ -460,46 +460,125 @@ importdec :
       }
     }
 
+typedecs :
+  TYPE ID EQ ty %prec END_TYPE
+    {
+      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $ID, $4);
+      typedecs->push_front(*typedec);
+      $$ = typedecs;
+    }
+| CLASS ID LBRACE classfields RBRACE %prec END_TYPE
+    {
+      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4));
+      typedecs->push_front(*typedec);
+      $$ = typedecs;
+    }
+| CLASS ID EXTENDS type-id LBRACE classfields RBRACE %prec END_TYPE
+    {
+      ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, $4, $6));
+      typedecs->push_front(*typedec);
+      $$ = typedecs;
+    }
+| TYPE ID EQ ty typedecs
+    {
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $ID, $4);
+      $5->push_front(*typedec);
+      $$ = $5;
+    }
+| CLASS ID LBRACE classfields RBRACE typedecs
+    {
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4));
+      $6->push_front(*typedec);
+      $$ = $6;
+    }
+| CLASS ID EXTENDS type-id LBRACE classfields RBRACE typedecs
+    {
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, $4, $6));
+      $8->push_front(*typedec);
+      $$ = $8;
+    }
 
-
-typedec :
-  TYPE ID EQ ty
+funcdecs :
+  FUNCTION ID LPAREN tyfield_decs RPAREN EQ exp %prec END_FUNCTION
     {
-      $$ =  new ast::TypeDec(@$, $ID, $4);
+      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, nullptr, $7);
+      funcdecs->push_front(*funcdec);
+      $$ = funcdecs;
     }
-| CLASS ID LBRACE classfields RBRACE
+| FUNCTION ID LPAREN tyfield_decs RPAREN COLON type-id EQ exp %prec END_FUNCTION
     {
-      $$ = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4));
+      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, $7, $9);
+      funcdecs->push_front(*funcdec);
+      $$ = funcdecs;
     }
-| CLASS ID EXTENDS type-id LBRACE classfields RBRACE
+| FUNCTION ID LPAREN error RPAREN COLON type-id EQ exp %prec END_FUNCTION
     {
-      $$ =  new ast::TypeDec(@$, $2, new ast::ClassTy(@$, $4, $6));
+      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2,nullptr, $7, $9);
+      funcdecs->push_front(*funcdec);
+      $$ = funcdecs;
     }
-
-funcdec :
-  FUNCTION ID LPAREN tyfield_decs RPAREN EQ exp
+| PRIMITIVE ID LPAREN tyfield_decs RPAREN %prec END_FUNCTION
     {
-      $$ = new ast::FunctionDec(@$, $2, $4, nullptr, $7);
+      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, nullptr, nullptr);
+      funcdecs->push_front(*funcdec);
+      $$ = funcdecs;
     }
-| FUNCTION ID LPAREN tyfield_decs RPAREN COLON type-id EQ exp
+| PRIMITIVE ID LPAREN tyfield_decs RPAREN COLON type-id %prec END_FUNCTION
     {
-      $$ = new ast::FunctionDec(@$, $2, $4, $7, $9);
+      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, $7, nullptr);
+      funcdecs->push_front(*funcdec);
+      $$ = funcdecs;
     }
-| FUNCTION ID LPAREN error RPAREN COLON type-id EQ exp
+| PRIMITIVE ID LPAREN error RPAREN %prec END_FUNCTION
     {
-      $$ = new ast::FunctionDec(@$, $2,nullptr, $7, $9);
+      ast::FunctionDecs* funcdecs = new ast::FunctionDecs(@$);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, nullptr, nullptr, nullptr);
+      funcdecs->push_front(*funcdec);
+      $$ = funcdecs;
     }
-| PRIMITIVE ID LPAREN tyfield_decs RPAREN
+| FUNCTION ID LPAREN tyfield_decs RPAREN EQ exp funcdecs
     {
-      $$ = new ast::FunctionDec(@$, $2, $4, nullptr, nullptr);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, nullptr, $7);
+      $8->push_front(*funcdec);
+      $$ = $8;
     }
-| PRIMITIVE ID LPAREN tyfield_decs RPAREN COLON type-id
+| FUNCTION ID LPAREN tyfield_decs RPAREN COLON type-id EQ exp funcdecs
     {
-      $$ = new ast::FunctionDec(@$, $2, $4, $7, nullptr);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, $7, $9);
+      $10->push_front(*funcdec);
+      $$ = $10;
     }
-| PRIMITIVE ID LPAREN error RPAREN
+| FUNCTION ID LPAREN error RPAREN COLON type-id EQ exp funcdecs
     {
-      $$ = new ast::FunctionDec(@$, $2, nullptr, nullptr, nullptr);
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2,nullptr, $7, $9);
+      $10->push_front(*funcdec);
+      $$ = $10;
+    }
+| PRIMITIVE ID LPAREN tyfield_decs RPAREN funcdecs
+    {
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, nullptr, nullptr);
+      $6->push_front(*funcdec);
+      $$ = $6;
+    }
+| PRIMITIVE ID LPAREN tyfield_decs RPAREN COLON type-id funcdecs
+    {
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, $4, $7, nullptr);
+      $8->push_front(*funcdec);
+      $$ = $8;
+    }
+| PRIMITIVE ID LPAREN error RPAREN funcdecs
+    {
+      ast::FunctionDec* funcdec = new ast::FunctionDec(@$, $2, nullptr, nullptr, nullptr);
+      $6->push_front(*funcdec);
+      $$ = $6;
     }
 
 tyfields_decs:
@@ -516,9 +595,7 @@ tyfields_decs:
 
 tyfield_decs:
   %empty
-    {
-      $$ = new ast::VarDecs(@$);
-    }
+    { $$ = new ast::VarDecs(@$); }
 | ID COLON type-id tyfields_decs
     {
       ast::VarDec* vardec = new ast::VarDec(@$, $1, $3, nullptr);
@@ -526,53 +603,75 @@ tyfield_decs:
       $$ = $4;
     }
 
-vardec:
-  VAR ID ASSIGN exp
+vardecs:
+  VAR ID ASSIGN exp %prec END_VAR
     {
-      $$ = new ast::VarDec(@$, $2, nullptr, $4);
+      ast::VarDecs* vardecs = new ast::VarDecs(@$);
+      ast::VarDec* vardec = new ast::VarDec(@$, $2, nullptr, $4);
+      vardecs->push_front(*vardec);
+      $$ = vardecs;
     }
-| VAR ID COLON type-id ASSIGN exp
+| VAR ID COLON type-id ASSIGN exp %prec END_VAR
     {
-      $$ = new ast::VarDec(@$, $2, $4, $6);
+      ast::VarDecs* vardecs = new ast::VarDecs(@$);
+      ast::VarDec* vardec = new ast::VarDec(@$, $2, $4, $6);
+      vardecs->push_front(*vardec);
+      $$ = vardecs;
     }
 
 classfields:
   %empty
     { $$ = new ast::DecsList(@$); }
-| classfield classfields
+| classfield_method classfields
+    {
+      $2->push_front($1);
+      $$ = $2;
+    }
+| vardecs classfields
     {
       $2->push_front($1);
       $$ = $2;
     }
 
-classfield:
-  vardec
-    {
-      ast::VarDecs* vardecs = new ast::VarDecs(@$);
-      vardecs->push_front(*$1);
-      $$ = vardecs;
-    }
-| METHOD ID LPAREN tyfield_decs RPAREN EQ exp
+classfield_method:
+  METHOD ID LPAREN tyfield_decs RPAREN EQ exp %prec END_METHOD
     {
       ast::MethodDecs* methoddecs = new ast::MethodDecs(@$);
       ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, $4, nullptr, $7);
       methoddecs->push_front(*methoddec);
       $$ = methoddecs;
     }
-| METHOD ID LPAREN tyfield_decs RPAREN COLON type-id EQ exp
+| METHOD ID LPAREN tyfield_decs RPAREN COLON type-id EQ exp %prec END_METHOD
     {
       ast::MethodDecs* methoddecs = new ast::MethodDecs(@$);
       ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, $4, $7, $9);
       methoddecs->push_front(*methoddec);
       $$ = methoddecs;
     }
-| METHOD ID LPAREN error RPAREN EQ exp
+| METHOD ID LPAREN error RPAREN EQ exp %prec END_METHOD
     {
       ast::MethodDecs* methoddecs = new ast::MethodDecs(@$);
-      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2,nullptr ,
-      nullptr, $7);
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, nullptr, nullptr, $7);
       methoddecs->push_front(*methoddec);
       $$ = methoddecs;
+    }
+| METHOD ID LPAREN tyfield_decs RPAREN EQ exp classfield_method
+    {
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, $4, nullptr, $7);
+      $8->push_front(*methoddec);
+      $$ = $8;
+    }
+| METHOD ID LPAREN tyfield_decs RPAREN COLON type-id EQ exp classfield_method
+    {
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, $4, $7, $9);
+      $10->push_front(*methoddec);
+      $$ = $10;
+    }
+| METHOD ID LPAREN error RPAREN EQ exp classfield_method
+    {
+      ast::MethodDec* methoddec = new ast::MethodDec(@$, $2, nullptr, nullptr, $7);
+      $8->push_front(*methoddec);
+      $$ = $8;
     }
 
 ty:

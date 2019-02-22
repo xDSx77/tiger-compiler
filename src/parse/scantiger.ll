@@ -80,7 +80,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*|_main
               }
   <<EOF>>     {
                 tp.error_ << misc::error::error_type::scan << tp.location_
-                          << ": Unterminated string" << std::endl;
+                          << ": unexpected end of file in a string" << std::endl;
                 yyterminate();
               }
   "\\a"         grown_string.append("\\a");
@@ -90,6 +90,7 @@ id              [a-zA-Z][a-zA-Z_0-9]*|_main
   "\\r"         grown_string.append("\\r");
   "\\t"         grown_string.append("\\t");
   "\\v"         grown_string.append("\\v");
+  "\\\""         grown_string.append("\\\"");
   \\int       {
                 if (strtol(yytext + 2, 0, 10) > 255)
                 {
@@ -100,7 +101,11 @@ id              [a-zA-Z][a-zA-Z_0-9]*|_main
                 grown_string.append(yytext + 2);
               }
   \n+           tp.location_.lines(yyleng); tp.location_.step();
-  \\x[0-9a-fA-F]{2} grown_string.append(yytext + 2);
+  \\x[0-9a-fA-F]{2} {
+                char str[2];
+                std::sprintf(str, "%c", std::stoi(yytext+2, 0, 16));
+                grown_string.append(boost::lexical_cast<std::string>(str));
+              }
   .             grown_string.append(yytext);
 }
 
