@@ -2,48 +2,102 @@
 
 TODO List
 
-[ ] README
+[X] README
  |
-[ ] TODO
+[X] TODO
  |
-[ ] TC-0
+[X] TC-0
  |  |
- | [ ] Flex
+ | [X] Flex
  |  |  |
- |  | [ ] Write a scanner
+ |  | [X] Write a scanner
  |  |
- | [ ] Bison
+ | [X] Bison
  |     |
- |    [ ] Write a parser
+ |    [X] Write a parser
  |
-[ ] TC-1
+[X] TC-1
  |  |
- | [ ] Autoconf or Automake
+ | [X] Autoconf or Automake
  |  |
- | [ ] Options
+ | [X] Options
  |  |  |
- |  | [ ] -? , --help
+ |  | [X] -? , --help
  |  |  |
- |  | [ ] --version
+ |  | [X] --version
  |  |  |
- |  | [ ] --task-list
+ |  | [X] --task-list
  |  |  |
- |  | [ ] --task-selection
+ |  | [X] --task-selection
  |  |  |
- |  | [ ] -p , --library-prepend
+ |  | [X] -p , --library-prepend
  |  |  |
- |  | [ ] -P , --library-append
+ |  | [X] -P , --library-append
  |  |  |
- |  | [ ] --library-display
+ |  | [X] --library-display
  |  |  |
- |  | [ ] --scan-trace
+ |  | [X] --scan-trace
  |  |  |
- |  | [ ] --parse-trace
+ |  | [X] --parse-trace
  |  |  |
- |  | [ ] --parse
+ |  | [X] --parse
  |  |  |
- |  | [ ] --prelude=prelude
+ |  | [X] --prelude=prelude
  |  |  |
- |  | [ ] -X , --no-prelude
+ |  | [X] -X , --no-prelude
  |  |
- | [ ] Locations
+ | [X] Locations
+ |
+[X] TC-2
+ |  |
+ | [X] Parser
+ |  |  |
+ |  | [X] AST
+ |  |  |  |
+ |  |  | [X] exp
+ |  |  |  |
+ |  |  | [X] lvalue
+ |  |  |  |
+ |  |  | [X] dec
+ |  |  |  |
+ |  |  | [X] classfields
+ |  |  |  |
+ |  |  | [X] ty
+ |  |  |
+ |  | [X] Object-related syntax
+ |  |  |
+ |  | [X] Metavariable constructs
+ |  |  |
+ |  | [X] Error recovery
+ |  |  |
+ |  | [X] Use %printer
+ |  |  |
+ |  | [X] Use %destructor
+ |  |  |
+ |  | [X] GLR
+ |  |  |
+ |  | [X] Chunks
+ |  |
+ | [X] No fixme in AST left
+ |  |
+ | [X] Complete the GenDefaultVisitor class
+ |  |
+ | [X] Complete GenObjectVisitor
+ |  |
+ | [X] Pretty-printer
+ |
+[ ] TC-3
+ |  |
+ | [ ] Complete the class template misc::scoped
+ |  |
+ | [ ] Augment constructs “using” an identifier must be able to set a reference to their definition
+ |  |
+ | [ ] Implement --bindings-display for pretty-printer
+ |  |
+ | [ ] Complete the bind::Binder
+ |  |
+ | [ ] Complete the object::Binder
+ |  |
+ | [ ] Implement renaming to unique identifiers
+ |  |
+ | [ ] Complete auxiliary code
