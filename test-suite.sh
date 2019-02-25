@@ -29,10 +29,29 @@ for file in ./tests/good/*.tig ; do
 done
 
 echo "===================================================="
+echo "================TESTING BIND FILES=================="
+echo "===================================================="
+for file in ./tests/bind/*.tig ; do
+  test_good
+done
+
+echo "===================================================="
+echo "================TESTING TYPE FILES=================="
+echo "===================================================="
+for file in ./tests/type/*.tig ; do
+  test_good
+done
+
+echo "===================================================="
 echo "===========TESTING SYNTAX ERROR IN FILES============"
 echo "===================================================="
 for file in ./tests/syntax/*.tig ; do
   test_error
 done
 
-
+echo "===================================================="
+echo "=================TESTING OUR TESTS=================="
+echo "===================================================="
+for file in own_test/*.tig ; do
+  test_good
+done
