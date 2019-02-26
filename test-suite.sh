@@ -52,6 +52,6 @@ done
 echo "===================================================="
 echo "=================TESTING OUR TESTS=================="
 echo "===================================================="
-for file in own_test/*.tig ; do
+for file in ./tests/own_test/*.tig ; do
   test_good
 done
