@@ -31,9 +31,18 @@ namespace ast
     const exps_type& exps_get() const;
     exps_type& exps_get();
 
+    /// Return definition site.
+    const FunctionDec* def_get() const;
+    /// Return definition site.
+    FunctionDec* def_get();
+    /// Set definition site.
+    void def_set(FunctionDec*);
+    /** \} */
+
   protected:
     misc::symbol name_;
     exps_type* exps_;
+    FunctionDec* def_ = nullptr;
   };
 } // namespace ast
 
