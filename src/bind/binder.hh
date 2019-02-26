@@ -187,7 +187,14 @@ namespace bind
     /// Binding errors handler.
     misc::error error_;
 
-  // FIXME: Some code was deleted here (More members).
+    /// Scope map for types declaration
+    misc::scoped_map<misc::symbol, ast::Ty*> scope_map_type_;
+
+    /// Scope map for functions declaration
+    misc::scoped_map<misc::symbol, ast::Exp*> scope_map_func_;
+
+    /// Scope map for variables declaration
+    misc::scoped_map<misc::symbol, ast::Exp*> scope_map_var_;
   };
 
 }

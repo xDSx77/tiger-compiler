@@ -18,7 +18,7 @@ namespace misc
   void
   scoped_map<Key, Data>::put(const Key& key, const Data& value)
   {
-    scoped_map_.back().insert_or_assign(key, value);
+    scoped_map_.back()->insert_or_assign(key, value);
   }
 
   template <typename Key, typename Data>
