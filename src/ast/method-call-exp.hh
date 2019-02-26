@@ -49,11 +49,20 @@ namespace ast
     const Var& var_get() const;
     /// Return variable.
     Var& var_get();
+
+    /// Return definition site.
+    const MethodDec* def_get() const;
+    /// Return definition site.
+    MethodDec* def_get();
+    /// Set definition site.
+    void def_set(MethodDec*);
     /** \} */
+
 
   protected:
     /// Variable.
     Var* var_;
+    MethodDec* def_ = nullptr;
 
   };
 
