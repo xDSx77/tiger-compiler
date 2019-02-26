@@ -37,5 +37,23 @@ namespace ast
   {
     return *var_;
   }
+
+  inline const Var*
+  FieldVar::def_get() const
+  {
+    return def_;
+  }
+
+  inline Var*
+  FieldVar::def_get()
+  {
+    return def_;
+  }
+
+  inline void
+  FieldVar::def_set(Var* def)
+  {
+    def_ = def;
+  }
 } // namespace ast
 

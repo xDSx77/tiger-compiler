@@ -31,9 +31,18 @@ namespace ast
     const Var& var_get() const;
     Var& var_get();
 
+    /// Return definition site.
+    const Var* def_get() const;
+    /// Return definition site.
+    Var* def_get();
+    /// Set definition site.
+    void def_set(Var*);
+    /** \} */
+
   protected:
     misc::symbol name_;
     Var* var_;
+    Var* def_ = nullptr;
   };
 
 } // namespace ast
