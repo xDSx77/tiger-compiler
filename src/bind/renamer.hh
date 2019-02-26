@@ -55,12 +55,34 @@ namespace bind
 
     /// \name Visiting definition sites.
     /// \{
-  // FIXME: Some code was deleted here.
+    /*void operator()(ast::NilExp& e) override;
+    void operator()(ast::IntExp& e) override;
+    void operator()(ast::StringExp& e) override;
+    void operator()(ast::CallExp& e) override;
+    void operator()(ast::OpExp& e) override;
+    void operator()(ast::RecordExp& e) override;
+    void operator()(ast::SeqExp& e) override;
+    void operator()(ast::AssignExp& e) override;
+    void operator()(ast::IfExp& e) override;
+    void operator()(ast::WhileExp& e) override;
+    void operator()(ast::ForExp& e) override;
+    void operator()(ast::BreakExp&) override;
+    void operator()(ast::LetExp& e) override;
+    void operator()(ast::ArrayExp& e) override;
+    void operator()(ast::CastExp& e) override;
+    void operator()(ast::FieldInit& e) override;*/
+    void operator()(ast::DecsList& e) override;
+    virtual void operator()(ast::Decs& e);
     /// \}
 
     /// \name Visiting usage sites.
     /// \{
-  // FIXME: Some code was deleted here.
+    void operator()(ast::VarDecs& e) override;
+    void operator()(ast::FunctionDecs& e) override;
+    void operator()(ast::FunctionDec& e) override;
+    void operator()(ast::VarDec& e) override;
+    void operator()(ast::TypeDecs& e) override;
+    void operator()(ast::TypeDec& e) override;
     /// \}
 
   private:
