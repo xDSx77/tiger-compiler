@@ -26,16 +26,16 @@ namespace bind
   Binder::redefinition(const T& e1, const T& e2)
   {
     error_ << misc::error::error_type::bind /*<< e2.location_get()*/
-      << "undeclared variable: " << e2.get() << std::endl;
+      << "undeclared variable: " << e2.name_get() << std::endl;
     error_ << misc::error::error_type::bind /*<< e1.location_get()*/
-      << "first definition" << std::endl;
+      << "first definition of " << e1.name_get() << std::endl;
   }
 
   /*------------------.
   | Visiting /Decs/.  |
   `------------------*/
 
-  template <class D>
+  /*template <class D>
   void
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
@@ -46,26 +46,77 @@ namespace bind
       visit_dec_header(*(e.decs_get()[i]));
       visit_dec_body(*(e.decs_get()[i]));
     }
+  }*/
+
+  template <>
+  void
+  Binder::decs_visit(ast::TypeDecs& e)
+  {
+    for (unsigned i = 0; i < e.decs_get().size(); i++)
+    {
+      visit_dec_header(*(e.decs_get()[i]));
+      visit_dec_body(*(e.decs_get()[i]));
+    }
   }
 
-  template <class D>
+  template <>
   void
-  Binder::visit_dec_header(D& e)
+  Binder::decs_visit(ast::FunctionDecs& e)
+  {
+    for (unsigned i = 0; i < e.decs_get().size(); i++)
+    {
+      visit_dec_header(*(e.decs_get()[i]));
+      visit_dec_body(*(e.decs_get()[i]));
+    }
+  }
+
+  template <>
+  void
+  Binder::decs_visit(ast::VarDecs& e)
+  {
+    for (unsigned i = 0; i < e.decs_get().size(); i++)
+    {
+      visit_dec_header(*(e.decs_get()[i]));
+      visit_dec_body(*(e.decs_get()[i]));
+    }
+  }
+
+  template <>
+  void
+  Binder::visit_dec_header(ast::TypeDec& e)
+  {
+    if (scope_map_type_.is_inside(e.name_get()))
+      redefinition(e, scope_map_type_.get(e.name_get()));
+    scope_map_type_.put(e.name_get(), e);
+  }
+
+  template <>
+  void
+  Binder::visit_dec_header(ast::FunctionDec& e)
   {
     if (scope_map_func_.is_inside(e.name_get()))
-        redefinition(e.name_get(), e.name_get());
+        redefinition(e, scope_map_func_.get(e.name_get()));
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
     {
       if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()))
-        redefinition(e.formals_get().decs_get()[i]->name_get(),
-            e.formals_get().decs_get()[i]->name_get());
+        redefinition(*(e.formals_get().decs_get()[i]),
+          scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()));
     }
     scope_map_func_.put(e.name_get(), e);
   }
 
-  template <class D>
+  template <>
   void
-  Binder::visit_dec_body(D& e)
+  Binder::visit_dec_header(ast::VarDec& e)
+  {
+    if (scope_map_var_.is_inside(e.name_get()))
+      redefinition(e, scope_map_var_.get(e.name_get()));
+    scope_map_var_.put(e.name_get(), e);
+  }
+
+  template <>
+  void
+  Binder::visit_dec_body(ast::FunctionDec& e)
   {
     scope_begin();
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)

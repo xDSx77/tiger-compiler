@@ -65,7 +65,9 @@ namespace bind
   void
   Binder::operator()(ast::LetExp& e)
   {
-    decs_visit(e);
+    for (auto i = *(e.decs_get().decs_get().begin());
+      i != *(e.decs_get().decs_get().end()); i++)
+      decs_visit(*i);
   }
 
 

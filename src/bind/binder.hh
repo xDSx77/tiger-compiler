@@ -137,10 +137,16 @@ namespace bind
     /// Check a Function or Type declaration header.
     template <class D>
     void visit_dec_header(D& e);
+    void visit_dec_header(ast::TypeDec& e);
+    void visit_dec_header(ast::FunctionDec& e);
+    void visit_dec_header(ast::VarDec& e);
 
     /// Check a Function or Type declaration body.
     template <class D>
     void visit_dec_body(D& e);
+    void visit_dec_body(ast::TypeDec& e);
+    void visit_dec_body(ast::FunctionDec& e);
+    void visit_dec_body(ast::VarDec& e);
 
     // Visit a variable declaration.
     //void operator()(ast::VarDec&) override;
