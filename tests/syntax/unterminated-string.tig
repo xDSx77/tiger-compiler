@@ -1,0 +1,5 @@
+let
+  var str := "Hello World\n
+in
+  print(var)
+end

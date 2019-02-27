@@ -1,0 +1,27 @@
+let
+  type strings = array of string
+  var s1 : strings := strings [50] of ""
+  var s2 : strings := strings [4] of "coco"
+  var s3 : strings := strings [10] of "hello"
+  type ints = array of int
+  var a1 : ints := ints [5] of
+in
+  function hello (a : "euh") : 5 = nil
+  print(s1[5])
+  print(s2[1])
+  print(var a : int := 5)
+  print(nil)
+  nil
+  let
+    print_int(4)
+  in
+    var a2 : int := 5
+    for i := "test" to nil do
+    (
+      if 1 = 2 then
+        print("maths are broken")
+      else
+        print("ok")
+    )
+  end
+end

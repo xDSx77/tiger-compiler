@@ -12,13 +12,10 @@
 *.status
 *.in
 *.la
-*.tig
-*.tih
 .deps
 .dirstamp
 .libs
 build-aux
-tests
 Makefile
 Doxyfile
 stamp-h1
