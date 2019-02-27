@@ -159,7 +159,7 @@ namespace bind
     void error(const ast::Ast& loc, const std::string& msg);
 
     /// Check _main definition.
-    void check_main(ast::FunctionDec& e);
+    void check_main(const ast::FunctionDec& e);
 
     /// Report an undefined symbol.
     ///

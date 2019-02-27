@@ -29,10 +29,12 @@ namespace bind
   }
 
   void
-  Binder::check_main(ast::FunctionDec& e)
+  Binder::check_main(const ast::FunctionDec& e)
   {
-    visit_dec_header(e);
-    visit_dec_body(e);
+    if (e.formals_get().decs_get().size() != 0)
+      error(e, "wrong number of arguments in _main function");
+    if (e.result_get() != nullptr)
+      error(e, "_main function must not have a return type");
   }
 
   /*----------------.
