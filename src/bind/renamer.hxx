@@ -16,12 +16,12 @@ namespace bind
   {
       return new_name(e);
   }
-  template <typename Def>
+/*  template <typename Def>
   misc::symbol
   new_name(const Def& e)
   {
       return  ;
-  }
+  }*/
   template <class E, class Def>
   void
   visit(E& e, const Def* def)

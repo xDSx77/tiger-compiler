@@ -61,15 +61,11 @@ namespace bind
   /*---------.
   | Visits.  |
   `---------*/
-
+/*
   void
   Binder::operator()(ast::LetExp& e)
   {
-    scope_begin();
-    /*
-    for (ast::VarDecs* i = *(e.decs_get().decs_get().begin()); i != *(e.decs_get().decs_get().end()); i++)
-      for (unsigned j = 0; j < i->decs_get().size(); j++)
-        scope_map_var_.put(i->decs_get()[j]->name_get(), *(i->decs_get()[j]));*/
+    decs_visit(e);
   }
 
 
@@ -187,7 +183,7 @@ namespace bind
   Binder::operator()(ast::Field& e)
   {
   }
-
+*/
 
   /*-------------------.
   | Visiting VarDecs.  |
