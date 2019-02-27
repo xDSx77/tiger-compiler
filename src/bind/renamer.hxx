@@ -14,25 +14,20 @@ namespace bind
   misc::symbol
   new_name_compute(const Def& e)
   {
-      return e.Renamer();
+      return new_name(e);
   }
   template <typename Def>
   misc::symbol
   new_name(const Def& e)
   {
-      return e.Renamer();
+      return  ;
   }
   template <class E, class Def>
   void
   visit(E& e, const Def* def)
   {
-      def.e;
-  }
-  template <class E, class Def>
-  void
-  Renamer::visit(E& e, const Def* def)
-  {
-      def.e;
+      if (def)
+        e.name_set();
   }
   /*void
   Renamer::operator()(ast::NilExp& e)

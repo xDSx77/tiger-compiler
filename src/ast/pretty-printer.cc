@@ -87,7 +87,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
-    ostr_ << e.name_get() << '(' << misc::separate(e.exps_get(), ',') << ')';
+    ostr_ << e.name_get() << " (" << misc::separate(e.exps_get(), ',') << ')';
   }
 
   void
@@ -213,29 +213,29 @@ namespace ast
     if (e.body_get())
     {
       ostr_ << "function " << e.name_get() << " ("
-            << misc::separate(e.formals_get().decs_get(), ", ") << ')';
+            << misc::separate(e.formals_get().decs_get(), ", ") << ")";
     }
     else
     {
-      ostr_ << "primitive " << e.name_get() << '('
-            << misc::separate(e.formals_get().decs_get(), ", ") << ')';
+      ostr_ << "primitive " << e.name_get() << " ("
+            << misc::separate(e.formals_get().decs_get(), ", ") << ") ";
     }
     if (e.result_get())
       ostr_ << " : " << *(e.result_get());
     if (e.body_get())
-      ostr_ << " = " << misc::incendl << '(' << misc::incendl << *(e.body_get())
-            << misc::decendl << ')' << misc::decindent;
+      ostr_ << " = " << misc::incendl << " (" << misc::incendl << *(e.body_get())
+            << misc::decendl << ")" << misc::decindent;
   }
 
   void
   PrettyPrinter::operator()(const MethodDec& e)
   {
-    ostr_ << "method " << e.name_get() << '('
-          << misc::separate(e.formals_get().decs_get(), ", ") << ')';
+    ostr_ << "method " << e.name_get() << " ("
+          << misc::separate(e.formals_get().decs_get(), ", ") << ") ";
     if (e.result_get())
-      ostr_ << " : " << *(e.result_get());
-    ostr_ << " = " << misc::incendl << '(' << misc::incendl << *(e.body_get())
-          << misc::decendl << ')' << misc::decindent;
+      ostr_ << ": " << *(e.result_get());
+    ostr_ << "= " << misc::incendl << " (" << misc::incendl << *(e.body_get())
+          << misc::decendl << ") " << misc::decindent;
   }
 
   void
@@ -253,7 +253,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
-    ostr_ << misc::separate(e.fields_get(), ',');
+    ostr_ << misc::separate(e.fields_get(), ", ");
   }
 
   void
@@ -277,8 +277,8 @@ namespace ast
   void
   PrettyPrinter::operator()(const MethodCallExp& e)
   {
-    ostr_ << e.var_get() << '.' << e.name_get() << '('
-          << misc::separate(e.exps_get(), ',') << ')' << std::endl;
+    ostr_ << e.var_get() << '.' << e.name_get() << " ("
+          << misc::separate(e.exps_get(), ", ") << ')' << std::endl;
   }
 
   void
