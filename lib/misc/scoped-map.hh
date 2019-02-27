@@ -29,6 +29,7 @@ namespace misc
     ~scoped_map();
     void put(const Key& key, const Data& value);
     Data get(const Key& key) const;
+    int is_inside(const Key& key) const;
     std::ostream& dump(std::ostream& ostr) const;
     void scope_begin();
     void scope_end();

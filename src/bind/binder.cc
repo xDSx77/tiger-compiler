@@ -29,8 +29,10 @@ namespace bind
   }
 
   void
-  Binder::check_main(const ast::FunctionDec& e)
+  Binder::check_main(ast::FunctionDec& e)
   {
+    visit_dec_header(e);
+    visit_dec_body(e);
   }
 
   /*----------------.
@@ -61,23 +63,13 @@ namespace bind
   void
   Binder::operator()(ast::LetExp& e)
   {
+    scope_begin();
+    /*
+    for (ast::VarDecs* i = *(e.decs_get().decs_get().begin()); i != *(e.decs_get().decs_get().end()); i++)
+      for (unsigned j = 0; j < i->decs_get().size(); j++)
+        scope_map_var_.put(i->decs_get()[j]->name_get(), *(i->decs_get()[j]));*/
   }
 
-/*
-  void
-  Binder::operator()(ast::NilExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::IntExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::StringExp& e)
-  {
-  }
 
   void
   Binder::operator()(ast::CallExp& e)
@@ -190,10 +182,10 @@ namespace bind
   }
 
   void
-  Binder::operator()(ast::Field e)
+  Binder::operator()(ast::Field& e)
   {
   }
-*/
+
 
   /*-------------------.
   | Visiting VarDecs.  |

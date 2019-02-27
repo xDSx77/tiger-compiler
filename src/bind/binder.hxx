@@ -18,12 +18,17 @@ namespace bind
   void
   Binder::undeclared(const std::string& k, const T& e)
   {
+    error_ << misc::error::error_type::bind << e.location_get() << k << std::endl;
   }
 
   template <typename T>
   void
   Binder::redefinition(const T& e1, const T& e2)
   {
+    error_ << misc::error::error_type::bind /*<< e2.location_get()*/
+      << "undeclared variable: " << e2.get() << std::endl;
+    error_ << misc::error::error_type::bind /*<< e1.location_get()*/
+      << "first definition" << std::endl;
   }
 
   /*------------------.
@@ -47,14 +52,15 @@ namespace bind
   void
   Binder::visit_dec_header(D& e)
   {
-    if (scope_map_func_.get(e.name_get()))
+    if (scope_map_func_.is_inside(e.name_get()))
         redefinition(e.name_get(), e.name_get());
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
     {
-      if (scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()))
-        redefinition(e.formals_get().decs_get()[i]->name_get(), e.formals_get().decs_get()[i]->name_get());
+      if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()))
+        redefinition(e.formals_get().decs_get()[i]->name_get(),
+            e.formals_get().decs_get()[i]->name_get());
     }
-    scope_map_func_.put(e.name_get(), e.body_get());
+    scope_map_func_.put(e.name_get(), e);
   }
 
   template <class D>
@@ -63,7 +69,8 @@ namespace bind
   {
     scope_begin();
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
-      scope_map_var_.put(e.formals_get().decs_get()[i]->name_get(), e.formals_get().decs_get()[i]->init_get());
+      scope_map_var_.put(e.formals_get().decs_get()[i]->name_get(),
+          *(e.formals_get().decs_get()[i]));
   }
   /* These specializations are in bind/binder.hxx, so that derived
      visitors can use them (otherwise, they wouldn't see them).  */

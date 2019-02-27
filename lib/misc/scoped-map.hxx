@@ -18,15 +18,25 @@ namespace misc
   void
   scoped_map<Key, Data>::put(const Key& key, const Data& value)
   {
-    scoped_map_.back()->insert_or_assign(key, value);
+    scoped_map_.back()->insert(std::pair<Key, Data>(key, value));
   }
 
   template <typename Key, typename Data>
   Data
   scoped_map<Key, Data>::get(const Key& key) const
   {
-    auto pair = *(scoped_map_.back()->find(key));
-    return pair.second;
+    auto pair = scoped_map_.back()->find(key);
+    return pair->second;
+  }
+
+  template <typename Key, typename Data>
+  int
+  scoped_map<Key, Data>::is_inside(const Key& key) const
+  {
+    auto pair = scoped_map_.back()->find(key);
+    if (pair != scoped_map_.back()->end())
+      return 1;
+    return 0;
   }
 
   template <typename Key, typename Data>

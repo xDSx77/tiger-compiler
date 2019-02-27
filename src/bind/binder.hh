@@ -159,7 +159,7 @@ namespace bind
     void error(const ast::Ast& loc, const std::string& msg);
 
     /// Check _main definition.
-    void check_main(const ast::FunctionDec& e);
+    void check_main(ast::FunctionDec& e);
 
     /// Report an undefined symbol.
     ///
@@ -188,13 +188,13 @@ namespace bind
     misc::error error_;
 
     /// Scope map for types declaration
-    misc::scoped_map<misc::symbol, ast::Ty*> scope_map_type_;
+    misc::scoped_map<misc::symbol, ast::TypeDec&> scope_map_type_;
 
     /// Scope map for functions declaration
-    misc::scoped_map<misc::symbol, ast::Exp*> scope_map_func_;
+    misc::scoped_map<misc::symbol, ast::FunctionDec&> scope_map_func_;
 
     /// Scope map for variables declaration
-    misc::scoped_map<misc::symbol, ast::Exp*> scope_map_var_;
+    misc::scoped_map<misc::symbol, ast::VarDec&> scope_map_var_;
   };
 
 }
