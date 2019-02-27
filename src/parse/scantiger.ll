@@ -187,6 +187,7 @@ namety          return TOKEN(NAMETY);
 {id}            return TOKEN_VAL(ID, yytext);
 [ \t]+          tp.location_.step();
 \n+             tp.location_.lines(yyleng); tp.location_.step();
+.               ;
 
 %%
 
