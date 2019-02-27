@@ -212,7 +212,7 @@ namespace ast
   {
     if (e.body_get())
     {
-      ostr_ << "function " << e.name_get() << '('
+      ostr_ << "function " << e.name_get() << " ("
             << misc::separate(e.formals_get().decs_get(), ", ") << ')';
     }
     else

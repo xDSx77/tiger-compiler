@@ -301,7 +301,7 @@ exp:
 | lvalue_c LPAREN exp2 RPAREN
     { $$ = new ast::MethodCallExp(@$, $1->name_get(), $3, $1); }
 | MINUS exp
-    { $$ = new ast::OpExp(@$, nullptr, ast::OpExp::Oper::sub, $2); }
+    { $$ = new ast::OpExp(@$, new ast::NilExp(@$), ast::OpExp::Oper::sub, $2); }
 | exp MINUS exp
     { $$ = new ast::OpExp(@$, $1, ast::OpExp::Oper::sub, $3); }
 | exp PLUS exp
