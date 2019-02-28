@@ -127,7 +127,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const SeqExp& e)
   {
-    ostr_ << misc::separate(e.exps_get(), ';');
+    ostr_ << '(' << misc::separate(e.exps_get(), ");") << misc::iendl <<')' ;
   }
 
   void
@@ -140,11 +140,11 @@ namespace ast
   PrettyPrinter::operator()(const IfExp& e)
   {
     ostr_ << "if (" << e.test_get() << ')' << misc::iendl
-          << "then " << e.body_get() << misc::iendl;
+          << "then (" << e.body_get() << ')';
     if (e.body_2_get())
     {
       const ast::Exp* exp2 = e.body_2_get();
-      ostr_ << "else (" << *exp2 << ')' << misc::iendl;
+      ostr_ << misc::iendl << "else " << *exp2 ;
     }
   }
 
@@ -158,7 +158,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << "for " << e.vardec_get() << " to " << e.hi_get() << " do" << misc::iendl
+    ostr_ << "for " << e.vardec_get().name_get() << " to " << e.hi_get() << " do" << misc::iendl
           << e.body_get() << misc::iendl;
   }
 
@@ -172,7 +172,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const ArrayExp& e)
   {
-    ostr_ << e.type_get() << " [" << e.size_get() << "] of" << e.value_get()
+    ostr_ << e.type_get() << " [" << e.size_get() << "] of " << e.value_get()
           << std::endl;
   }
 
@@ -200,7 +200,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-    ostr_ << e.name_get();
+    ostr_ << "var " << e.name_get();
     if (e.type_name_get())
       ostr_ << " : " << *(e.type_name_get());
     if (e.init_get())
