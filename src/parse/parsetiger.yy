@@ -92,7 +92,6 @@
 %destructor { delete $$; } <ast::DecsList*>
                            <ast::FunctionDecs*>
                            <ast::TypeDecs*>
-                           <ast::SeqExp*>
                            <ast::MethodDecs*>
                            <ast::exps_type*>
                            <ast::Exp*>
@@ -197,11 +196,11 @@
 %type <ast::FunctionDecs*> funcdecs
 %type <ast::TypeDecs*> typedecs
 %type <ast::DecsList*> decs
-%type <ast::SeqExp*> exps
+%type <ast::exps_type*> exps
 %type <ast::Exp*> exp
 %type <ast::fieldinits_type> id_exp
 %type <ast::exps_type*> exp2
-%type <ast::SeqExp*> exp3
+%type <ast::exps_type*> exp3
 %type <ast::MethodDecs*> classfield_method
 %type <ast::DecsList*> importdec
 %type <ast::DecsList*> classfields
@@ -334,9 +333,9 @@ exp:
         new ast::IfExp(@3, $3 , new ast::IntExp(@$,1), new ast::IntExp(@$,0)));
     }
 | LPAREN exps RPAREN
-    { $$ = $2; }
+    { $$ = new ast::SeqExp(@$, $2); }
 | LPAREN error RPAREN
-    { $$ = new ast::SeqExp(@$,new ast::exps_type()); }
+    { $$ = new ast::SeqExp(@$, new ast::exps_type()); }
 | lvalue ASSIGN exp
     { $$ = new ast::AssignExp(@$, $1, $3); }
 | IF exp THEN exp
@@ -350,7 +349,7 @@ exp:
 | BREAK
     { $$ = new ast::BreakExp(@$); }
 | LET decs IN exps END
-    { $$ = new ast::LetExp(@$, $2, $4); }
+    { $$ = new ast::LetExp(@$, $2, new ast::SeqExp(@4, $4)); }
 | CAST LPAREN exp COMMA ty RPAREN
     { $$ = new ast::CastExp(@$, $3, $5); }
 | EXP LPAREN INT RPAREN
@@ -396,22 +395,30 @@ exp3:
     {
       ast::exps_type* exps = new ast::exps_type();
       exps->emplace_back($1);
-      ast::SeqExp* exp = new ast::SeqExp(@$, exps);
-      $$ = exp;
+      $$ = exps;
     }
 | exp SEMI exp3
     {
-      $3->exps_get().insert($3->exps_get().begin(), $1);
+      $3->emplace_back($1);
       $$ = $3;
     }
 
 exps:
   %empty
     {
-      $$ = new ast::SeqExp(@$, new ast::exps_type());
+      $$ = new ast::exps_type();
     }
-| exp3
-    { $$ = $1; }
+| exp
+    {
+      ast::exps_type* exps = new ast::exps_type();
+      exps->emplace_back($1);
+      $$ = exps;
+    }
+| exp SEMI exp3
+    {
+      $3->insert($3->begin(), $1);
+      $$ = $3;
+    }
 
 /*---------------.
 | Declarations.  |
@@ -682,7 +689,7 @@ ty:
 | ARRAY OF type-id
     { $$ = new ast::ArrayTy(@$, $3); }
 | CLASS LBRACE classfields RBRACE
-    { $$ = new ast::ClassTy(@$, nullptr, $3); }
+    { $$ = new ast::ClassTy(@$, new ast::NameTy(@$, "Object"), $3); }
 | CLASS EXTENDS type-id LBRACE classfields RBRACE
     { $$ = new ast::ClassTy(@$, $3, $5); }
 

@@ -3,7 +3,7 @@
 function test_good()
 {
   ./src/tc -XA $file > tests/test
-  ./src/tc -XA tests/test
+  ./src/tc tests/test
   if [ $(echo $?) = 0 ]; then
     echo -e "\033[32;1m[OK] $file \033[0m"
   else

@@ -93,7 +93,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const OpExp& e)
   {
-    ostr_ << e.left_get() << ' ';
+    ostr_ << '(' << e.left_get() << ' ';
     if (e.oper_get() == ast::OpExp::Oper::add)
         ostr_ << '+';
     else if (e.oper_get() == ast::OpExp::Oper::sub)
@@ -114,20 +114,19 @@ namespace ast
         ostr_ << '>';
     else if (e.oper_get() == ast::OpExp::Oper::ge)
         ostr_ << ">=";
-    ostr_ << ' ' << e.right_get();
+    ostr_ << ' ' << e.right_get() << ')';
   }
 
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
-    ostr_ << e.type_get() << " { " << misc::separate(e.fieldinits_get(), ',')
-          << " } ";
+    ostr_ << e.type_get() << " { " << misc::separate(e.fieldinits_get(), ',') << " } ";
   }
 
   void
   PrettyPrinter::operator()(const SeqExp& e)
   {
-    ostr_ << '(' << misc::separate(e.exps_get(), ");") << misc::iendl <<')' ;
+    ostr_ << '(' << misc::separate(e.exps_get(), ';') << ')';
   }
 
   void
@@ -139,27 +138,26 @@ namespace ast
   void
   PrettyPrinter::operator()(const IfExp& e)
   {
-    ostr_ << "if (" << e.test_get() << ')' << misc::iendl
-          << "then (" << e.body_get() << ')';
+    ostr_ << "if " << e.test_get() << misc::iendl
+          << "then " << e.body_get() ;
     if (e.body_2_get())
     {
       const ast::Exp* exp2 = e.body_2_get();
-      ostr_ << misc::iendl << "else " << *exp2 ;
+      ostr_ << misc::iendl << "else " << *exp2;
     }
   }
 
   void
   PrettyPrinter::operator()(const WhileExp& e)
   {
-    ostr_ << "while " << e.test_get() << " do" << std::endl << e.body_get()
-          << std::endl;
+    ostr_ << "while " << e.test_get() << " do" << std::endl << e.body_get() << std::endl;
   }
 
   void
   PrettyPrinter::operator()(const ForExp& e)
   {
-    ostr_ << "for " << e.vardec_get().name_get() << " to " << e.hi_get() << " do" << misc::iendl
-          << e.body_get() << misc::iendl;
+    ostr_ << "for " << e.vardec_get().name_get() << " := " << *(e.vardec_get().init_get())
+      << " to " << e.hi_get() << " do" << misc::iendl << e.body_get() << misc::iendl;
   }
 
   void
@@ -179,7 +177,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const FieldInit& e)
   {
-    ostr_ << e.name_get() << " = " << e.init_get() << std::endl;
+    ostr_ << e.name_get() << " = " << e.init_get() << misc::iendl;
   }
 
 
@@ -253,13 +251,19 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordTy& e)
   {
-    ostr_ << misc::separate(e.fields_get(), ", ");
+    ostr_ << '{' << misc::separate(e.fields_get(), ", ") << '}';
   }
 
   void
   PrettyPrinter::operator()(const ArrayTy& e)
   {
     ostr_ << "array of " << e.base_type_get();
+  }
+
+  void
+  PrettyPrinter::operator()(const ClassTy& e)
+  {
+    ostr_ << "class extends " << e.super_get() << '{' << e.decs_get() << '}';
   }
 
   void
