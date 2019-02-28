@@ -187,7 +187,25 @@ namety          return TOKEN(NAMETY);
 {id}            return TOKEN_VAL(ID, yytext);
 [ \t]+          tp.location_.step();
 \n+             tp.location_.lines(yyleng); tp.location_.step();
-.               ;
+"\\n"            {
+                  tp.error_ << misc::error::error_type::scan << tp.location_
+                  << ": unexpected new line outside of a string" << std::endl;
+                }
+\\int           {
+                  tp.error_ << misc::error::error_type::scan << tp.location_
+                  << ": unexpected octal outside of a string" << std::endl;
+                }
+\\x[0-9a-fA-F]{2} {
+                  tp.error_ << misc::error::error_type::scan << tp.location_
+                  << ": unexpected hexadecimal outside of a string" << std::endl;
+                }
+_               ;
+.               {
+                  std::cout << yytext << std::endl;
+                  tp.error_ << misc::error::error_type::scan << tp.location_
+                  << ": invalid character" << std::endl;
+                }
+
 
 %%
 
