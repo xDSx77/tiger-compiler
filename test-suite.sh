@@ -2,17 +2,19 @@
 
 function test_good()
 {
-  ./src/tc $file
+  ./src/tc -XA $file > tests/test
+  ./src/tc -XA tests/test
   if [ $(echo $?) = 0 ]; then
     echo -e "\033[32;1m[OK] $file \033[0m"
   else
     echo -e "\033[31;1m[KO] $file \033[0m"
   fi
+  rm tests/test
 }
 
 function test_error()
 {
-  ./src/tc $file
+  ./src/tc -XA $file
   i=$(echo $?)
   if [ $i = 3 ] || [ $i = 2 ]; then
     echo -e "\033[32;1m[OK] error detected in $file \033[0m"
