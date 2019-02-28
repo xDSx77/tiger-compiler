@@ -1,0 +1,5 @@
+let
+  var a := 0
+in
+  for i := 100 to 0 do (i := i - 1; ())
+end

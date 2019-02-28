@@ -48,10 +48,3 @@ echo "===================================================="
 for file in ./tests/syntax/*.tig ; do
   test_error
 done
-
-echo "===================================================="
-echo "=================TESTING OUR TESTS=================="
-echo "===================================================="
-for file in ./tests/own_test/*.tig ; do
-  test_good
-done
