@@ -17,7 +17,7 @@ namespace ast
     public:
     /** \name Ctor & dtor
      ** \{ */
-    RecordTy(const Location& location, fields_type fields);
+    RecordTy(const Location& location, fields_type& fields);
     RecordTy(const RecordTy&) = delete;
     RecordTy& operator=(const RecordTy&) = delete;
     /// Destroy a RecordTy node.

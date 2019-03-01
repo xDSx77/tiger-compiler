@@ -252,14 +252,12 @@ id_exp:
 | ID EQ exp
     {
       ast::fieldinits_type fields;
-      ast::FieldInit* field = new ast::FieldInit(@1, $1, $3);
-      fields.emplace_back(field);
+      fields.push_back(new ast::FieldInit(@1, $1, $3));
       $$ = fields;
     }
 | ID EQ exp COMMA id_exp
     {
-      ast::FieldInit* field = new ast::FieldInit(@1, $1, $3);
-      $5.insert($5.begin(), field);
+      $5.insert($5.begin(), new ast::FieldInit(@1, $1, $3));
       $$ = $5;
     }
 
@@ -399,7 +397,7 @@ exp3:
     }
 | exp SEMI exp3
     {
-      $3->emplace_back($1);
+      $3->insert($3->begin(), $1);
       $$ = $3;
     }
 
@@ -705,9 +703,8 @@ tyfields:
       ast::fields_type fields;
       ast::Field* field =  new ast::Field(@1, $2, $4);
       fields.insert(fields.begin(), field);
-      ast::RecordTy* record = new ast::RecordTy(@$, fields);
-      $5->fields_get().insert($5->fields_get().end(), record->fields_get().begin(),
-          record->fields_get().end());
+      $5->fields_get().insert($5->fields_get().begin(), fields.begin(),
+          fields.end());
       $$ = $5;
     }
 
@@ -723,9 +720,8 @@ tyfield:
       ast::fields_type fields;
       ast::Field* field = new ast::Field(@1, $1, $3);
       fields.insert(fields.begin(), field);
-      ast::RecordTy* record = new ast::RecordTy(@$, fields);
-      $4->fields_get().insert($4->fields_get().end(), record->fields_get().begin(),
-          record->fields_get().end());
+      $4->fields_get().insert($4->fields_get().begin(), fields.begin(),
+          fields.end());
       $$ = $4;
     }
 

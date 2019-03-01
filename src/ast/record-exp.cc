@@ -11,7 +11,7 @@ namespace ast
 {
 
   RecordExp::RecordExp(const Location& location, NameTy* type,
-                      fieldinits_type fieldinits)
+                      fieldinits_type& fieldinits)
     : Exp(location)
     , type_(type)
     , fieldinits_(fieldinits)

@@ -20,7 +20,7 @@ namespace ast
     /** \name Ctor & dtor.
      ** \{ */
     /// Construct a RecordExp node.
-    RecordExp(const Location& location, NameTy* type, fieldinits_type fieldinits);
+    RecordExp(const Location& location, NameTy* type, fieldinits_type& fieldinits);
     RecordExp(const RecordExp&) = delete;
     RecordExp& operator=(const RecordExp&) = delete;
     /// Destroy a RecordExp node.
