@@ -45,6 +45,7 @@ namespace bind
     {
       visit_dec_header(*(e.decs_get()[i]));
       visit_dec_body(*(e.decs_get()[i]));
+      decs_visit(*(e.decs_type()[i]));
     }
   }
 
@@ -122,6 +123,18 @@ namespace bind
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
       scope_map_var_.put(e.formals_get().decs_get()[i]->name_get(),
           *(e.formals_get().decs_get()[i]));
+  }
+
+  template <>
+  void
+  Binder::visit_dec_header(ast::DecsList& e)
+  {
+  }
+
+  template <>
+  void
+  Binder::visit_dec_body(ast::DecsList& e)
+  {
   }
   /* These specializations are in bind/binder.hxx, so that derived
      visitors can use them (otherwise, they wouldn't see them).  */

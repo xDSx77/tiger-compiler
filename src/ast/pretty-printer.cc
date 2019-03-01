@@ -35,15 +35,15 @@ namespace ast
     ///
     /// Used to factor the output of the name declared,
     /// and its possible additional attributes.
-    /*inline
+    inline
     std::ostream&
     operator<<(std::ostream& ostr, const Dec& e)
     {
       ostr << e.name_get();
-      if (bindings_display(ostr))*/
-        //ostr << " /* " << &e << " */";
-      /*return ostr;
-    }*/
+      if (bindings_display(ostr))
+        ostr << " /* " << &e << " */";
+      return ostr;
+    }
   }
 
   PrettyPrinter::PrettyPrinter(std::ostream& ostr)
