@@ -6,12 +6,14 @@
 #pragma once
 
 #include <ast/ast.hh>
+#include <ast/typable.hh>
+#include <ast/type-constructor.hh>
 
 namespace ast
 {
 
   /// Ty.
-  class Ty : public Ast
+  class Ty : public Ast, public Typable, public TypeConstructor
   {
   public:
     /** \name Ctor & dtor.
@@ -22,6 +24,14 @@ namespace ast
     Ty& operator=(const Ty&) = delete;
     /// Destroy a Ty node.
     /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    void accept(ConstVisitor& v) const override = 0;
+    /// Accept a non-const visitor \a v.
+    void accept(Visitor& v) override = 0;
+    /// \}
   };
 
 } // namespace ast
