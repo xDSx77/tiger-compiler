@@ -2,19 +2,19 @@
 
 function test_good()
 {
-  ./src/tc -XA $file > tests/test
-  ./src/tc tests/test
+  ../src/tc -XA $file > test
+  ../src/tc test
   if [ $(echo $?) = 0 ]; then
     echo -e "\033[32;1m[OK] $file \033[0m"
   else
     echo -e "\033[31;1m[KO] $file \033[0m"
   fi
-  rm tests/test
+  rm test
 }
 
 function test_error()
 {
-  ./src/tc -XA $file
+  ../src/tc -XA $file
   i=$(echo $?)
   if [ $i = 3 ] || [ $i = 2 ]; then
     echo -e "\033[32;1m[OK] error detected in $file \033[0m"
@@ -26,27 +26,27 @@ function test_error()
 echo "===================================================="
 echo "================TESTING GOOD FILES=================="
 echo "===================================================="
-for file in ./tests/good/*.tig ; do
+for file in ./good/*.tig ; do
   test_good
 done
 
 echo "===================================================="
 echo "================TESTING BIND FILES=================="
 echo "===================================================="
-for file in ./tests/bind/*.tig ; do
+for file in ./bind/*.tig ; do
   test_good
 done
 
 echo "===================================================="
 echo "================TESTING TYPE FILES=================="
 echo "===================================================="
-for file in ./tests/type/*.tig ; do
+for file in ./type/*.tig ; do
   test_good
 done
 
 echo "===================================================="
 echo "===========TESTING SYNTAX ERROR IN FILES============"
 echo "===================================================="
-for file in ./tests/syntax/*.tig ; do
+for file in ./syntax/*.tig ; do
   test_error
 done
