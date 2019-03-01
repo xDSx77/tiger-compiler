@@ -35,7 +35,7 @@ namespace bind
   | Visiting /Decs/.  |
   `------------------*/
 
-  /*template <class D>
+  template <class D>
   void
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
@@ -46,7 +46,7 @@ namespace bind
       visit_dec_header(*(e.decs_get()[i]));
       visit_dec_body(*(e.decs_get()[i]));
     }
-  }*/
+  }
 
   template <>
   void

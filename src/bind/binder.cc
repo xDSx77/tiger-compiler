@@ -69,123 +69,60 @@ namespace bind
       i != *(e.decs_get().decs_get().end()); i++)
       decs_visit(*i);
   }
-
+*/
 
   void
   Binder::operator()(ast::CallExp& e)
   {
-  }
-
-  void
-  Binder::operator()(ast::OpExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::RecordExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::SeqExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::AssignExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::IfExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::WhileExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::ForExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::BreakExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::ArrayExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::CastExp& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::FieldInit& e)
-  {
+    visit_dec_header(*(e.def_get()));
+    visit_dec_body(*(e.def_get()));
   }
 
   void
   Binder::operator()(ast::SimpleVar& e)
   {
+    visit_dec_header(*(e.def_get()));
+    visit_dec_body(*(e.def_get()));
   }
-
+/*
   void
   Binder::operator()(ast::FieldVar& e)
   {
+    visit_dec_header(*(e.var_get().def_get()));
+    visit_dec_body(*(e.var_get().def_get()));
   }
 
   void
   Binder::operator()(ast::SubscriptVar& e)
   {
-  }
+    visit_dec_header(*(e.var_get().def_get()));
+    visit_dec_body(*(e.var_get().def_get()));
+  }*/
 
-  void
-  Binder::operator()(ast::CastVar& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::Ast& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::DecsList& e)
-  {
-  }
-
-  void
-  Binder::operator()(ast::Decs& e)
-  {
-  }
 
   void
   Binder::operator()(ast::NameTy& e)
   {
+    visit_dec_header(*(e.def_get()));
+    visit_dec_body(*(e.def_get()));
   }
 
   void
   Binder::operator()(ast::RecordTy& e)
   {
+    for (unsigned i = 0; i < e.fields_get().size(); i++)
+    {
+      visit_dec_header(*(e.fields_get()[i]->type_name_get().def_get()));
+      visit_dec_body(*(e.fields_get()[i]->type_name_get().def_get()));
+    }
   }
 
   void
   Binder::operator()(ast::ArrayTy& e)
   {
+    visit_dec_header(*(e.base_type_get().def_get()));
+    visit_dec_body(*(e.base_type_get().def_get()));
   }
-
-  void
-  Binder::operator()(ast::Field& e)
-  {
-  }
-*/
 
   /*-------------------.
   | Visiting VarDecs.  |
