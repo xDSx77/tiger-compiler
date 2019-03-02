@@ -10,15 +10,12 @@
 
 #include <ast/fwd.hh>
 
-/// Ast management.
+#include <misc/error.hh>
+
+#include <bind/binder.hh>
+
+/// Binding management.
 namespace bind
 {
-
-  extern const misc::xalloc<bool> bind;
-  extern const misc::xalloc<bool> bindings_display;
-
-  /// Output \a a on \a ostr.
-  std::ostream& operator<<(std::ostream& ostr, const ast::Dec& e);
-
-
-} // namespace ast
+  misc::error bind(ast::Ast& tree);
+} // namespace bind
