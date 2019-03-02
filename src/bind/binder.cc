@@ -74,31 +74,26 @@ namespace bind
   void
   Binder::operator()(ast::CallExp& e)
   {
-    visit_dec_header(*(e.def_get()));
-    visit_dec_body(*(e.def_get()));
+    e.def_set(&scope_map_func_.get(e.name_get()));
   }
 
   void
   Binder::operator()(ast::SimpleVar& e)
   {
-    visit_dec_header(*(e.def_get()));
-    visit_dec_body(*(e.def_get()));
+    e.def_set(&scope_map_var_.get(e.name_get()));
   }
-/*
+
   void
   Binder::operator()(ast::FieldVar& e)
   {
-    visit_dec_header(*(e.var_get().def_get()));
-    visit_dec_body(*(e.var_get().def_get()));
+    e.var_get();
   }
 
   void
   Binder::operator()(ast::SubscriptVar& e)
   {
-    visit_dec_header(*(e.var_get().def_get()));
-    visit_dec_body(*(e.var_get().def_get()));
-  }*/
-
+    e.var_get();
+  }
 
   void
   Binder::operator()(ast::NameTy& e)
@@ -127,43 +122,52 @@ namespace bind
   /*-------------------.
   | Visiting VarDecs.  |
   `-------------------*/
-/*
+
   void
   Binder::operator()(ast::VarDecs& e)
   {
+    decs_visit(e);
   }
 
   void
   Binder::operator()(ast::VarDec& e)
   {
+    visit_dec_header(e);
+    visit_dec_body(e);
   }
-*/
+
   /*------------------------.
   | Visiting FunctionDecs.  |
   `------------------------*/
 
-/*
-  void operator()(ast::FunctionDecs& e)
+  void
+  Binder::operator()(ast::FunctionDecs& e)
   {
+    decs_visit(e);
   }
 
-  void operator()(ast::FunctionDec& e)
+  void
+  Binder::operator()(ast::FunctionDec& e)
   {
+    visit_dec_header(e);
+    visit_dec_body(e);
   }
-*/
 
   /*--------------------.
   | Visiting TypeDecs.  |
   `--------------------*/
 
-/*
- void operator()(ast::TypeDecs& e)
- {
- }
+  void
+  Binder::operator()(ast::TypeDecs& e)
+  {
+    decs_visit(e);
+  }
 
- void operator()(ast::TypeDec& e)
- {
- }
-*/
+  void
+  Binder::operator()(ast::TypeDec& e)
+  {
+    visit_dec_header(e);
+    visit_dec_body(e);
+  }
 
 } // namespace bind
