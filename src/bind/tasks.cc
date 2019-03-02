@@ -2,15 +2,16 @@
  ** \file bind/tasks.cc
  ** \brief Bind module tasks implementation.
  */
-/*
-#include <misc/contract.hh>
+
+#include <ostream>
+#include <ast/libast.hh>
+#include <ast/tasks.hh>
 #include <bind/libbind.hh>
-#define DEFINE_TASK 3
+#define DEFINE_TASK 1
 #include <bind/tasks.hh>
 #undef DEFINE_TASK
 #include <common.hh>
-#include <ast/libast.hh>
-#include <ast/tasks.hh>
+#include <misc/xalloc.hh>
 
 namespace bind::tasks
 {
@@ -27,4 +28,4 @@ namespace bind::tasks
         task_error().exit_on_error();
     }
 }
-*/
+

@@ -14,15 +14,22 @@
 
 namespace misc
 {
+
   template <typename Key, typename Data>
-  void
+  scoped_map<Key, Data>::scoped_map()
+  {
+    scope_begin();
+  }
+
+  template <typename Key, typename Data>
+  inline void
   scoped_map<Key, Data>::put(const Key& key, const Data& value)
   {
     scoped_map_.back()->insert(std::pair<Key, Data>(key, value));
   }
 
   template <typename Key, typename Data>
-  Data
+  inline Data
   scoped_map<Key, Data>::get(const Key& key) const
   {
     auto pair = scoped_map_.back()->find(key);
@@ -30,7 +37,7 @@ namespace misc
   }
 
   template <typename Key, typename Data>
-  int
+  inline int
   scoped_map<Key, Data>::is_inside(const Key& key) const
   {
     auto pair = scoped_map_.back()->find(key);
@@ -40,21 +47,21 @@ namespace misc
   }
 
   template <typename Key, typename Data>
-  void
+  inline void
   scoped_map<Key, Data>::scope_begin()
   {
     scoped_map_.push_back(new std::map<Key, Data>());
   }
 
   template <typename Key, typename Data>
-  void
+  inline void
   scoped_map<Key, Data>::scope_end()
   {
     delete scoped_map_.back();
   }
 
   template <typename Key, typename Data>
-  std::ostream&
+  inline std::ostream&
   scoped_map<Key, Data>::dump(std::ostream& ostr) const
   {
     for (auto i = scoped_map_.back().begin(); i != scoped_map_.back().end(); i++)

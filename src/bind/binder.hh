@@ -64,11 +64,7 @@ namespace bind
     void operator()(ast::LetExp& e) override;
     void operator()(ast::CallExp& e) override;
     void operator()(ast::SimpleVar& e) override;
-    void operator()(ast::FieldVar& e) override;
-    void operator()(ast::SubscriptVar& e) override;
     void operator()(ast::NameTy& e) override;
-    void operator()(ast::RecordTy& e) override;
-    void operator()(ast::ArrayTy& e) override;
     void operator()(ast::VarDecs& e) override;
     void operator()(ast::VarDec& e) override;
     void operator()(ast::FunctionDecs& e) override;
@@ -117,17 +113,9 @@ namespace bind
     /// Check a Function or Type declaration header.
     template <class D>
     void visit_dec_header(D& e);
-    void visit_dec_header(ast::TypeDec& e);
-    void visit_dec_header(ast::FunctionDec& e);
-    void visit_dec_header(ast::VarDec& e);
-    //void visit_dec_header(ast::DecsList& e);
     /// Check a Function or Type declaration body.
     template <class D>
     void visit_dec_body(D& e);
-    void visit_dec_body(ast::TypeDec& e);
-    void visit_dec_body(ast::FunctionDec& e);
-    void visit_dec_body(ast::VarDec& e);
-    //void visit_dec_body(ast::DecsList& e);
     // Visit a variable declaration.
     //void operator()(ast::VarDec&) override;
 

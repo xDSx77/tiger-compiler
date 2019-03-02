@@ -49,39 +49,7 @@ namespace bind
   }
 
   template <>
-  void
-  Binder::decs_visit(ast::TypeDecs& e)
-  {
-    for (unsigned i = 0; i < e.decs_get().size(); i++)
-    {
-      visit_dec_header(*(e.decs_get()[i]));
-      visit_dec_body(*(e.decs_get()[i]));
-    }
-  }
-
-  template <>
-  void
-  Binder::decs_visit(ast::FunctionDecs& e)
-  {
-    for (unsigned i = 0; i < e.decs_get().size(); i++)
-    {
-      visit_dec_header(*(e.decs_get()[i]));
-      visit_dec_body(*(e.decs_get()[i]));
-    }
-  }
-
-  template <>
-  void
-  Binder::decs_visit(ast::VarDecs& e)
-  {
-    for (unsigned i = 0; i < e.decs_get().size(); i++)
-    {
-      visit_dec_header(*(e.decs_get()[i]));
-      visit_dec_body(*(e.decs_get()[i]));
-    }
-  }
-
-  template <>
+  inline
   void
   Binder::visit_dec_header(ast::TypeDec& e)
   {
@@ -91,6 +59,7 @@ namespace bind
   }
 
   template <>
+  inline
   void
   Binder::visit_dec_header(ast::FunctionDec& e)
   {
@@ -106,15 +75,7 @@ namespace bind
   }
 
   template <>
-  void
-  Binder::visit_dec_header(ast::VarDec& e)
-  {
-    if (scope_map_var_.is_inside(e.name_get()))
-      redefinition(e, scope_map_var_.get(e.name_get()));
-    scope_map_var_.put(e.name_get(), e);
-  }
-
-  template <>
+  inline
   void
   Binder::visit_dec_body(ast::FunctionDec& e)
   {
@@ -123,18 +84,15 @@ namespace bind
       scope_map_var_.put(e.formals_get().decs_get()[i]->name_get(),
           *(e.formals_get().decs_get()[i]));
   }
-/*
-  template <>
-  void
-  Binder::visit_dec_header(ast::DecsList& e)
-  {
-  }
 
   template <>
+  inline
   void
-  Binder::visit_dec_body(ast::DecsList& e)
+  Binder::visit_dec_body(ast::TypeDec& e)
   {
-  }*/
+    scope_begin();
+  }
+
   /* These specializations are in bind/binder.hxx, so that derived
      visitors can use them (otherwise, they wouldn't see them).  */
 

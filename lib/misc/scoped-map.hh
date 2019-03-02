@@ -26,7 +26,6 @@ namespace misc
 
   public:
     scoped_map();
-    ~scoped_map();
     void put(const Key& key, const Data& value);
     Data get(const Key& key) const;
     int is_inside(const Key& key) const;

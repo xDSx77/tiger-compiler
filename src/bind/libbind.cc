@@ -2,9 +2,10 @@
  ** \file bind/libbind.cc
  ** \brief Define exported bind functions.
  */
-#include <fstream>
+
 
 #include <bind/libbind.hh>
+#include <bind/binder.hh>
 
 namespace bind
 {
