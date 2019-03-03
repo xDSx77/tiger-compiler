@@ -9,11 +9,12 @@
 
 namespace bind
 {
+  /*
     misc::error
     bind(ast::Ast& tree)
     {
         Binder bin;
         bin(tree);
         return bin.error_get();
-    }
+    }*/
 } // namespace bind
