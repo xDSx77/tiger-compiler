@@ -25,7 +25,8 @@ namespace bind
   void
   Binder::error(const ast::Ast& loc, const std::string& msg)
   {
-    error_ << misc::error::error_type::bind << loc.location_get() << msg << std::endl;
+    error_ << misc::error::error_type::bind << loc.location_get() << msg
+           << std::endl;
   }
 
   void
@@ -95,11 +96,18 @@ namespace bind
   void
   Binder::operator()(ast::VarDecs& e)
   {
+    for (auto vardec : e.decs_get())
+    {
+      if (scope_map_var_.is_inside(vardec->name_get()) >= 0)
+        redefinition(*(vardec), scope_map_var_.get(vardec->name_get()));
+
+    }
   }
 
   void
   Binder::operator()(ast::VarDec& e)
   {
+    scope_map_var_.put(e.name_get(), e);
   }
 
   /*------------------------.

@@ -32,18 +32,24 @@ namespace misc
   inline Data
   scoped_map<Key, Data>::get(const Key& key) const
   {
-    auto pair = scoped_map_.back()->find(key);
-    return pair->second;
+    int i = this->is_inside(key);
+    auto map = scoped_map_[i];
+    return map->at(key);
   }
 
   template <typename Key, typename Data>
   inline int
   scoped_map<Key, Data>::is_inside(const Key& key) const
   {
-    auto pair = scoped_map_.back()->find(key);
-    if (pair != scoped_map_.back()->end())
-      return 1;
-    return 0;
+    int i = scoped_map_.size();
+    for (auto map = scoped_map_.back(); map != scoped_map_.front(); map--)
+    {
+      auto pair = map->find(key);
+      if (pair != map->end())
+        return i;
+      i--;
+    }
+    return -1;
   }
 
   template <typename Key, typename Data>

@@ -3,13 +3,13 @@
  ** \brief Bind module tasks implementation.
  */
 
-#include <ostream>
+#include <iostream>
 #include <ast/libast.hh>
 #include <ast/tasks.hh>
 #include <bind/libbind.hh>
-#define DEFINE_TASK 1
+#define DEFINE_TASKS 1
 #include <bind/tasks.hh>
-#undef DEFINE_TASK
+#undef DEFINE_TASKS
 #include <common.hh>
 #include <misc/xalloc.hh>
 

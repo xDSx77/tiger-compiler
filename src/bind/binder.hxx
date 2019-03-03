@@ -53,7 +53,7 @@ namespace bind
   void
   Binder::visit_dec_header(ast::TypeDec& e)
   {
-    if (scope_map_type_.is_inside(e.name_get()))
+    if (scope_map_type_.is_inside(e.name_get()) >= 0)
       redefinition(e, scope_map_type_.get(e.name_get()));
     scope_map_type_.put(e.name_get(), e);
   }
@@ -63,11 +63,11 @@ namespace bind
   void
   Binder::visit_dec_header(ast::FunctionDec& e)
   {
-    if (scope_map_func_.is_inside(e.name_get()))
+    if (scope_map_func_.is_inside(e.name_get()) >= 0)
         redefinition(e, scope_map_func_.get(e.name_get()));
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
     {
-      if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()))
+      if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()) >= 0)
         redefinition(*(e.formals_get().decs_get()[i]),
           scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()));
     }
@@ -80,9 +80,10 @@ namespace bind
   Binder::visit_dec_body(ast::FunctionDec& e)
   {
     scope_begin();
-    for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
+    e.formals_get();
+    /*for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
       scope_map_var_.put(e.formals_get().decs_get()[i]->name_get(),
-          *(e.formals_get().decs_get()[i]));
+          *(e.formals_get().decs_get()[i]));*/
   }
 
   template <>
