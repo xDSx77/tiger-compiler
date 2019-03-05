@@ -64,6 +64,9 @@ namespace bind
     void operator()(ast::LetExp& e) override;
     void operator()(ast::CallExp& e) override;
     void operator()(ast::SimpleVar& e) override;
+    void operator()(ast::IfExp& e) override;
+    void operator()(ast::ForExp& e) override;
+    void operator()(ast::WhileExp& e) override;
     void operator()(ast::NameTy& e) override;
     void operator()(ast::VarDecs& e) override;
     void operator()(ast::VarDec& e) override;

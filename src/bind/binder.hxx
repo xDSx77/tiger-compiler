@@ -18,17 +18,16 @@ namespace bind
   void
   Binder::undeclared(const std::string& k, const T& e)
   {
-    error_ << misc::error::error_type::bind << e.location_get() << k << std::endl;
+    std::string str = "undeclared ";
+    error(e, str.append(k).append(": "));
   }
 
   template <typename T>
   void
   Binder::redefinition(const T& e1, const T& e2)
   {
-    error_ << misc::error::error_type::bind /*<< e2.location_get()*/
-      << "undeclared variable: " << e2.name_get() << std::endl;
-    error_ << misc::error::error_type::bind /*<< e1.location_get()*/
-      << "first definition of " << e1.name_get() << std::endl;
+    error(e1, "redefinition: ");
+    error(e2, "first definition");
   }
 
   /*------------------.
@@ -42,10 +41,10 @@ namespace bind
     // Shorthand.
     using decs_type = ast::AnyDecs<D>;
     for (unsigned i = 0; i < e.decs_get().size(); i++)
-    {
       visit_dec_header(*(e.decs_get()[i]));
-      visit_dec_body(*(e.decs_get()[i]));
-    }
+    for (unsigned i = 0; i < e.decs_get().size(); i++)
+      if (e.decs_get()[i] != nullptr)
+        visit_dec_body(*(e.decs_get()[i]));
   }
 
   template <>
@@ -53,7 +52,7 @@ namespace bind
   void
   Binder::visit_dec_header(ast::TypeDec& e)
   {
-    if (scope_map_type_.is_inside(e.name_get()) >= 0)
+    if (scope_map_type_.is_inside(e.name_get()))
       redefinition(e, scope_map_type_.get(e.name_get()));
     scope_map_type_.put(e.name_get(), e);
   }
@@ -63,14 +62,10 @@ namespace bind
   void
   Binder::visit_dec_header(ast::FunctionDec& e)
   {
-    if (scope_map_func_.is_inside(e.name_get()) >= 0)
-        redefinition(e, scope_map_func_.get(e.name_get()));
-    for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
-    {
-      if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()) >= 0)
-        redefinition(*(e.formals_get().decs_get()[i]),
-          scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()));
-    }
+    auto& map = scope_map_func_.map_get().back();
+    auto pair = map->find(e.name_get());
+    if (pair != map->end())
+      redefinition(scope_map_func_.get(e.name_get()), e);
     scope_map_func_.put(e.name_get(), e);
   }
 
@@ -80,10 +75,14 @@ namespace bind
   Binder::visit_dec_body(ast::FunctionDec& e)
   {
     scope_begin();
-    e.formals_get();
-    /*for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
-      scope_map_var_.put(e.formals_get().decs_get()[i]->name_get(),
-          *(e.formals_get().decs_get()[i]));*/
+    for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
+    {
+      if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()))
+        redefinition(scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()), *(e.formals_get().decs_get()[i]));
+    }
+    if (e.body_get() != nullptr)
+      e.body_get()->accept(*this);
+    scope_end();
   }
 
   template <>
@@ -92,6 +91,8 @@ namespace bind
   Binder::visit_dec_body(ast::TypeDec& e)
   {
     scope_begin();
+    e.ty_get().accept(*this);
+    scope_end();
   }
 
   /* These specializations are in bind/binder.hxx, so that derived

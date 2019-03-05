@@ -15,7 +15,7 @@
 
 namespace bind::tasks
 {
-    /*void
+    void
     bindings_display()
     {
         ast::bindings_display(std::cout) = true;
@@ -26,6 +26,6 @@ namespace bind::tasks
     {
         task_error() << ::bind::bind(*ast::tasks::the_program);
         task_error().exit_on_error();
-    }*/
+    }
 }
 

@@ -5,7 +5,7 @@
 
 #include <ast/all.hh>
 #include <bind/binder.hh>
-
+#include <exception>
 #include <misc/contract.hh>
 
 namespace bind
@@ -36,6 +36,8 @@ namespace bind
       error(e, "wrong number of arguments in _main function");
     if (e.result_get() != nullptr)
       error(e, "_main function must not have a return type");
+    if (scope_map_func_.is_inside(e.name_get()))
+      redefinition(scope_map_func_.get(e.name_get()), e);
   }
 
   /*----------------.
@@ -66,6 +68,7 @@ namespace bind
   void
   Binder::operator()(ast::LetExp& e)
   {
+    std::cout << "letexp\n";
     /*for (auto i = *(e.decs_get().decs_get().begin());
       i != *(e.decs_get().decs_get().end()); i++)
       decs_visit(*i);*/
@@ -75,18 +78,54 @@ namespace bind
   void
   Binder::operator()(ast::CallExp& e)
   {
+    std::cout << "callexp " << e.name_get() << '\n';
     e.def_set(&scope_map_func_.get(e.name_get()));
   }
 
   void
   Binder::operator()(ast::SimpleVar& e)
   {
+    std::cout << "simplevar " << e.name_get() << '\n';
     e.def_set(&scope_map_var_.get(e.name_get()));
+  }
+
+  void
+  Binder::operator()(ast::IfExp& e)
+  {
+    std::cout << "ifexp\n";
+    e.test_get().accept(*this);
+    scope_begin();
+    e.body_get().accept(*this);
+    if (e.body_2_get())
+      e.body_2_get()->accept(*this);
+    scope_end();
+  }
+
+  void
+  Binder::operator()(ast::ForExp& e)
+  {
+    std::cout << "forexp\n";
+    scope_begin();
+    e.vardec_get().accept(*this);
+    e.hi_get().accept(*this);
+    e.body_get().accept(*this);
+    scope_end();
+  }
+
+  void
+  Binder::operator()(ast::WhileExp& e)
+  {
+    std::cout << "whileexp\n";
+    scope_begin();
+    e.test_get().accept(*this);
+    e.body_get().accept(*this);
+    scope_end();
   }
 
   void
   Binder::operator()(ast::NameTy& e)
   {
+    std::cout << "namety " << e.name_get() << '\n';
   }
 
   /*-------------------.
@@ -96,17 +135,20 @@ namespace bind
   void
   Binder::operator()(ast::VarDecs& e)
   {
+    std::cout << "vardecs " << e.decs_get()[0]->name_get() << '\n';
     for (auto vardec : e.decs_get())
     {
-      if (scope_map_var_.is_inside(vardec->name_get()) >= 0)
+      if (scope_map_var_.is_inside(vardec->name_get()))
         redefinition(*(vardec), scope_map_var_.get(vardec->name_get()));
-
     }
   }
 
   void
   Binder::operator()(ast::VarDec& e)
   {
+    std::cout << "vardec " << e.name_get() << '\n';
+    if (scope_map_var_.is_inside(e.name_get()))
+      redefinition(scope_map_var_.get(e.name_get()), e);
     scope_map_var_.put(e.name_get(), e);
   }
 
@@ -117,12 +159,16 @@ namespace bind
   void
   Binder::operator()(ast::FunctionDecs& e)
   {
+    std::cout << "funcdecs " << e.decs_get()[0]->name_get() << '\n';
     decs_visit(e);
   }
 
   void
   Binder::operator()(ast::FunctionDec& e)
   {
+    std::cout << "funcdec " << e.name_get() << '\n';
+    if (e.name_get() == misc::symbol("_main"))
+      check_main(e);
   }
 
   /*--------------------.
@@ -132,12 +178,14 @@ namespace bind
   void
   Binder::operator()(ast::TypeDecs& e)
   {
+    std::cout << "typedecs " << e.decs_get()[0]->name_get() << '\n';
     decs_visit(e);
   }
 
   void
   Binder::operator()(ast::TypeDec& e)
   {
+    std::cout << "typedec " << e.name_get() << '\n';
   }
 
 } // namespace bind

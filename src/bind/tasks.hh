@@ -10,7 +10,7 @@
 
 namespace bind::tasks
 {
-  /*
+  
     TASK_GROUP("3. Binding");
 
     ///Dispaly the  bindings
@@ -19,5 +19,5 @@ namespace bind::tasks
 
     ///Dispaly the  bindings
     TASK_DECLARE("B|bindings-display","display the binding",
-            bindings_display,"parse");*/
+            bindings_display,"parse");
 }//namespace bind::tasks
