@@ -234,8 +234,12 @@ namespace ast
     if (e.result_get())
       ostr_ << " : " << *(e.result_get());
     if (e.body_get())
+    {
       ostr_ << " =" << misc::incendl << '(' << misc::incendl << *(e.body_get())
             << misc::decendl << ')' << misc::decindent;
+    }
+    else
+      ostr_ << misc::iendl;
   }
 
   void

@@ -179,7 +179,7 @@ namespace ast
   void
   GenDefaultVisitor<Const>::operator()(const_t<DecsList>& e)
   {
-    for (auto i = *(e.decs_get().begin()); i != *(e.decs_get().end()); i++)
+    for (auto i : e.decs_get())
       i->accept(*this);
   }
 

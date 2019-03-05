@@ -226,11 +226,11 @@
 %nonassoc ELSE
 %nonassoc OF
 %nonassoc DO
-%nonassoc CLASS FUNCTION PRIMITIVE METHOD TYPE
 %nonassoc END_TYPE
 %nonassoc END_FUNCTION
 %nonassoc END_METHOD
 %nonassoc END_VAR
+%nonassoc CLASS FUNCTION PRIMITIVE METHOD TYPE
 
 %start program
 
