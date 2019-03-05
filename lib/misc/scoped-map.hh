@@ -14,6 +14,7 @@
 
 #include <map>
 #include <vector>
+#include <optional>
 
 namespace misc
 {
@@ -27,8 +28,9 @@ namespace misc
   public:
     scoped_map();
     void put(const Key& key, const Data& value);
+    std::vector<std::map<Key, Data>*>& map_get();
+    bool is_inside(const Key& key) const;
     Data get(const Key& key) const;
-    int is_inside(const Key& key) const;
     std::ostream& dump(std::ostream& ostr) const;
     void scope_begin();
     void scope_end();

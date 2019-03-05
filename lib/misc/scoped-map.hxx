@@ -29,27 +29,42 @@ namespace misc
   }
 
   template <typename Key, typename Data>
-  inline Data
-  scoped_map<Key, Data>::get(const Key& key) const
+  inline std::vector<std::map<Key, Data>*>&
+  scoped_map<Key, Data>::map_get()
   {
-    int i = this->is_inside(key);
-    auto map = scoped_map_[i];
-    return map->at(key);
+    return scoped_map_;
   }
 
   template <typename Key, typename Data>
-  inline int
+  inline bool
   scoped_map<Key, Data>::is_inside(const Key& key) const
   {
-    int i = scoped_map_.size();
-    for (auto map = scoped_map_.back(); map != scoped_map_.front(); map--)
+    for (auto map = scoped_map_.back()-1; map == scoped_map_.front(); map--)
     {
       auto pair = map->find(key);
       if (pair != map->end())
-        return i;
-      i--;
+        return true;
     }
-    return -1;
+    return false;
+  }
+
+  template <typename Key, typename Data>
+  inline Data
+  scoped_map<Key, Data>::get(const Key& key) const
+  {
+    for (auto map = scoped_map_.back()-1; map == scoped_map_.front(); map--)
+    {
+      try
+      {
+        return map->at(key);
+      }
+      catch(std::exception const& e)
+      {
+        if (map != scoped_map_.front())
+          continue;
+        std::cerr << e.what() << std::endl;
+      }
+    }
   }
 
   template <typename Key, typename Data>
