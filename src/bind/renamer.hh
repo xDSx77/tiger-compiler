@@ -67,24 +67,24 @@ namespace bind
 
     /// \name Visiting usage sites.
     /// \{
-     void operator()(ast::SimpleVar& e) override;
-     void operator()(ast::FieldVar& e) override;
-     void operator()(ast::SubscriptVar& e) override;
-     void operator()(ast::CastVar& e) override;
-     void operator()(ast::ArrayExp& e) override;
-     void operator()(ast::AssignExp& e) override;
-     void operator()(ast::CallExp& e) override;
-     void operator()(ast::CastExp& e) override;
-     void operator()(ast::MethodCallExp& e) override;
-     void operator()(ast::ForExp& e) override;
-     void operator()(ast::IntExp& e) override;
-     void operator()(ast::LetExp& e) override;
-     void operator()(ast::ObjectExp& e) override;
-     void operator()(ast::OpExp& e) override;
-     void operator()(ast::SeqExp& e) override;
-     void operator()(ast::WhileExp& e) override;
-     void operator()(ast::DecsList& e) override;
-     virtual void operator()(ast::Decs& e);
+     /*
+     * void operator()(const_t<SimpleVar>& e) override;
+     * void operator()(const_t<FieldVar>& e) override;
+     * void operator()(const_t<SubscriptVar>& e) override;
+     * void operator()(const_t<CastVar>& e) override;
+     * void operator()(const_t<ArrayExp>& e) override;
+     * void operator()(const_t<AssignExp>& e) override;
+     * void operator()(const_t<CallExp>& e) override;
+     * void operator()(const_t<CastExp>& e) override;
+     * void operator()(const_t<MethodCallExp>& e) override;
+     * void operator()(const_t<ForExp>& e) override;
+     * void operator()(const_t<InExp>& e) override;
+     * void operator()(const_t<LetExp>& e) override;
+     * void operator()(const_t<ObjectExp>& e) override;
+     * void operator()(const_t<OpExp>& e) override;
+     * void operator()(const_t<SeqExp>& e) override;
+     * void operator()(const_t<WhileExp>& e) override;
+     */
     /// \}
 
   private:

@@ -16,34 +16,36 @@ namespace bind
   {
       return new_name(e);
   }
-/*  template <typename Def>
+  template <typename Def>
   misc::symbol
   new_name(const Def& e)
   {
-      return  ;
-  }*/
+      return def_set(e);
+  }
   template <class E, class Def>
   void
   visit(E& e, const Def* def)
   {
+      if (e)
+        name_set(e);
       if (def)
-        e.name_set();
+        new_name_compute(def);
   }
   /*void
   Renamer::operator()(ast::NilExp& e)
   {
       super_type::operator()(e);
-  }*/
+  }
   void
   Renamer::operator()(ast::IntExp& e)
   {
       super_type::operator()(e);
   }
-  /*void
+  void
   Renamer::operator()(ast::StringExp& e)
   {
       super_type::operator()(e);
-  }*/
+  }
   void
   Renamer::operator()(ast::CallExp& e)
   {
@@ -54,11 +56,11 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  /*void
+  void
   Renamer::operator()(ast::RecordExp& e)
   {
       super_type::operator()(e);
-  }*/
+  }
   void
   Renamer::operator()(ast::SeqExp& e)
   {
@@ -69,11 +71,11 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  /*void
+  void
   Renamer::operator()(ast::IfExp& e)
   {
       super_type::operator()(e);
-  }*/
+  }
   void
   Renamer::operator()(ast::WhileExp& e)
   {
@@ -84,9 +86,9 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  /*void
+  void
   Renamer::operator()(ast::BreakExp&)
-  {}*/
+  {}
   void
   Renamer::operator()(ast::LetExp& e)
   {
@@ -102,11 +104,11 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  /*void
+  void
   Renamer::operator()(ast::FieldInit& e)
   {
       super_type::operator()(e);
-  }*/
+  }
   void
   Renamer::operator()(ast::DecsList& e)
   {
@@ -116,7 +118,7 @@ namespace bind
   Renamer::operator()(ast::Decs& e)
   {
       super_type::operator()(e);
-  }
+  }*/
   void
   Renamer::operator()(ast::VarDecs& e)
   {
