@@ -33,17 +33,17 @@ namespace bind
   Renamer::operator()(ast::NilExp& e)
   {
       super_type::operator()(e);
-  }
+  }*/
   void
   Renamer::operator()(ast::IntExp& e)
   {
       super_type::operator()(e);
   }
-  void
+  /*void
   Renamer::operator()(ast::StringExp& e)
   {
       super_type::operator()(e);
-  }
+  }*/
   void
   Renamer::operator()(ast::CallExp& e)
   {
@@ -54,11 +54,11 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  void
+  /*void
   Renamer::operator()(ast::RecordExp& e)
   {
       super_type::operator()(e);
-  }
+  }*/
   void
   Renamer::operator()(ast::SeqExp& e)
   {
@@ -69,11 +69,11 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  void
+  /*void
   Renamer::operator()(ast::IfExp& e)
   {
       super_type::operator()(e);
-  }
+  }*/
   void
   Renamer::operator()(ast::WhileExp& e)
   {
@@ -84,9 +84,9 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  void
+  /*void
   Renamer::operator()(ast::BreakExp&)
-  {}
+  {}*/
   void
   Renamer::operator()(ast::LetExp& e)
   {
@@ -102,7 +102,7 @@ namespace bind
   {
       super_type::operator()(e);
   }
-  void
+  /*void
   Renamer::operator()(ast::FieldInit& e)
   {
       super_type::operator()(e);
