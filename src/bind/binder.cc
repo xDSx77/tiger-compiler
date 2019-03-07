@@ -25,7 +25,7 @@ namespace bind
   void
   Binder::error(const ast::Ast& loc, const std::string& msg)
   {
-    error_ << misc::error::error_type::bind << loc.location_get() << msg
+    error_ << misc::error::error_type::bind << loc.location_get()  << ' ' << msg
            << std::endl;
   }
 
@@ -36,8 +36,8 @@ namespace bind
       error(e, "wrong number of arguments in _main function");
     if (e.result_get() != nullptr)
       error(e, "_main function must not have a return type");
-    if (scope_map_func_.is_inside(e.name_get()))
-      redefinition(scope_map_func_.get(e.name_get()), e);
+    if (scope_map_func_.get(e.name_get()) != nullptr)
+      redefinition(*(scope_map_func_.get(e.name_get())), e);
   }
 
   /*----------------.
@@ -69,9 +69,11 @@ namespace bind
   Binder::operator()(ast::LetExp& e)
   {
     std::cout << "letexp\n";
-    /*for (auto i = *(e.decs_get().decs_get().begin());
-      i != *(e.decs_get().decs_get().end()); i++)
-      decs_visit(*i);*/
+    for (auto decs : e.decs_get().decs_get())
+    {
+      decs->accept(*this);
+    }
+    e.exp_get().accept(*this);
   }
 
 
@@ -79,14 +81,19 @@ namespace bind
   Binder::operator()(ast::CallExp& e)
   {
     std::cout << "callexp " << e.name_get() << '\n';
-    e.def_set(&scope_map_func_.get(e.name_get()));
+    e.def_set(scope_map_func_.get(e.name_get()));
   }
 
   void
   Binder::operator()(ast::SimpleVar& e)
   {
     std::cout << "simplevar " << e.name_get() << '\n';
-    e.def_set(&scope_map_var_.get(e.name_get()));
+    /*if (!scope_map_var_.is_inside(e.name_get()))*/
+    auto vardec = scope_map_var_.get(e.name_get());
+    if (vardec != nullptr)
+      e.def_set(vardec);
+    else
+      undeclared("variable", e);
   }
 
   void
@@ -137,19 +144,17 @@ namespace bind
   {
     std::cout << "vardecs " << e.decs_get()[0]->name_get() << '\n';
     for (auto vardec : e.decs_get())
-    {
-      if (scope_map_var_.is_inside(vardec->name_get()))
-        redefinition(*(vardec), scope_map_var_.get(vardec->name_get()));
-    }
+      vardec->accept(*this);
   }
 
   void
   Binder::operator()(ast::VarDec& e)
   {
     std::cout << "vardec " << e.name_get() << '\n';
-    if (scope_map_var_.is_inside(e.name_get()))
-      redefinition(scope_map_var_.get(e.name_get()), e);
-    scope_map_var_.put(e.name_get(), e);
+    if (scope_map_var_.get(e.name_get()) != nullptr)
+      redefinition(*(scope_map_var_.get(e.name_get())), e);
+    else
+      scope_map_var_.put(e.name_get(), &e);
   }
 
   /*------------------------.

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <type_traits>
@@ -39,7 +40,7 @@ namespace misc
   inline bool
   scoped_map<Key, Data>::is_inside(const Key& key) const
   {
-    for (auto map = scoped_map_.back()-1; map == scoped_map_.front(); map--)
+    for (auto map = *(scoped_map_.end()-1); map >= *(scoped_map_.begin()); map--)
     {
       auto pair = map->find(key);
       if (pair != map->end())
@@ -49,20 +50,24 @@ namespace misc
   }
 
   template <typename Key, typename Data>
-  inline Data
+  Data
   scoped_map<Key, Data>::get(const Key& key) const
   {
-    for (auto map = scoped_map_.back()-1; map == scoped_map_.front(); map--)
+    for (auto map = *(scoped_map_.end()-1); map >= *(scoped_map_.begin()); map--)
     {
       try
       {
-        return map->at(key);
+        auto& elem = map->at(key);
+        return elem;
       }
       catch(std::exception const& e)
       {
         if (map != scoped_map_.front())
           continue;
-        std::cerr << e.what() << std::endl;
+        if constexpr(std::is_pointer_v<Data>)
+          return nullptr;
+        else
+          throw std::range_error("can't find data with that key");
       }
     }
   }

@@ -19,7 +19,7 @@ namespace bind
   Binder::undeclared(const std::string& k, const T& e)
   {
     std::string str = "undeclared ";
-    error(e, str.append(k).append(": "));
+    error(e, str.append(k).append(": ").append(e.name_get()));
   }
 
   template <typename T>
@@ -52,9 +52,10 @@ namespace bind
   void
   Binder::visit_dec_header(ast::TypeDec& e)
   {
-    if (scope_map_type_.is_inside(e.name_get()))
-      redefinition(e, scope_map_type_.get(e.name_get()));
-    scope_map_type_.put(e.name_get(), e);
+    if (scope_map_type_.get(e.name_get()) != nullptr)
+      redefinition(*(scope_map_type_.get(e.name_get())), e);
+    else
+      scope_map_type_.put(e.name_get(), &e);
   }
 
   template <>
@@ -65,8 +66,9 @@ namespace bind
     auto& map = scope_map_func_.map_get().back();
     auto pair = map->find(e.name_get());
     if (pair != map->end())
-      redefinition(scope_map_func_.get(e.name_get()), e);
-    scope_map_func_.put(e.name_get(), e);
+      redefinition(*(scope_map_func_.get(e.name_get())), e);
+    else
+      scope_map_func_.put(e.name_get(), &e);
   }
 
   template <>
@@ -77,8 +79,8 @@ namespace bind
     scope_begin();
     for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
     {
-      if (scope_map_var_.is_inside(e.formals_get().decs_get()[i]->name_get()))
-        redefinition(scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()), *(e.formals_get().decs_get()[i]));
+      if (scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()) != nullptr)
+        redefinition(*(scope_map_var_.get(e.formals_get().decs_get()[i]->name_get())), *(e.formals_get().decs_get()[i]));
     }
     if (e.body_get() != nullptr)
       e.body_get()->accept(*this);

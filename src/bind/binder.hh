@@ -165,13 +165,13 @@ namespace bind
     misc::error error_;
 
     /// Scope map for types declaration
-    misc::scoped_map<misc::symbol, ast::TypeDec&> scope_map_type_;
+    misc::scoped_map<misc::symbol, ast::TypeDec*> scope_map_type_;
 
     /// Scope map for functions declaration
-    misc::scoped_map<misc::symbol, ast::FunctionDec&> scope_map_func_;
+    misc::scoped_map<misc::symbol, ast::FunctionDec*> scope_map_func_;
 
     /// Scope map for variables declaration
-    misc::scoped_map<misc::symbol, ast::VarDec&> scope_map_var_;
+    misc::scoped_map<misc::symbol, ast::VarDec*> scope_map_var_;
   };
 
 }
