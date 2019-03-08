@@ -29,7 +29,6 @@ namespace misc
     scoped_map();
     void put(const Key& key, const Data& value);
     std::vector<std::map<Key, Data>*>& map_get();
-    bool is_inside(const Key& key) const;
     Data get(const Key& key) const;
     std::ostream& dump(std::ostream& ostr) const;
     void scope_begin();

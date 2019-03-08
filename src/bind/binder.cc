@@ -87,8 +87,6 @@ namespace bind
   void
   Binder::operator()(ast::SimpleVar& e)
   {
-    std::cout << "simplevar " << e.name_get() << '\n';
-    /*if (!scope_map_var_.is_inside(e.name_get()))*/
     auto vardec = scope_map_var_.get(e.name_get());
     if (vardec != nullptr)
       e.def_set(vardec);
@@ -113,9 +111,11 @@ namespace bind
   {
     std::cout << "forexp\n";
     scope_begin();
+    loops_.push_back(&e);
     e.vardec_get().accept(*this);
     e.hi_get().accept(*this);
     e.body_get().accept(*this);
+    delete loops_.back();
     scope_end();
   }
 
@@ -124,9 +124,19 @@ namespace bind
   {
     std::cout << "whileexp\n";
     scope_begin();
+    loops_.push_back(&e);
     e.test_get().accept(*this);
     e.body_get().accept(*this);
+    delete loops_.back();
     scope_end();
+  }
+
+  void
+  Binder::operator()(ast::BreakExp& e)
+  {
+    std::cout << "breakexp\n";
+    if (loops_.size() == 0)
+      error(e, "'break' outside any loop");
   }
 
   void

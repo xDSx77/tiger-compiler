@@ -67,6 +67,7 @@ namespace bind
     void operator()(ast::IfExp& e) override;
     void operator()(ast::ForExp& e) override;
     void operator()(ast::WhileExp& e) override;
+    void operator()(ast::BreakExp& e) override;
     void operator()(ast::NameTy& e) override;
     void operator()(ast::VarDecs& e) override;
     void operator()(ast::VarDec& e) override;
@@ -172,6 +173,9 @@ namespace bind
 
     /// Scope map for variables declaration
     misc::scoped_map<misc::symbol, ast::VarDec*> scope_map_var_;
+
+    /// Vector for the different loops
+    std::vector<ast::Exp*> loops_;
   };
 
 }

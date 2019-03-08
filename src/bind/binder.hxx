@@ -39,7 +39,7 @@ namespace bind
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
     // Shorthand.
-    using decs_type = ast::AnyDecs<D>;
+    //using decs_type = ast::AnyDecs<D>;
     for (unsigned i = 0; i < e.decs_get().size(); i++)
       visit_dec_header(*(e.decs_get()[i]));
     for (unsigned i = 0; i < e.decs_get().size(); i++)
