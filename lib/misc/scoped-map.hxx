@@ -37,32 +37,19 @@ namespace misc
   }
 
   template <typename Key, typename Data>
-  inline bool
-  scoped_map<Key, Data>::is_inside(const Key& key) const
-  {
-    for (auto map = *(scoped_map_.end()-1); map >= *(scoped_map_.begin()); map--)
-    {
-      auto pair = map->find(key);
-      if (pair != map->end())
-        return true;
-    }
-    return false;
-  }
-
-  template <typename Key, typename Data>
   Data
   scoped_map<Key, Data>::get(const Key& key) const
   {
-    for (auto map = *(scoped_map_.end()-1); map >= *(scoped_map_.begin()); map--)
+    for (auto map = scoped_map_.rbegin(); map != scoped_map_.rend(); map++)
     {
       try
       {
-        auto& elem = map->at(key);
+        auto& elem = (*map)->at(key);
         return elem;
       }
       catch(std::exception const& e)
       {
-        if (map != scoped_map_.front())
+        if (*map != scoped_map_.front())
           continue;
         if constexpr(std::is_pointer_v<Data>)
           return nullptr;

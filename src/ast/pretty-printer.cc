@@ -188,6 +188,30 @@ namespace ast
   }
 
   void
+  PrettyPrinter::operator()(const VarDecs& e)
+  {
+    ostr_ << misc::separate(e.decs_get(), misc::iendl);
+  }
+
+  void
+  PrettyPrinter::operator()(const FunctionDecs& e)
+  {
+    ostr_ << misc::separate(e.decs_get(), misc::iendl);
+  }
+
+  void
+  PrettyPrinter::operator()(const TypeDecs& e)
+  {
+    ostr_ << misc::separate(e.decs_get(), misc::iendl);
+  }
+
+  void
+  PrettyPrinter::operator()(const MethodDecs& e)
+  {
+    ostr_ << misc::separate(e.decs_get(), misc::iendl);
+  }
+
+  void
   PrettyPrinter::operator()(const VarDec& e)
   {
     ostr_ << "var " << e.name_get();
