@@ -26,8 +26,9 @@ namespace bind
   void
   Binder::redefinition(const T& e1, const T& e2)
   {
-    error(e1, "redefinition: ");
-    error(e2, "first definition");
+    std::string str = "redefinition: ";
+    error(e2, str.append(e2.name_get()));
+    error(e1, "first definition");
   }
 
   /*------------------.
@@ -64,8 +65,8 @@ namespace bind
   Binder::visit_dec_header(ast::FunctionDec& e)
   {
     auto& map = scope_map_func_.map_get().back();
-    auto pair = map->find(e.name_get());
-    if (pair != map->end())
+    auto pair = map.find(e.name_get());
+    if (pair != map.end())
       redefinition(*(scope_map_func_.get(e.name_get())), e);
     else
       scope_map_func_.put(e.name_get(), &e);
@@ -77,10 +78,11 @@ namespace bind
   Binder::visit_dec_body(ast::FunctionDec& e)
   {
     scope_begin();
-    for (unsigned i = 0; i < e.formals_get().decs_get().size(); i++)
+    for (auto dec : e.formals_get().decs_get())
     {
-      if (scope_map_var_.get(e.formals_get().decs_get()[i]->name_get()) != nullptr)
-        redefinition(*(scope_map_var_.get(e.formals_get().decs_get()[i]->name_get())), *(e.formals_get().decs_get()[i]));
+      if (scope_map_var_.get(dec->name_get()) != nullptr)
+        redefinition(*(scope_map_var_.get(dec->name_get())), *dec);
+      scope_map_var_.put(dec->name_get(), dec);
     }
     if (e.body_get() != nullptr)
       e.body_get()->accept(*this);
@@ -99,7 +101,5 @@ namespace bind
 
   /* These specializations are in bind/binder.hxx, so that derived
      visitors can use them (otherwise, they wouldn't see them).  */
-
-  // FIXME: Some code was deleted here.
 
 } // namespace bind

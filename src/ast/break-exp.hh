@@ -29,8 +29,6 @@ namespace ast
     void accept(ConstVisitor& v) const override;
     /// Accept a non-const visitor \a v.
     void accept(Visitor& v) override;
-    /// Set site of loop.
-    void def_set(Exp*);
     /// \} */
   };
 

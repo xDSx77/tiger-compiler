@@ -68,7 +68,6 @@ namespace bind
   void
   Binder::operator()(ast::LetExp& e)
   {
-    std::cout << "letexp\n";
     for (auto decs : e.decs_get().decs_get())
     {
       decs->accept(*this);
@@ -80,8 +79,11 @@ namespace bind
   void
   Binder::operator()(ast::CallExp& e)
   {
-    std::cout << "callexp " << e.name_get() << '\n';
-    e.def_set(scope_map_func_.get(e.name_get()));
+    auto functiondec = scope_map_func_.get(e.name_get());
+    if (functiondec != nullptr)
+      e.def_set(functiondec);
+    else
+      undeclared("function", e);
   }
 
   void
@@ -95,9 +97,19 @@ namespace bind
   }
 
   void
+  Binder::operator()(ast::NameTy& e)
+  {
+    auto typedec = scope_map_type_.get(e.name_get());
+    if (typedec != nullptr || e.name_get() == misc::symbol("int")
+        || e.name_get() == misc::symbol("string"))
+      e.def_set(typedec);
+    else
+      undeclared("type", e);
+  }
+
+  void
   Binder::operator()(ast::IfExp& e)
   {
-    std::cout << "ifexp\n";
     e.test_get().accept(*this);
     scope_begin();
     e.body_get().accept(*this);
@@ -109,40 +121,31 @@ namespace bind
   void
   Binder::operator()(ast::ForExp& e)
   {
-    std::cout << "forexp\n";
     scope_begin();
     loops_.push_back(&e);
     e.vardec_get().accept(*this);
     e.hi_get().accept(*this);
     e.body_get().accept(*this);
-    delete loops_.back();
+    loops_.pop_back();
     scope_end();
   }
 
   void
   Binder::operator()(ast::WhileExp& e)
   {
-    std::cout << "whileexp\n";
     scope_begin();
     loops_.push_back(&e);
     e.test_get().accept(*this);
     e.body_get().accept(*this);
-    delete loops_.back();
+    loops_.pop_back();
     scope_end();
   }
 
   void
   Binder::operator()(ast::BreakExp& e)
   {
-    std::cout << "breakexp\n";
     if (loops_.size() == 0)
       error(e, "'break' outside any loop");
-  }
-
-  void
-  Binder::operator()(ast::NameTy& e)
-  {
-    std::cout << "namety " << e.name_get() << '\n';
   }
 
   /*-------------------.
@@ -152,7 +155,6 @@ namespace bind
   void
   Binder::operator()(ast::VarDecs& e)
   {
-    std::cout << "vardecs " << e.decs_get()[0]->name_get() << '\n';
     for (auto vardec : e.decs_get())
       vardec->accept(*this);
   }
@@ -160,11 +162,14 @@ namespace bind
   void
   Binder::operator()(ast::VarDec& e)
   {
-    std::cout << "vardec " << e.name_get() << '\n';
     if (scope_map_var_.get(e.name_get()) != nullptr)
       redefinition(*(scope_map_var_.get(e.name_get())), e);
     else
       scope_map_var_.put(e.name_get(), &e);
+    if (e.type_name_get() != nullptr)
+      e.type_name_get()->accept(*this);
+    if (e.init_get() != nullptr)
+      e.init_get()->accept(*this);
   }
 
   /*------------------------.
@@ -174,14 +179,12 @@ namespace bind
   void
   Binder::operator()(ast::FunctionDecs& e)
   {
-    std::cout << "funcdecs " << e.decs_get()[0]->name_get() << '\n';
     decs_visit(e);
   }
 
   void
   Binder::operator()(ast::FunctionDec& e)
   {
-    std::cout << "funcdec " << e.name_get() << '\n';
     if (e.name_get() == misc::symbol("_main"))
       check_main(e);
   }
@@ -193,14 +196,12 @@ namespace bind
   void
   Binder::operator()(ast::TypeDecs& e)
   {
-    std::cout << "typedecs " << e.decs_get()[0]->name_get() << '\n';
     decs_visit(e);
   }
 
   void
   Binder::operator()(ast::TypeDec& e)
   {
-    std::cout << "typedec " << e.name_get() << '\n';
   }
 
 } // namespace bind

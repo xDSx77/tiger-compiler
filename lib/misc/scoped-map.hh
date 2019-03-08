@@ -23,12 +23,12 @@ namespace misc
   class scoped_map
   {
   protected:
-    using scoped_map_t = std::vector<std::map<Key, Data>*>;
+    using scoped_map_t = std::vector<std::map<Key, Data>>;
 
   public:
     scoped_map();
     void put(const Key& key, const Data& value);
-    std::vector<std::map<Key, Data>*>& map_get();
+    std::vector<std::map<Key, Data>>& map_get();
     Data get(const Key& key) const;
     std::ostream& dump(std::ostream& ostr) const;
     void scope_begin();
