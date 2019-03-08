@@ -25,7 +25,7 @@ function test_error()
 
 function test_bind()
 {
-  ../src/tc -b $file
+  ../src/tc -Xb $file
   if [ $(echo $?) = 4 ]; then
     echo -e "\033[32;1m[OK] binding error detected in $file \033[0m"
   else
@@ -52,6 +52,13 @@ for file in ./good/*.tig ; do
 done
 
 echo "===================================================="
+echo "===========TESTING SYNTAX ERROR IN FILES============"
+echo "===================================================="
+for file in ./syntax/*.tig ; do
+  test_error
+done
+
+echo "===================================================="
 echo "================TESTING BIND FILES=================="
 echo "===================================================="
 for file in ./bind/*.tig ; do
@@ -63,11 +70,4 @@ echo "================TESTING TYPE FILES=================="
 echo "===================================================="
 for file in ./type/*.tig ; do
   test_type
-done
-
-echo "===================================================="
-echo "===========TESTING SYNTAX ERROR IN FILES============"
-echo "===================================================="
-for file in ./syntax/*.tig ; do
-  test_error
 done
