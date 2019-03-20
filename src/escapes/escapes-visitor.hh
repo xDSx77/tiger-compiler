@@ -71,6 +71,7 @@ namespace escapes
     void Escape::visit_dec_header<ast::TypeDec>(ast::TypeDec& e);
     template <>
     void Escape::visit_dec_body<ast::TypeDec>(ast::TypeDec& e);
+    */
   };
-*/
+
 } // namespace escapes
