@@ -9,6 +9,7 @@
 
 namespace escapes
 {
+/*
     void
     Escape::operator()(ast::FunctionDecs& e)
     {
@@ -65,4 +66,5 @@ namespace escapes
     void Escape::visit_dec_body<ast::TypeDec>(ast::TypeDec& e)
     {
     }
+    */
 } // namespace escapes

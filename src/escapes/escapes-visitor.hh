@@ -53,7 +53,7 @@ namespace escapes
     using super_type = ast::DefaultVisitor;
     /// Import all the overloaded visit methods.
     using super_type::operator();
-
+/*
     void operator()(ast::FunctionDecs& e) override;
     void operator()(ast::FunctionDec&) override;
     void operator()(ast::TypeDecs& e) override;
@@ -72,5 +72,5 @@ namespace escapes
     template <>
     void Escape::visit_dec_body<ast::TypeDec>(ast::TypeDec& e);
   };
-
+*/
 } // namespace escapes
