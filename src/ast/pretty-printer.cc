@@ -145,6 +145,8 @@ namespace ast
       const ast::Exp* exp2 = e.body_2_get();
       ostr_ << misc::decendl << "else " << *exp2;
     }
+    else
+      ostr_ << misc::decendl << "else " << "()";
   }
 
   void
@@ -325,9 +327,9 @@ namespace ast
   }
 
   void
-  PrettyPrinter::operator()(const BreakExp& e)
+  PrettyPrinter::operator()(const BreakExp&)
   {
-    ostr_ << "break" << std::endl;
+    ostr_ << "break";
   }
 
   void
@@ -344,7 +346,7 @@ namespace ast
   }
 
   void
-  PrettyPrinter::operator()(const NilExp& e)
+  PrettyPrinter::operator()(const NilExp&)
   {
     ostr_ << "nil";
   }

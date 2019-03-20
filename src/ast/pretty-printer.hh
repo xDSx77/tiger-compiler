@@ -44,10 +44,10 @@ namespace ast
     void operator()(const ArrayExp& e) override;
     void operator()(const CastExp& e) override;
     void operator()(const FieldInit& e) override;
-    void operator()(const BreakExp& e) override;
+    void operator()(const BreakExp&) override;
     void operator()(const MethodCallExp& e) override;
     void operator()(const IntExp& e) override;
-    void operator()(const NilExp& e) override;
+    void operator()(const NilExp&) override;
     void operator()(const ObjectExp& e) override;
     void operator()(const StringExp& e) override;
 
