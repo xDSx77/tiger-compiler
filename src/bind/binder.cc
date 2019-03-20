@@ -84,6 +84,8 @@ namespace bind
       e.def_set(functiondec);
     else
       undeclared("function", e);
+    for (auto exp : e.exps_get())
+      exp->accept(*this);
   }
 
   void
