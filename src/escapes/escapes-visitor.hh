@@ -54,7 +54,23 @@ namespace escapes
     /// Import all the overloaded visit methods.
     using super_type::operator();
 
-  // FIXME: Some code was deleted here.
+    void operator()(ast::FunctionDecs& e) override;
+    void operator()(ast::FunctionDec&) override;
+    void operator()(ast::TypeDecs& e) override;
+    void operator()(ast::TypeDec&) override;
+    void operator()(ast::VarDec& e) override; 
+    void operator()(ast::NameTy& e) override;
+    void operator()(ast::RecordTy& e) override;
+    void operator()(ast::ArrayTy& e) override;
+  protected:
+    template <>
+    void Escape::visit_dec_header<ast::FunctionDec>(ast::FunctionDec& e);
+    template <>
+    void Escape::visit_dec_body<ast::FunctionDec>(ast::FunctionDec& e);
+    template <>
+    void Escape::visit_dec_header<ast::TypeDec>(ast::TypeDec& e);
+    template <>
+    void Escape::visit_dec_body<ast::TypeDec>(ast::TypeDec& e);
   };
 
 } // namespace escapes
