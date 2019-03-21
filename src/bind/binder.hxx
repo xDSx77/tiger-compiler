@@ -39,13 +39,24 @@ namespace bind
   void
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
-    // Shorthand.
-    //using decs_type = ast::AnyDecs<D>;
     for (unsigned i = 0; i < e.decs_get().size(); i++)
       visit_dec_header(*(e.decs_get()[i]));
     for (unsigned i = 0; i < e.decs_get().size(); i++)
       if (e.decs_get()[i] != nullptr)
         visit_dec_body(*(e.decs_get()[i]));
+  }
+
+  template <>
+  inline
+  void
+  Binder::visit_dec_header(ast::FunctionDec& e)
+  {
+    auto& cur_map = scope_map_func_.map_get().back();
+    auto pair = cur_map.find(e.name_get());
+    if (pair != cur_map.end())
+      redefinition(*(scope_map_func_.get(e.name_get())), e);
+    else
+      scope_map_func_.put(e.name_get(), &e);
   }
 
   template <>
@@ -57,19 +68,6 @@ namespace bind
       redefinition(*(scope_map_type_.get(e.name_get())), e);
     else
       scope_map_type_.put(e.name_get(), &e);
-  }
-
-  template <>
-  inline
-  void
-  Binder::visit_dec_header(ast::FunctionDec& e)
-  {
-    auto& map = scope_map_func_.map_get().back();
-    auto pair = map.find(e.name_get());
-    if (pair != map.end())
-      redefinition(*(scope_map_func_.get(e.name_get())), e);
-    else
-      scope_map_func_.put(e.name_get(), &e);
   }
 
   template <>

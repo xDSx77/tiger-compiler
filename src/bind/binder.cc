@@ -68,11 +68,13 @@ namespace bind
   void
   Binder::operator()(ast::LetExp& e)
   {
+    scope_begin();
     for (auto decs : e.decs_get().decs_get())
     {
       decs->accept(*this);
     }
     e.exp_get().accept(*this);
+    scope_end();
   }
 
 
@@ -164,7 +166,9 @@ namespace bind
   void
   Binder::operator()(ast::VarDec& e)
   {
-    if (scope_map_var_.get(e.name_get()) != nullptr)
+    auto& cur_map = scope_map_var_.map_get().back();
+    auto pair = cur_map.find(e.name_get());
+    if (pair != cur_map.end())
       redefinition(*(scope_map_var_.get(e.name_get())), e);
     else
       scope_map_var_.put(e.name_get(), &e);
@@ -204,6 +208,8 @@ namespace bind
   void
   Binder::operator()(ast::TypeDec& e)
   {
+    visit_dec_header(e);
+    visit_dec_body(e);
   }
 
 } // namespace bind
