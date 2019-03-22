@@ -24,7 +24,13 @@ namespace object
   void
   Binder::operator()(ast::SimpleVar& e)
   {
-  // FIXME: Some code was deleted here.
+    auto vardec = scope_map_var_.get(e.name_get());
+    if (vardec != nullptr)
+      e.def_set(vardec);
+    else if (e.name_get() != misc::symbol("self") || within_method_dec_ == false)
+      throw std::runtime_error("variable not defined");
+    else
+      undeclared("variable", e);
   }
 
   // Handle the case of `Object'.
@@ -101,9 +107,10 @@ namespace object
   void
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
-    // Shorthand.
-    using decs_type = ast::AnyDecs<D>;
-  // FIXME: Some code was deleted here (Two passes: once on headers, then on bodies).
+    for (auto dec : e.decs_get())
+      visit_dec_header(*dec);
+    for (auto dec : e.decs_get())
+      visit_dec_body(*dec);
   }
 
   // This trampoline is needed, since `virtual' and `template' cannot
