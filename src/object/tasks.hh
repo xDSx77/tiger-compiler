@@ -20,9 +20,7 @@ namespace object::tasks
   TASK_DECLARE("object-parse", "parse a file, allowing objects",
                object_parse, "object parse");
 
-  // FIXME: Some code was deleted here.
-
-
-
+  TASK_DECLARE("object-bindings-compute", "bind the identifiers, allowing objects",
+               object_bindings_compute, "object parse");
 
 } // namespace object::tasks
