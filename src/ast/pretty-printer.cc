@@ -317,7 +317,8 @@ namespace ast
   void
   PrettyPrinter::operator()(const ClassTy& e)
   {
-    ostr_ << "class extends " << e.super_get() << '{' << e.decs_get() << '}';
+    ostr_ << "class extends " << e.super_get() << misc::iendl
+          << '{' << misc::incendl << e.decs_get() << misc::decendl << '}';
   }
 
   void
