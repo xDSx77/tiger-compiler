@@ -1,4 +1,4 @@
-/* A program to solve the N-queens problem */
+* A program to solve the N-queens problem */
 
 let
     var N := 5
