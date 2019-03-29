@@ -1,0 +1,5 @@
+let
+  import "fortytwo-var.tih"
+in
+  print_int(fortytwo); print("\n")
+end

@@ -1,0 +1,2 @@
+import "fortytwo-fn.tih"
+var fortytwo := fortytwo()

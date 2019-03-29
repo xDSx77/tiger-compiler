@@ -1,0 +1,20 @@
+let
+  type C = class
+  {
+    var a := 1
+    method m() =
+      let
+        type D = class
+        {
+          /* These members have same names as C's, but this is allowed
+             since they are not in the same scope.  */
+          var a := 1
+          method m() = ()
+        }
+      in
+      end
+  }
+in
+end
+
+
