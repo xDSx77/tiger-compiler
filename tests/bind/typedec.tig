@@ -1,0 +1,8 @@
+let
+    type a = { foo : int }
+    type c = a
+    var a := a { foo = 42 }
+    var c := c { foo = 24 }
+in
+    a := c
+end

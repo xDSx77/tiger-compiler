@@ -1,0 +1,6 @@
+let
+    var o := 42
+    var p : int := 24
+in
+    o := p := 45
+end

@@ -1,0 +1,8 @@
+let
+    var a := 1 /* int */
+in
+    while(a) do
+    (
+        42; ()
+    )
+end
