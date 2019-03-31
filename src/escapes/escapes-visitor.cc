@@ -9,7 +9,8 @@
 
 namespace escapes
 {
-/*
+
+    /*
     void
     Escape::operator()(ast::FunctionDecs& e)
     {
