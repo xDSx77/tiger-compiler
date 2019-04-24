@@ -1,0 +1,6 @@
+let
+  function _main () =
+    5
+in
+  _main()
+end
