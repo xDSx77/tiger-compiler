@@ -1,0 +1,12 @@
+let
+in
+  let
+    var a : int := 12
+    function hello (name : string) : string = name
+    var s : string := "test"
+  in
+    let function _main () = ()
+    in _main ()
+    end
+  end
+end

@@ -1,0 +1,7 @@
+while 2 < 5 do
+  let
+    function test () =
+      break
+  in
+    test ()
+  end
