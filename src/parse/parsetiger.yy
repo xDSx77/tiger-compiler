@@ -476,7 +476,7 @@ typedecs :
 | CLASS ID LBRACE classfields RBRACE %prec END_TYPE
     {
       ast::TypeDecs* typedecs = new ast::TypeDecs(@$);
-      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4));
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, new ast::NameTy(@$, "Object"), $4));
       typedecs->push_front(*typedec);
       $$ = typedecs;
     }
@@ -495,7 +495,7 @@ typedecs :
     }
 | CLASS ID LBRACE classfields RBRACE typedecs
     {
-      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, nullptr, $4));
+      ast::TypeDec* typedec = new ast::TypeDec(@$, $2, new ast::ClassTy(@$, new ast::NameTy(@$, "Object"), $4));
       $6->push_front(*typedec);
       $$ = $6;
     }
