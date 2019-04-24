@@ -53,6 +53,8 @@ namespace bind
   {
     auto& cur_map = scope_map_func_.map_get().back();
     auto pair = cur_map.find(e.name_get());
+    if (e.name_get() == misc::symbol("_main"))
+      check_main(e);
     if (pair != cur_map.end())
       redefinition(*(scope_map_func_.get(e.name_get())), e);
     else
