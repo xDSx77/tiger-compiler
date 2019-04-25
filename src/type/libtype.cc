@@ -9,7 +9,7 @@
 
 namespace type
 {
-
+/*
   misc::error
   types_check(ast::Ast& tree)
   {
@@ -17,5 +17,5 @@ namespace type
     type(tree);
     return type.error_get();
   }
-
+*/
 } // namespace type

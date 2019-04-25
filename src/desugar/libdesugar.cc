@@ -21,7 +21,7 @@ namespace desugar
   /*----------.
   | Helpers.  |
   `----------*/
-
+/*
   template <typename A>
   void
   bind_and_types_check(A& tree)
@@ -35,11 +35,11 @@ namespace desugar
 
   // Explicit instantiation.
   template void bind_and_types_check<ast::DecsList>(ast::DecsList&);
-
+*/
   /*----------.
   | Desugar.  |
   `----------*/
-
+/*
   template <typename A>
   A*
   raw_desugar(const A& tree,
@@ -68,11 +68,11 @@ namespace desugar
   /// Explicit instantiations.
   template ast::DecsList* raw_desugar(const ast::DecsList&, bool, bool);
   template ast::DecsList* desugar(const ast::DecsList&, bool, bool);
-
+*/
   /*-----------------------.
   | Array bounds checking.  |
   `-----------------------*/
-
+/*
   template <typename A>
   A*
   raw_bounds_checks_add(const A& tree)
@@ -99,5 +99,5 @@ namespace desugar
   /// Explicit instantiations.
   template ast::DecsList* raw_bounds_checks_add(const ast::DecsList&);
   template ast::DecsList* bounds_checks_add(const ast::DecsList&);
-
+*/
 } // namespace desugar

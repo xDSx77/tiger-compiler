@@ -30,7 +30,7 @@ namespace object
   /*----------------.
   | Compute types.  |
   `----------------*/
-
+/*
   misc::error
   types_check(ast::Ast& tree)
   {
@@ -38,11 +38,11 @@ namespace object
     type(tree);
     return type.error_get();
   }
-
+*/
   /*---------.
   | Rename.  |
   `---------*/
-
+/*
   class_names_type*
   rename(ast::Ast& tree)
   {
@@ -51,12 +51,12 @@ namespace object
     rename(tree);
     return rename.class_names_get();
   }
-
+*/
 
   /*------------------.
   | Desugar objects.  |
   `------------------*/
-
+/*
   template <typename A>
   A*
   raw_desugar(const A& tree, const class_names_type& class_names)
@@ -86,7 +86,7 @@ namespace object
   template ast::DecsList* desugar(const ast::DecsList&,
                                   const class_names_type&);
 
-
+*/
   /*----------.
   | Overfun.  |
   `----------*/

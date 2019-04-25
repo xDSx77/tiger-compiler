@@ -26,7 +26,7 @@ namespace object::tasks
     task_error() << ::object::bind(*ast::tasks::the_program);
     task_error().exit_on_error();
   }
-
+/*
   void
   object_types_compute()
   {
@@ -55,7 +55,7 @@ namespace object::tasks
     astclone::apply(::object::raw_desugar, ast::tasks::the_program,
                     *class_names.get());
   }
-
+*/
   // FIXME: Some code was deleted here.
 
 } // namespace object::tasks

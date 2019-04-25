@@ -13,12 +13,12 @@
 // Type module related tasks' implementation.
 namespace type::tasks
 {
-
+/*
   void
   types_check()
   {
     task_error() << ::type::types_check(*ast::tasks::the_program)
                  << &misc::error::exit_on_error;
   }
-
+*/
 } // namespace type::tasks

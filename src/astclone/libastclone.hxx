@@ -7,7 +7,7 @@
 // Define exported clone functions.
 namespace astclone
 {
-
+/*
   template <typename T>
   T*
   clone(const T& tree)
@@ -40,5 +40,5 @@ namespace astclone
     A* t2 = f(*t1, t3);
     t1.reset(t2);
   }
-
+*/
 } // namespace astclone

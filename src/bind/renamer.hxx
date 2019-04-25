@@ -119,7 +119,7 @@ namespace bind
   {
       super_type::operator()(e);
   }*/
-  void
+  /*void
   Renamer::operator()(ast::VarDecs& e)
   {
       super_type::operator()(e);
@@ -148,6 +148,6 @@ namespace bind
   Renamer::operator()(ast::TypeDec& e)
   {
       super_type::operator()(e);
-  }
+  }*/
 
 } // namespace bind

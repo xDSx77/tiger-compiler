@@ -23,7 +23,7 @@ namespace object::tasks
 
   TASK_DECLARE("object-bindings-compute", "bind the identifiers, allowing objects",
                object_bindings_compute, "object parse");
-
+/*
   /// Check for type violation, allowing objects.
   TASK_DECLARE("object-types-compute", "check for type violations, "
                "allowing objects",
@@ -45,7 +45,7 @@ namespace object::tasks
                "remove object constructs from the program "
                "without recomputing bindings nor types",
                raw_object_desugar, "object-rename");
-
+*/
   // FIXME: Some code was deleted here.
 
 } // namespace object::tasks

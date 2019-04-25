@@ -17,28 +17,28 @@ namespace desugar::tasks
   /*-------------.
     | Desugaring.  |
     `-------------*/
-
+/*
   void
   desugar()
   {
     astclone::apply(::desugar::desugar, ast::tasks::the_program,
                     desugar_for_p, desugar_string_cmp_p);
   }
-
+*/
   // FIXME: Some code was deleted here (Overload and desugar).
-
+/*
   void
   raw_desugar()
   {
     astclone::apply(::desugar::raw_desugar, ast::tasks::the_program,
                     desugar_for_p, desugar_string_cmp_p);
   }
-
+*/
 
   /*-----------------------.
     | Array bounds checking.  |
     `-----------------------*/
-
+/*
   void
   bounds_checks_add()
   {
@@ -53,5 +53,5 @@ namespace desugar::tasks
     astclone::apply(::desugar::raw_bounds_checks_add,
                     ast::tasks::the_program);
   }
-
+*/
 } // namespace desugar::tasks
