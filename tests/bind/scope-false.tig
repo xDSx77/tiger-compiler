@@ -1,0 +1,18 @@
+function _main() =
+(
+    let
+        var a := 2
+    in
+    (
+        print_int(a);
+        let
+            var a := 3
+        in
+            print_int(a)
+        end
+    )
+    end;
+    print_int(a)
+)
+
+/* error : try to print a in the first scope but a is only defined in the second */

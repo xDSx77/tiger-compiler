@@ -1,0 +1,17 @@
+function _main() =
+(
+    let
+        var a := 2
+    in
+    (
+        print_int(a);
+        let
+            var a := 3
+        in
+            print_int(a)
+        end
+    )
+    end;
+)
+
+/* success : a is defined in the second scope and print in the third */
