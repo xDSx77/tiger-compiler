@@ -198,11 +198,4 @@ namespace bind
     decs_visit(e);
   }
 
-  void
-  Binder::operator()(ast::TypeDec& e)
-  {
-    visit_dec_header(e);
-    visit_dec_body(e);
-  }
-
 } // namespace bind

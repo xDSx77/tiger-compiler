@@ -72,9 +72,7 @@ namespace bind
     void operator()(ast::VarDecs& e) override;
     void operator()(ast::VarDec& e) override;
     void operator()(ast::FunctionDecs& e) override;
-    void operator()(ast::FunctionDec& e) override;
     void operator()(ast::TypeDecs& e) override;
-    void operator()(ast::TypeDec& e) override;
     // ---------------- //
     // Visiting /Dec/.  //
     // ---------------- //
