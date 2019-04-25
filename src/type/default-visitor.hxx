@@ -45,6 +45,7 @@ namespace type
   void
   GenDefaultVisitor<Const>::operator()(const_t<Named>& e)
   {
+    super_type::operator()(e);
   // FIXME: Some code was deleted here.
   }
 
