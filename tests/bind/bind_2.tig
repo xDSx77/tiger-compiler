@@ -1,0 +1,21 @@
+function _main() =
+(
+    let
+        var a := 0
+    in
+    (
+        let
+            a := 4
+        in
+        (
+            let
+                a := 8
+            in
+            end
+        )
+        end;
+    a := 42
+    )
+    end;
+    print_int(a)
+)

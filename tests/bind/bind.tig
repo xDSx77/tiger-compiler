@@ -1,0 +1,9 @@
+function _main() =
+(
+    let
+        var a := 0
+    in
+        a
+    end;
+    ()
+)
