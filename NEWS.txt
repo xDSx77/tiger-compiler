@@ -1,3 +1,11 @@
+New in 1.75, 2019-03-01
+
+* General Maintainance
+  - gitlab-ci: build pdf for assignment
+
+* IA31
+  - rewrite_program: ia32: handle simultaneous use and def
+
 Bump 1.74, 2019-02-15 for tc-3
 
 New in 1.73, 2019-02-09
