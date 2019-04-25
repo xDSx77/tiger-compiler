@@ -11,7 +11,7 @@ function _main() =
             print_int(a)
         end
     )
-    end;
+    end
 )
 
 /* success : a is defined in the second scope and print in the third */

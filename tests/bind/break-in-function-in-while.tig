@@ -1,7 +1,11 @@
 while 2 < 5 do
+(
   let
     function test () =
       break
   in
     test ()
-  end
+  end;
+  if 2 = 2 then
+    break
+)

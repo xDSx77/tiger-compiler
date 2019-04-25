@@ -77,6 +77,8 @@ namespace bind
   void
   Binder::visit_dec_body(ast::FunctionDec& e)
   {
+    std::vector<ast::Exp*> copy_loops = loops_;
+    loops_ = *(new std::vector<ast::Exp*>());
     scope_begin();
     for (auto dec : e.formals_get().decs_get())
     {
@@ -87,6 +89,7 @@ namespace bind
     if (e.body_get() != nullptr)
       e.body_get()->accept(*this);
     scope_end();
+    loops_ = copy_loops;
   }
 
   template <>
