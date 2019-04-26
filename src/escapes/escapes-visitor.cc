@@ -10,62 +10,139 @@
 namespace escapes
 {
 
-    /*
     void
-    Escape::operator()(ast::FunctionDecs& e)
+    EscapesVisitor::operator()(ast::SimpleVar& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::FunctionDec&)
+    EscapesVisitor::operator()(ast::FieldVar& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::TypeDecs& e)
+    EscapesVisitor::operator()(ast::SubscriptVar& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::TypeDec&)
+    EscapesVisitor::operator()(ast::CastVar& e)
+    {
+        super_type::operator()(e);
+    }
+
+    void
+    EscapesVisitor::operator()(ast::NilExp&)
+    {
+    }
+    void
+    EscapesVisitor::operator()(ast::IntExp&)
+    {
+    }
+    void
+    EscapesVisitor::operator()(ast::StringExp&)
+    {
+    }
+
+    void
+    EscapesVisitor::operator()(ast::CallExp& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::VarDec& e)
+    EscapesVisitor::operator()(ast::OpExp& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::NameTy& e)
+    EscapesVisitor::operator()(ast::RecordExp& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::RecordTy& e)
+    EscapesVisitor::operator()(ast::SeqExp& e)
     {
         super_type::operator()(e);
     }
     void
-    Escape::operator()(ast::ArrayTy& e)
+    EscapesVisitor::operator()(ast::AssignExp& e)
     {
         super_type::operator()(e);
     }
-    template <>
-    void Escape::visit_dec_header<ast::FunctionDec>(ast::FunctionDec& e)
+    void
+    EscapesVisitor::operator()(ast::IfExp& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::WhileExp& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::ForExp& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::LetExp& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::ArrayExp& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::CastExp& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::BreakExp&)
     {
     }
-    template <>
-    void Escape::visit_dec_body<ast::FunctionDec>(ast::FunctionDec& e)
+
+    void
+    EscapesVisitor::operator()(ast::FunctionDecs& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::FunctionDec&)
     {
     }
-    template <>
-    void Escape::visit_dec_header<ast::TypeDec>(ast::TypeDec& e)
+    void
+    EscapesVisitor::operator()(ast::TypeDecs& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::TypeDec&)
     {
     }
-    template <>
-    void Escape::visit_dec_body<ast::TypeDec>(ast::TypeDec& e)
+    void
+    EscapesVisitor::operator()(ast::VarDec& e)
     {
+        super_type::operator()(e);
     }
-    */
+
+
+    void
+    EscapesVisitor::operator()(ast::NameTy& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::RecordTy& e)
+    {
+        super_type::operator()(e);
+    }
+    void
+    EscapesVisitor::operator()(ast::ArrayTy& e)
+    {
+        super_type::operator()(e);
+    }
+
 } // namespace escapes

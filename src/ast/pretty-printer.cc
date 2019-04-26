@@ -20,17 +20,17 @@ namespace ast
   namespace
   {
     /// Output \a e on \a ostr.
-    /*inline
+    inline
     std::ostream&
     operator<<(std::ostream& ostr, const Escapable& e)
     {
       if (escapes_display(ostr)
-  // FIXME: Some code was deleted here.
-          )*/
-        //ostr << "/* escaping */ ";
+      // FIXME: Some code was deleted here.
+          )
+        ostr << "/* escaping */ ";
 
-      /*return ostr;
-    }*/
+      return ostr;
+    }
 
     /// \brief Output \a e on \a ostr.
     ///
@@ -88,7 +88,10 @@ namespace ast
   void
   PrettyPrinter::operator()(const CallExp& e)
   {
-    ostr_ << e.name_get() << " (" << misc::separate(e.exps_get(), ',') << ')';
+    ostr_ << e.name_get();
+    if (bindings_display(ostr_))
+      ostr_ << " /* " << e.def_get() << " */";
+    ostr_ << "(" << misc::separate(e.exps_get(), ',') << ')';
   }
 
   void
@@ -218,6 +221,8 @@ namespace ast
   PrettyPrinter::operator()(const VarDec& e)
   {
     ostr_ << "var " << e.name_get();
+    if (bindings_display(ostr_))
+      ostr_ << " /* " << &e << " */";
     if (e.type_name_get())
       ostr_ << " : " << *(e.type_name_get());
     if (e.init_get())
@@ -230,31 +235,45 @@ namespace ast
     unsigned size = e.formals_get().decs_get().size();
     if (e.body_get())
     {
-      ostr_ << "function " << e.name_get() << " (";
+      ostr_ << "function " << e.name_get();
+      if (bindings_display(ostr_))
+        ostr_ << " /* " << &e << " */";
+      ostr_ << '(';
       if (size > 0)
       {
         for (unsigned i = 0; i < size-1; i++)
         {
-          ostr_ << e.formals_get().decs_get()[i]->name_get() << " : "
-                << *(e.formals_get().decs_get()[i]->type_name_get()) << ", ";
+          ostr_ << e.formals_get().decs_get()[i]->name_get();
+          if (bindings_display(ostr_))
+            ostr_ << " /* " << &(e.formals_get().decs_get()[i]) << " */";
+          ostr_ << " : " << *(e.formals_get().decs_get()[i]->type_name_get()) << ", ";
         }
-        ostr_ << e.formals_get().decs_get()[size-1]->name_get() << " : "
-              << *(e.formals_get().decs_get()[size-1]->type_name_get());
+        ostr_ << e.formals_get().decs_get()[size-1]->name_get();
+        if (bindings_display(ostr_))
+          ostr_ << " /* " << &(e.formals_get().decs_get()[size-1]) << " */";
+        ostr_ << " : " << *(e.formals_get().decs_get()[size-1]->type_name_get());
       }
       ostr_ << ')';
     }
     else
     {
-      ostr_ << "primitive " << e.name_get() << " (";
+      ostr_ << "primitive " << e.name_get();
+      if (bindings_display(ostr_))
+        ostr_ << " /* " << &e << " */";
+      ostr_ << '(';
       if (size >0)
       {
         for (unsigned i = 0; i < size-1; i++)
         {
-          ostr_ << e.formals_get().decs_get()[i]->name_get() << " : "
-                << *(e.formals_get().decs_get()[i]->type_name_get()) << ", ";
+          ostr_ << e.formals_get().decs_get()[i]->name_get();
+          if (bindings_display(ostr_))
+            ostr_ << " /* " << &(e.formals_get().decs_get()[i]) << " */";
+          ostr_ << " : " << *(e.formals_get().decs_get()[i]->type_name_get()) << ", ";
         }
-        ostr_ << e.formals_get().decs_get()[size-1]->name_get() << " : "
-              << *(e.formals_get().decs_get()[size-1]->type_name_get());
+        ostr_ << e.formals_get().decs_get()[size-1]->name_get();
+        if (bindings_display(ostr_))
+          ostr_ << " /* " << &(e.formals_get().decs_get()[size-1]) << " */";
+        ostr_ << " : " << *(e.formals_get().decs_get()[size-1]->type_name_get());
       }
       ostr_ << ')';
     }
@@ -273,16 +292,23 @@ namespace ast
   PrettyPrinter::operator()(const MethodDec& e)
   {
     unsigned size = e.formals_get().decs_get().size();
-    ostr_ << "method " << e.name_get() << " (";
+    ostr_ << "method " << e.name_get();
+    if (bindings_display(ostr_))
+      ostr_ << " /* " << &e << " */";
+    ostr_ << '(';
     if (size > 0)
     {
       for (unsigned i = 0; i < size-1; i++)
       {
-        ostr_ << e.formals_get().decs_get()[i]->name_get() << " : "
-              << *(e.formals_get().decs_get()[i]->type_name_get()) << ", ";
+        ostr_ << e.formals_get().decs_get()[i]->name_get();
+        if (bindings_display(ostr_))
+          ostr_ << " /* " << &(e.formals_get().decs_get()[i]) << " */";
+        ostr_ << " : " << *(e.formals_get().decs_get()[i]->type_name_get()) << ", ";
       }
-      ostr_ << e.formals_get().decs_get()[size-1]->name_get() << " : "
-            << *(e.formals_get().decs_get()[size-1]->type_name_get());
+      ostr_ << e.formals_get().decs_get()[size-1]->name_get();
+      if (bindings_display(ostr_))
+        ostr_ << " /* " << &(e.formals_get().decs_get()[size-1]) << " */";
+      ostr_ << " : " << *(e.formals_get().decs_get()[size-1]->type_name_get());
     }
     ostr_ << ')';
     if (e.result_get())
@@ -294,13 +320,18 @@ namespace ast
   void
   PrettyPrinter::operator()(const TypeDec& e)
   {
-    ostr_ << "type " << e.name_get() << " = " << e.ty_get();
+    ostr_ << "type " << e.name_get();
+    if (bindings_display(ostr_))
+      ostr_ << " /* " << &e << " */";
+    ostr_ << " = " << e.ty_get();
   }
 
   void
   PrettyPrinter::operator()(const NameTy& e)
   {
     ostr_ << e.name_get();
+    if (bindings_display(ostr_))
+      ostr_ << " /* " << e.def_get() << " */";
   }
 
   void
@@ -337,8 +368,10 @@ namespace ast
   void
   PrettyPrinter::operator()(const MethodCallExp& e)
   {
-    ostr_ << e.var_get() << '.' << e.name_get() << " ("
-          << misc::separate(e.exps_get(), ", ") << ')' << std::endl;
+    ostr_ << e.var_get() << '.' << e.name_get();
+    if (bindings_display(ostr_))
+      ostr_ << " /* " << &e << " */";
+    ostr_ << " (" << misc::separate(e.exps_get(), ", ") << ')' << std::endl;
   }
 
   void

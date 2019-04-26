@@ -53,25 +53,45 @@ namespace escapes
     using super_type = ast::DefaultVisitor;
     /// Import all the overloaded visit methods.
     using super_type::operator();
-/*
+
+    void operator()(ast::SimpleVar& e) override;
+    void operator()(ast::FieldVar& e) override;
+    void operator()(ast::SubscriptVar& e) override;
+    void operator()(ast::CastVar& e) override;
+
+    void operator()(ast::NilExp&) override;
+    void operator()(ast::IntExp&) override;
+    void operator()(ast::StringExp&) override;
+
+    void operator()(ast::CallExp& e) override;
+    void operator()(ast::OpExp& e) override;
+    void operator()(ast::RecordExp& e) override;
+    void operator()(ast::SeqExp& e) override;
+    void operator()(ast::AssignExp& e) override;
+    void operator()(ast::IfExp& e) override;
+    void operator()(ast::WhileExp& e) override;
+    void operator()(ast::ForExp& e) override;
+    void operator()(ast::LetExp& e) override;
+    void operator()(ast::ArrayExp& e) override;
+    void operator()(ast::CastExp& e) override;
+    void operator()(ast::BreakExp&) override;
+
     void operator()(ast::FunctionDecs& e) override;
     void operator()(ast::FunctionDec&) override;
     void operator()(ast::TypeDecs& e) override;
     void operator()(ast::TypeDec&) override;
     void operator()(ast::VarDec& e) override; 
+
     void operator()(ast::NameTy& e) override;
     void operator()(ast::RecordTy& e) override;
     void operator()(ast::ArrayTy& e) override;
+
   protected:
-    template <>
-    void Escape::visit_dec_header<ast::FunctionDec>(ast::FunctionDec& e);
-    template <>
-    void Escape::visit_dec_body<ast::FunctionDec>(ast::FunctionDec& e);
-    template <>
-    void Escape::visit_dec_header<ast::TypeDec>(ast::TypeDec& e);
-    template <>
-    void Escape::visit_dec_body<ast::TypeDec>(ast::TypeDec& e);
-    */
+
+    std::map<misc::symbol, ast::TypeDec*> map_type_;
+    std::map<misc::symbol, ast::FunctionDec*> map_func_;
+    std::map<misc::symbol, ast::VarDec*> map_var_;
+
   };
 
 } // namespace escapes
