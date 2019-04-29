@@ -9,7 +9,9 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  Escapable::Escapable()
+    : escaped_(true)
+  {}
 
 } // namespace ast
 

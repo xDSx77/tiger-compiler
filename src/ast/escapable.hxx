@@ -10,7 +10,17 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  inline const bool&
+  Escapable::escape_get() const
+  {
+    return escaped_;
+  }
+
+  inline void
+  Escapable::escape_set(const bool& escaped)
+  {
+    escaped_ = escaped;
+  }
 
 } // namespace ast
 

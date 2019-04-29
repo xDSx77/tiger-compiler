@@ -24,11 +24,8 @@ namespace ast
     std::ostream&
     operator<<(std::ostream& ostr, const Escapable& e)
     {
-      if (escapes_display(ostr)
-      // FIXME: Some code was deleted here.
-          )
+      if (escapes_display(ostr) && e.escape_get())
         ostr << "/* escaping */ ";
-
       return ostr;
     }
 
@@ -220,7 +217,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const VarDec& e)
   {
-    ostr_ << "var " << e.name_get();
+    ostr_ << "var " << static_cast<const ast::Escapable&>(e) << e.name_get();
     if (bindings_display(ostr_))
       ostr_ << " /* " << &e << " */";
     if (e.type_name_get())
