@@ -46,42 +46,41 @@ namespace type
   GenDefaultVisitor<Const>::operator()(const_t<Named>& e)
   {
     super_type::operator()(e);
-  // FIXME: Some code was deleted here.
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Array>& e)
   {
-  // FIXME: Some code was deleted here.
+    super_type::operator()(e);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Record>& e)
   {
-  // FIXME: Some code was deleted here.
+    super_type::operator()(e);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Class>& e)
   {
-  // FIXME: Some code was deleted here.
+    super_type::operator()(e);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Function>& e)
   {
-  // FIXME: Some code was deleted here.
+    super_type::operator()(e);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Method>& e)
   {
-    e.Function::accept(*this);
+    e.Function::accept(*this)
   }
 
 } // namespace type
