@@ -42,7 +42,9 @@ namespace type
   TypeChecker::type(const ast::fields_type& e)
   {
     auto res = new Record;
-  // FIXME: Some code was deleted here.
+    for (const auto& i : e.type_get())
+        res->field_add(i->name_get(), *type(*i));
+
     return res;
   }
 
@@ -139,13 +141,17 @@ namespace type
   void
   TypeChecker::operator()(ast::IntExp& e)
   {
-  // FIXME: Some code was deleted here.
+      auto int_ptr = std::make_unique<Int>();
+      type_default(e, int_ptr.get());
+      created_type_default(e, int_ptr.release());
   }
 
   void
   TypeChecker::operator()(ast::StringExp& e)
   {
-  // FIXME: Some code was deleted here.
+      auto str_ptr = std::make_unique<String>();
+      type_default(e, str_ptr.get());
+      created_type_default(e, str_ptr.release());
   }
 
 
