@@ -25,7 +25,7 @@ function test_error()
 
 function test_bind()
 {
-  ../src/tc -Xb $file
+  ../src/tc -b $file
   if [ $(echo $?) = 4 ]; then
     echo -e "\033[32;1m[OK] binding error detected in $file \033[0m"
   else

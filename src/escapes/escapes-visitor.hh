@@ -59,13 +59,14 @@ namespace escapes
     void operator()(ast::SimpleVar& e) override;
     void operator()(ast::FieldVar& e) override;
     void operator()(ast::SubscriptVar& e) override;
+    void operator()(ast::CastVar& e) override;
 
-    void operator()(ast::FunctionDecs& e) override;
+    void operator()(ast::FunctionDec& e) override;
     void operator()(ast::VarDec& e) override; 
 
   protected:
 
-    int scope_depth;
+    int scope_depth_;
     std::map<misc::symbol, int> map_var_;
 
   };

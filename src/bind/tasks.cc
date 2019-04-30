@@ -31,6 +31,7 @@ namespace bind::tasks
     void
     bound()
     {
+      bindings_compute();
     }
 }
 
