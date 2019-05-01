@@ -70,9 +70,7 @@ namespace bind
   {
     scope_begin();
     for (auto decs : e.decs_get().decs_get())
-    {
       decs->accept(*this);
-    }
     e.exp_get().accept(*this);
     scope_end();
   }
@@ -109,6 +107,12 @@ namespace bind
       e.def_set(typedec);
     else
       undeclared("type", e);
+  }
+
+  void
+  Binder::operator()(ast::ArrayTy& e)
+  {
+    e.base_type_get().accept(*this);
   }
 
   void

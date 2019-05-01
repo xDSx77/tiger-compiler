@@ -69,6 +69,7 @@ namespace bind
     void operator()(ast::WhileExp& e) override;
     void operator()(ast::BreakExp& e) override;
     void operator()(ast::NameTy& e) override;
+    void operator()(ast::ArrayTy& e) override;
     void operator()(ast::VarDecs& e) override;
     void operator()(ast::VarDec& e) override;
     void operator()(ast::FunctionDecs& e) override;
@@ -118,14 +119,6 @@ namespace bind
     /// Check a Function or Type declaration body.
     template <class D>
     void visit_dec_body(D& e);
-    // Visit a variable declaration.
-    //void operator()(ast::VarDec&) override;
-
-    /// Visit a chunk of Function declarations.
-    //void operator()(ast::FunctionDecs&) override;
-
-    /// No longer used.
-    //void operator()(ast::MethodDec&) override;
     /// \}
 
     /// \name Error handling

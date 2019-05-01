@@ -39,11 +39,11 @@ namespace bind
   void
   Binder::decs_visit(ast::AnyDecs<D>& e)
   {
-    for (unsigned i = 0; i < e.decs_get().size(); i++)
-      visit_dec_header(*(e.decs_get()[i]));
-    for (unsigned i = 0; i < e.decs_get().size(); i++)
-      if (e.decs_get()[i] != nullptr)
-        visit_dec_body(*(e.decs_get()[i]));
+    for (auto dec : e.decs_get())
+      visit_dec_header(*dec);
+    for (auto dec : e.decs_get())
+      if (dec != nullptr)
+        visit_dec_body(*dec);
   }
 
   template <>
