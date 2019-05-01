@@ -18,7 +18,7 @@ namespace type
   const Type&
   Attribute::type_get() const
   {
-  // FIXME: Some code was deleted here.
+    return *(def_->type_get());
   }
 
   inline

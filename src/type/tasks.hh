@@ -9,7 +9,7 @@
 
 namespace type::tasks
 {
-/*
+
   TASK_GROUP("4. Type checking");
 
   /// Default the type-checking to Tiger (without objects nor overloading).
@@ -17,10 +17,10 @@ namespace type::tasks
                            "default the type-checking to Tiger "
                            "(without objects nor overloading)",
                            "types-compute"
-                           " object-types-compute");
+                           /*" object-types-compute"*/);
 
   /// Check for type violation.
   TASK_DECLARE("types-compute", "check for type violations",
                types_check, "bindings-compute");
-*/
+
 } // namespace type::tasks

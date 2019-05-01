@@ -80,7 +80,7 @@ namespace type
   void
   GenDefaultVisitor<Const>::operator()(const_t<Method>& e)
   {
-    e.Function::accept(*this)
+    e.Function::accept(*this);
   }
 
 } // namespace type

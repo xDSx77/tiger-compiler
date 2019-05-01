@@ -13,16 +13,15 @@ namespace type
   inline bool
   operator==(const Type& lhs, const Type& rhs)
   {
-    if (lhs == rhs)
+    if (lhs.actual() == rhs.actual())
       return true;
-    die("REMOVE ME!");
     return false;
   }
 
   inline bool
   operator!=(const Type& lhs, const Type& rhs)
   {
-    return lhs != rhs;
+    return !(lhs == rhs);
   }
 
 } // namespace type
