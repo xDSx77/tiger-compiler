@@ -14,7 +14,7 @@
 
 namespace astclone::tasks
 {
-/*
+
   void
   clone()
   {
@@ -25,5 +25,5 @@ namespace astclone::tasks
                    << &misc::error::exit;
     ast::tasks::the_program.reset(ds);
   }
-*/
+
 } // namespace astclone::tasks
