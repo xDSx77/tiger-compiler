@@ -23,7 +23,36 @@ namespace ast
 
   class Typable
   {
-  // FIXME: Some code was deleted here.
+  public:
+    /** \name Ctor & dtor.
+     ** \{ */
+    /// Construct a Typable node.
+    Typable();
+    Typable(const Typable&) = delete;
+    Typable& operator=(const Typable&) = delete;
+    /// Destroy a Typable node.
+    virtual ~Typable() = default;
+    /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    virtual void accept(ConstVisitor& v) const = 0;
+    /// Accept a non-const visitor \a v.
+    virtual void accept(Visitor& v) = 0;
+    /// \}
+
+    /** \name Accessors.
+     ** \{ */
+    /// Return a pointer to the type of the node.
+    const type::Type* type_get() const;
+    /// Set the type of the node.
+    void type_set(const type::Type* type);
+    /** \} */
+
+  protected:
+    /// Pointer to the type of the node.
+    const type::Type* type_;
   };
 
 } // namespace ast

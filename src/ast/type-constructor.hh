@@ -18,7 +18,36 @@ namespace ast
 
   class TypeConstructor
   {
-  // FIXME: Some code was deleted here.
+  public:
+    /** \name Ctor & dtor.
+     ** \{ */
+    /// Construct a TypeConstructor node.
+    TypeConstructor();
+    TypeConstructor(const TypeConstructor&) = delete;
+    TypeConstructor& operator=(const TypeConstructor&) = delete;
+    /// Destroy a TypeConstructor node.
+    ~TypeConstructor();
+    /** \} */
+
+    /// \name Visitors entry point.
+    /// \{ */
+    /// Accept a const visitor \a v.
+    virtual void accept(ConstVisitor& v) const = 0;
+    /// Accept a non-const visitor \a v.
+    virtual void accept(Visitor& v) = 0;
+    /// \}
+
+    /** \name Accessors.
+     ** \{ */
+    /// Return a pointer to the newly created type of the node.
+    const type::Type* created_type_get() const;
+    /// Set the created type of the node.
+    void create_type_set(const type::Type* type);
+    /** \} */
+
+  protected:
+    /// Pointer to the created type of the node.
+    const type::Type* created_type_;
   };
 
 } // namespace ast

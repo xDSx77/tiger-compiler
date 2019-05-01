@@ -9,7 +9,8 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  Typable::Typable()
+  {}
 
 } // namespace ast
 

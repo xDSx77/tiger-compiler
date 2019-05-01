@@ -9,7 +9,13 @@
 namespace ast
 {
 
-  // FIXME: Some code was deleted here.
+  TypeConstructor::TypeConstructor()
+  {}
+
+  TypeConstructor::~TypeConstructor()
+  {
+    //delete created_type_;
+  }
 
 } // namespace ast
 
