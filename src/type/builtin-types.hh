@@ -30,7 +30,7 @@ namespace type
     /** \name Accessors.
      ** \{ */
     /// Return the user defined type's structure.
-    const int type_get() const;
+    int type_get() const;
 
     /// Set the defined type's structure.
     void type_set(const int type);
@@ -43,7 +43,7 @@ namespace type
   private:
     /// The Type pointed to.
     const int* type_;
-  }
+  };
 
   class String : public Type
   {
@@ -78,7 +78,7 @@ namespace type
   private:
     /// The Type pointed to.
     const std::string* type_;
-  }
+  };
 
   class Void : public Type
   {
@@ -96,5 +96,5 @@ namespace type
     /// Accept a non-const visitor \a v.
     void accept(Visitor& v) override;
     /** \} */
-  }
+  };
 } // namespace type

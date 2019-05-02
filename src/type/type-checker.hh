@@ -148,9 +148,9 @@ namespace type
     // ---------------- //
 
     void operator()(ast::SimpleVar& e) override;
-    /*void operator()(ast::CastVar& e) override;
+    void operator()(ast::CastVar& e) override;
     void operator()(ast::FieldVar& e) override;
-    void operator()(ast::SubscriptVar& e) override;*/
+    void operator()(ast::SubscriptVar& e) override;
 
     // ---------------- //
     // Visiting /Exp/.  //
@@ -164,7 +164,7 @@ namespace type
     // Complex values.
     void operator()(ast::RecordExp& e) override;
     void operator()(ast::OpExp& e) override;
-    /*void operator()(ast::ArrayExp& e) override;
+    void operator()(ast::ArrayExp& e) override;
     void operator()(ast::AssignExp& e) override;
     void operator()(ast::BreakExp& e) override;
     void operator()(ast::CallExp& e) override;
@@ -175,7 +175,7 @@ namespace type
     void operator()(ast::LetExp& e) override;
     void operator()(ast::ObjectExp& e) override;
     void operator()(ast::SeqExp& e) override;
-    void operator()(ast::WhileExp& e) override;*/
+    void operator()(ast::WhileExp& e) override;
 
     // ---------------- //
     // Visiting /Dec/.  //

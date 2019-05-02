@@ -263,6 +263,12 @@ namespace type
   // FIXME: Some code was deleted here.
   }
 
+  void
+  TypeChecker::operator()(ast::MethodCallExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
   /*-----------------.
   | Visiting /Dec/.  |
   `-----------------*/
