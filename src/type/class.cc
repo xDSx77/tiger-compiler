@@ -35,25 +35,52 @@ namespace type
   const Type*
   Class::attr_type(const misc::symbol& key) const
   {
-  // FIXME: Some code was deleted here.
+    for (const Class* cur = this; cur; cur = cur->super_get())
+      for (const Attribute& attr : cur->attrs_get())
+        if (attr.name_get() == key)
+          return &attr.type_get();
+    return nullptr;
   }
 
   const Type*
   Class::meth_type(const misc::symbol& key) const
   {
-  // FIXME: Some code was deleted here.
+    for (const Class* cur = this; cur; cur = cur->super_get())
+      for (const Method* meth : cur->meths_get())
+        if (meth->name_get() == key)
+          return &meth->type_get();
+    return nullptr;
   }
 
-  // FIXME: Some code was deleted here (Find common super class).
+  const Class*
+  Class::common_root(const Class& other) const
+  {
+    for (const Class* cur = this; cur; cur = cur->super_get())
+      for (const Class* cur2 = &other; cur2; cur2 = cur2->super_get())
+        if (cur->id_get() == cur2->id_get())
+          return cur;
+    return nullptr;
+  }
 
-  // FIXME: Some code was deleted here (Super class soundness test).
+  bool
+  Class::sound() const
+  {
+  }
 
-  // FIXME: Some code was deleted here (Special implementation of "compatible_with" for Class).
+  bool
+  Class::compatible_with(const Type& other) const
+  {
+    for (const Class* sub : subclasses_)
+      if (*sub == dynamic_cast<const Class&>(other))
+        return true;
+    return false;
+  }
 
   const Class&
   Class::object_instance()
   {
-  // FIXME: Some code was deleted here.
+    Class* object = new Class(nullptr);
+    return *object;
   }
 
   unsigned Class::fresh_id()

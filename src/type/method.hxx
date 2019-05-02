@@ -22,7 +22,7 @@ namespace type
   inline const Type&
   Method::type_get() const
   {
-  // FIXME: Some code was deleted here.
+    return *this; //FIXME not sure about that
   }
 
   inline const ast::MethodDec*

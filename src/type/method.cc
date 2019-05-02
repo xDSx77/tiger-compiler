@@ -32,6 +32,20 @@ namespace type
     v(*this);
   }
 
-  // FIXME: Some code was deleted here.
+  bool
+  Method::compatible_with(const Type& other) const
+  {
+    if (*this != other)
+      return false;
+    const Function& f = dynamic_cast<const Function&>(*this);
+    if (!(f.compatible_with(other)))
+      return false;
+    const Method& m2 = dynamic_cast<const Method&>(other);
+    if (owner_ != m2.owner_get())
+      return false;
+    if (name_ != m2.name_get())
+      return false;
+    return true;
+  }
 
 } // namespace type

@@ -133,7 +133,7 @@ namespace type
     bool sound() const;
     /** \} */
 
-  // FIXME: Some code was deleted here (Inherited methods).
+    bool compatible_with(const Type& other) const;
 
     /// Return the unique instance of the class type `Object'.
     static const Class& object_instance();

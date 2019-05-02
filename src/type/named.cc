@@ -23,10 +23,28 @@ namespace type
     type_set(type);
   }
 
-  // FIXME: Some code was deleted here (Inherited functions).
+  void Named::accept(ConstVisitor& v) const
+  {
+    v(*this);
+  }
 
-  // FIXME: Some code was deleted here (Sound).
+  void Named::accept(Visitor& v)
+  {
+    v(*this);
+  }
 
-  // FIXME: Some code was deleted here (Special implementation of "compatible_with" for Named).
+  bool Named::sound() const
+  {
+    if (name_ == dynamic_cast<const Named*>(type_)->name_get())
+      return false;
+    return true;
+  }
+
+  bool Named::compatible_with(const Type& other) const
+  {
+    if (*type_ == other)
+      return true;
+    return false;
+  }
 
 } // namespace type

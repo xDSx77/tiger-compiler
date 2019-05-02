@@ -36,6 +36,25 @@ namespace type
     v(*this);
   }
 
-  // FIXME: Some code was deleted here.
+  bool
+  Function::compatible_with(const Type& other) const
+  {
+    if (*this != other)
+      return false;
+    const Function& f2 = dynamic_cast<const Function&>(other);
+    if (formals_ != nullptr && f2.formals_ != nullptr)
+    {
+      if (formals_->fields_get().size() != f2.formals_get().fields_get().size())
+        return false;
+      for (long unsigned int i = 0; i < formals_->fields_get().size(); i++)
+      {
+        if (!(formals_->field_type(formals_->fields_get()[i].name_get())->compatible_with(*f2.formals_get().field_type(f2.formals_get().fields_get()[i].name_get()))))
+          return false;
+      }
+    }
+    if (result_ != f2.result_)
+      return false;
+    return true;
+  }
 
 } // namespace type
