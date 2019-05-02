@@ -119,10 +119,27 @@ namespace type
   void
   TypeChecker::operator()(ast::SimpleVar& e)
   {
+
+  }
+
+  void
+  TypeChecker::operator()(ast::SubscriptVar& e)
+  {
   // FIXME: Some code was deleted here.
   }
 
+  void
+  TypeChecker::operator()(ast::FieldVar& e)
+  {
   // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::CastVar& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
 
 
   /*-----------------.
@@ -180,8 +197,71 @@ namespace type
       }
   }
 
+  void
+  TypeChecker::operator()(ast::SeqExp& e)
+  {
   // FIXME: Some code was deleted here.
+  }
 
+  void
+  TypeChecker::operator()(ast::WhileExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::ObjectExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::LetExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::IfExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::ForExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::CastExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::CallExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::BreakExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::AssignExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
+
+  void
+  TypeChecker::operator()(ast::ArrayExp& e)
+  {
+  // FIXME: Some code was deleted here.
+  }
 
   /*-----------------.
   | Visiting /Dec/.  |
