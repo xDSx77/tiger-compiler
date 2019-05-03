@@ -32,38 +32,38 @@ namespace object
     // Desugar prefixes.
 
     // Prefix of every class id (label).
-    const char* class_id_prefix = "_id_";
+    //const char* class_id_prefix = "_id_";
     // Prefix of every record holding the contents of a desugared class.
-    const char* class_contents_prefix = "_contents_";
+    //const char* class_contents_prefix = "_contents_";
     // Prefix of every variant storing the possible dynamic type for
     // a given static type.
-    const char* class_variant_prefix = "_variant_";
+    //const char* class_variant_prefix = "_variant_";
     // Prefix of the fields in the variant.
-    const char* variant_field_prefix = "field_";
+    //const char* variant_field_prefix = "field_";
     // Prefix of constructors.
-    const char* class_ctor_prefix = "_new_";
+    //const char* class_ctor_prefix = "_new_";
     // Prefix of methods.
-    const char* method_prefix = "_method_";
+    //const char* method_prefix = "_method_";
 
 
     // Useful routines.
 
     // Try to get the class type of \a t.  If \a t is not a class
     // type, return a null pointer.
-    const type::Class*
+    /*const type::Class*
     class_type_query(const ast::Typable& t)
     {
-  // FIXME: Some code was deleted here.
-    }
+    // FIXME: Some code was deleted here.
+    }*/
 
     // Like class_type_query, but ensure the type is actually a class.
-    const type::Class*
+    /*const type::Class*
     class_type_get(const ast::Typable& t)
     {
       const type::Class* class_type = class_type_query(t);
       postcondition(class_type);
       return class_type;
-    }
+    }*/
 
   }
 
@@ -72,31 +72,31 @@ namespace object
   | Code generation.  |
   `------------------*/
 
-  std::string
+  /*std::string
   DesugarVisitor::type_symbol(const type::Type* type)
   {
   // FIXME: Some code was deleted here (Check int, then string, then class name).
-  }
+  }*/
 
-  std::string
+  /*std::string
   DesugarVisitor::upcast_fun_name(const type::Class* from,
                                   const type::Class* to)
   {
     std::stringstream s;
     s << "_upcast_" << class_names_(from) << "_to_" << class_names_(to);
     return s.str();
-  }
+  }*/
 
-  std::string
+  /*std::string
   DesugarVisitor::downcast_fun_name(const type::Class* from,
                                     const type::Class* to)
   {
     std::stringstream s;
     s << "_downcast_" << class_names_(from) << "_to_" << class_names_(to);
     return s.str();
-  }
+  }*/
 
-  std::string
+  /*std::string
   DesugarVisitor::dispatch_fun_name(const type::Class* owner,
                                     const type::Method* method)
   {
@@ -109,10 +109,10 @@ namespace object
       s << "_dispatch_"  << class_names_(owner) << "_" << method->name_get();
 
     return s.str();
-  }
+  }*/
 
 
-  void
+  /*void
   DesugarVisitor::adapt_type(ast::Exp*& source_exp,
                              const type::Class* source_type,
                              const type::Class* target_type)
@@ -123,9 +123,9 @@ namespace object
       source_exp = parse::parse(parse::Tweast()
                                 << upcast_fun_name(source_type, target_type)
                                 << " (" << source_exp << ")");
-  }
+  }*/
 
-  ast::Exp*
+  /*ast::Exp*
   DesugarVisitor::variant_exp(const type::Class* static_type,
                               const std::string& exact_type,
                               const field_inits_type& inits)
@@ -135,12 +135,12 @@ namespace object
     input <<
           " " << class_variant_prefix << static_type_name <<
           " {"
-          "   exact_type = " << exact_type;
+          "   exact_type = " << exact_type;*/
     /* For each field of the variant, store the corresponding
        initialization value if one was given, otherwise set the field
        to `nil'.  */
     // Fields of the static type.
-    for (const type::Class* c = static_type; c; c = c->super_get())
+    /*for (const type::Class* c = static_type; c; c = c->super_get())
       // Don't generate slots for classes with no data.
       if (c->has_data())
         {
@@ -168,10 +168,10 @@ namespace object
         }
     input << " }\n";
     return parse::parse(input);
-  }
+  }*/
 
   // Syntactic sugar.
-  ast::Exp*
+  /*ast::Exp*
   DesugarVisitor::variant_exp(const type::Class* static_type,
                               const type::Class* dynamic_type,
                               const field_inits_type& inits)
@@ -179,9 +179,9 @@ namespace object
     std::string exact_type =
       class_id_prefix + class_names_(dynamic_type).get();
     return variant_exp(static_type, exact_type, inits);
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::fill_variant_fields(const type::Class* class_type,
                                       parse::Tweast* input)
   {
@@ -193,30 +193,30 @@ namespace object
                << "   " << variant_field_prefix << class_name << " : "
                << "   " << class_contents_prefix << class_name;
       }
-  }
+  }*/
 
   // Desugar a class type as a variant (record) type.
-  parse::Tweast*
+  /*parse::Tweast*
   DesugarVisitor::variant_ty(const type::Class* class_type)
   {
     auto input = new parse::Tweast;
     *input << " {"
-           << "   exact_type : int";
+           << "   exact_type : int";*/
     // Actual data slots.
     /* First, populate the variant with mandatory fields (always non
        nil) starting with the type of the visited class, then super
        classes.  */
-    for (const type::Class* c = class_type; c; c = c->super_get())
-      fill_variant_fields(c, input);
+    /*for (const type::Class* c = class_type; c; c = c->super_get())
+      fill_variant_fields(c, input);*/
     /* Then add all subclasses types.  These might be nil, according to
        the exact type of the object.  */
-    for (const type::Class* subclass : class_type->subclasses_get())
+    /*for (const type::Class* subclass : class_type->subclasses_get())
       fill_variant_fields(subclass, input);
     *input << " }\n";
     return input;
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::fill_init_list(const type::Class* class_type,
                                  field_inits_type& inits)
   {
@@ -229,9 +229,9 @@ namespace object
                   std::string("source.")
                   + variant_field_prefix + field_name);
       }
-  }
+  }*/
 
-  parse::Tweast*
+  /*parse::Tweast*
   DesugarVisitor::cast_function(const std::string& name,
                                 const type::Class* source,
                                 const type::Class* target,
@@ -254,25 +254,25 @@ namespace object
       fill_init_list(c, inits);
     *input << variant_exp(target, exact_type, inits) << "\n";
     return input;
-  }
+  }*/
 
-  parse::Tweast*
+  /*parse::Tweast*
   DesugarVisitor::upcast_function(const type::Class* source,
                                   const type::Class* target)
   {
     return cast_function(upcast_fun_name(source, target),
                          source, target, source);
-  }
+  }*/
 
-  parse::Tweast*
+  /*parse::Tweast*
   DesugarVisitor::downcast_function(const type::Class* source,
                                     const type::Class* target)
   {
     return cast_function(downcast_fun_name(source, target),
                          source, target, target);
-  }
+  }*/
 
-  ast::Exp*
+  /*ast::Exp*
   DesugarVisitor::dispatch_switch(const type::Class* class_type,
                                   const type::Method* method,
                                   const ast::TypeDecs* decs,
@@ -346,9 +346,9 @@ namespace object
       }
     input << '\n';
     return parse::parse(input);
-  }
+  }*/
 
-  parse::Tweast*
+  /*parse::Tweast*
   DesugarVisitor::method_call(const misc::symbol& class_name,
                               const misc::symbol& method_name,
                               const std::string& target,
@@ -362,13 +362,13 @@ namespace object
   // FIXME: Some code was deleted here.
     *input << ")";
     return input;
-  }
+  }*/
 
   /*------------------------.
   | Visiting declarations.  |
   `------------------------*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::DecsList& e)
   {
     const ast::Location& location = e.location_get();
@@ -397,13 +397,13 @@ namespace object
           }
       }
     result_ = new ast::DecsList(location, contents);
-  }
+  }*/
 
   /*-----------------------------.
   | Desugar class declarations.  |
   `-----------------------------*/
 
-  void
+  /*void
   DesugarVisitor::desugar_constructor(parse::Tweast& functions,
                                       const type::Class* cls,
                                       const misc::symbol& class_name)
@@ -456,9 +456,9 @@ namespace object
     // Create the contents of the variant.
     functions << variant_exp(cls, cls, inits)
               << " end\n";
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::desugar_method(parse::Tweast& functions,
                                   const type::Method* method,
                                   const misc::symbol& class_name)
@@ -483,9 +483,9 @@ namespace object
                  class_type_query(*def->body_get()),
                  class_type_query(*def->result_get()));
     functions << " = " << body << "\n";
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::dispatch_function(parse::Tweast& functions,
                                     const ast::TypeDecs& e,
                                     const type::Class* cls,
@@ -560,27 +560,27 @@ namespace object
     if (def->result_get() != nullptr)
       functions << " : " << recurse(def->result_get());
     functions << " = " << dispatch_switch(cls, method, &e);
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::handle_class(const ast::TypeDecs& e,
                                const type::Class* cls,
                                parse::Tweast& functions,
                                dispatch_list_type& sub_dispatches)
   {
     misc::symbol class_name = class_names_(cls);
-
+  */
     /*---------------------------.
     | Introduce a new class id.  |
     `---------------------------*/
-
+  /*
     class_ids_ << " var " << class_id_prefix << class_name
                << " := " << cls->id_get() << "\n";
-
+  */
     /*----------------------------------------------------.
     | Create a record holding the actual class contents.  |
     `----------------------------------------------------*/
-
+  /*
     if (cls->has_data())
       {
         types_
@@ -589,36 +589,36 @@ namespace object
   // FIXME: Some code was deleted here (Populate the record with attributes (names and types)).
         types_ << " }\n";
       }
-
+  */
     /*--------------------------------------------------------------.
     | Create a variant able to store any dynamic type corresponding |
     | to this (static) class type.                                  |
     `--------------------------------------------------------------*/
-
+  /*
     types_
       << " type " << class_variant_prefix << class_name << " ="
       << variant_ty(cls);
-
+  */
     /*-----------------------.
     | Create a constructor.  |
     `-----------------------*/
 
-    desugar_constructor(functions, cls, class_name);
+    //desugar_constructor(functions, cls, class_name);
 
     /*-------------------------------------------------------------.
     | Create conversion routines from the class type to any of its |
     | super types.                                                 |
     `-------------------------------------------------------------*/
-
+  /*
     for (const type::Class* super_type = cls->super_get();
          super_type; super_type = super_type->super_get())
       funs_tweast << upcast_function(cls, super_type);
-
+  */
     /*-------------------------------------------------------------.
     | Create conversion routines from the class type to any of its |
     | subtypes.                                                    |
     `-------------------------------------------------------------*/
-
+  /*
     for (const type::Class* subclass : cls->subclasses_get())
       functions << downcast_function(cls, subclass);
 
@@ -627,13 +627,13 @@ namespace object
         desugar_method(functions, m, class_name);
         dispatch_function(functions, e, cls, m, class_name, sub_dispatches);
       }
-  }
+  }*/
 
   /* All type-related code is emitted into the top-level decs-list, so
      that all classes are stored in the same typedecs, allowing them
      to see their subclasses and be able to build a variant for each
      of them.  */
-  void
+  /*void
   DesugarVisitor::operator()(const ast::TypeDecs& e)
   {
     parse::Tweast functions;
@@ -643,17 +643,17 @@ namespace object
     for (const ast::TypeDec* t : e.decs_get())
       {
         const type::Class* cls = nullptr;
-  // FIXME: Some code was deleted here (Get the ty's class type).
+        // FIXME: Some code was deleted here (Get the ty's class type).
 
         if (cls)
             handle_class(e, cls, functions, sub_dispatches);
         else
-          {
+          {*/
             /* FIXME: In the rest of the visitor, the
                simply-clone-this-node case is handled before the
                desugar-this-node case.  */
             // Otherwise, clone the type declaration.
-            ast::TypeDec* typedec = recurse(*t);
+            /*ast::TypeDec* typedec = recurse(*t);
             assertion(typedec);
             types_ << *typedec << '\n';
           }
@@ -661,15 +661,15 @@ namespace object
 
     ast::DecsList* funs_list = parse::parse(functions);
     result_ = funs_list;
-  }
+  }*/
 
   /*------------------------------------------------.
   | Desugar class instantiations and object usage.  |
   `------------------------------------------------*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::VarDec& e)
-  {
+  {*/
     /* We don't desugar everything using concrete syntax here, because
        it would require a lot of additional manipulations, as we
        cannot easily produce a single VarDec from a parsing.  Also
@@ -677,7 +677,7 @@ namespace object
        VarDec (with no `s') are also found in FunctionDec.  */
 
     // If this is not an object instantiation, delegate to the cloner.
-
+    /*
     const type::Class* class_type = class_type_query(e);
     if (!class_type)
       return super_type::operator()(e);
@@ -710,23 +710,23 @@ namespace object
     result_ = new ast::VarDec(location, name,
                               type_name, init);
     postcondition(type_name || init);
-  }
+  }*/
 
 
   // Desugar a class instantiation as a call to the desugared ctor routine.
-  void
+  /*void
   DesugarVisitor::operator()(const ast::ObjectExp& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::IfExp& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::AssignExp& e)
   {
     // If this is not an object assignment, delegate to the cloner.
@@ -749,10 +749,10 @@ namespace object
     ast::Exp* assignment =
       parse::parse(parse::Tweast() << var << " := " << exp);
     result_ = assignment;
-  }
+  }*/
 
 
-  ast::exps_type*
+  /*ast::exps_type*
   DesugarVisitor::recurse_args(const ast::exps_type& actuals,
                                const type::Record& formals)
   {
@@ -778,9 +778,9 @@ namespace object
         args->emplace_back(arg);
       }
     return args;
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::ArrayExp& e)
   {
     // We want to allow this:
@@ -794,9 +794,9 @@ namespace object
     //   arr[1] := new A
     // end
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::RecordExp& e)
   {
     // We want to allow this:
@@ -808,9 +808,9 @@ namespace object
     // in
     // end
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::CallExp& e)
   {
     const type::Function* function_type;
@@ -827,13 +827,13 @@ namespace object
   // FIXME: Some code was deleted here.
 
   // FIXME: Some code was deleted here (Instantiate into result).
-  }
+  }*/
 
   /*------------------------------------.
   | Desugar accesses to class members.  |
   `------------------------------------*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::FieldVar& e)
   {
     // Check the type of the variable to see whether it is a class or
@@ -868,7 +868,7 @@ namespace object
   // FIXME: Some code was deleted here.
                    );
     result_ = attr_var;
-  }
+  }*/
 
   void
   DesugarVisitor::operator()(const ast::LetExp& e)
@@ -892,7 +892,7 @@ namespace object
     dispatch_added_ = saved_dispatch_added_;
   }
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::MethodCallExp& e)
   {
     const type::Method* method_type;
@@ -922,14 +922,14 @@ namespace object
 
     // Turn the method call into a function call to the desugared method.
   // FIXME: Some code was deleted here (Instanciate into result).
-  }
+  }*/
 
   /*--------------------------.
   | New types and functions.  |
   `--------------------------*/
 
   // Introduce a desugared builtin Object in the top-level function.
-  void
+  /*void
   DesugarVisitor::operator()(const ast::FunctionDec& e)
   {
     bool is_main;
@@ -992,9 +992,9 @@ namespace object
             res->body_set(parse::parse(input));
           }
       }
-  }
+  }*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::NameTy& e)
   {
     // Check if E is the name of a class; if not, just clone it.
@@ -1007,6 +1007,6 @@ namespace object
     result_ = new ast::NameTy(location,
                               class_variant_prefix +
                               class_names_(class_type).get());
-  }
+  }*/
 
 } // namespace object

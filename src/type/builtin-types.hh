@@ -10,15 +10,27 @@
 namespace type
 {
 
-  class Int : public Type
+  /// Singleton design pattern.
+  template <class C> class Singleton : public Type
   {
-    /** \name Ctor & dtor.
-     ** \{ */
   public:
-    /** \brief Construct a Int type. */
-    Int();
-    /** \} */
+    /// Get a unique instance of the Singleton.
+    static Singleton* getInstance()
+    {
+      static Singleton* instance = new Singleton();
+      return instance;
+    }
 
+  protected:
+    /// Delete copy operators.
+    Singleton(const Singleton&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
+  };
+
+  /// Int builtin type.
+  class Int : public Singleton<Int>
+  {
+  public:
     /// \name Visitors entry point.
     /** \{ */
     /// Accept a const visitor \a v.
@@ -27,33 +39,20 @@ namespace type
     void accept(Visitor& v) override;
     /** \} */
 
-    /** \name Accessors.
+    /** \name Ctor & dtor.
      ** \{ */
-    /// Return the user defined type's structure.
-    int type_get() const;
-
-    /// Set the defined type's structure.
-    void type_set(const int type);
-    /// Set the defined type's structure.
-    void type_set(const int type) const;
-    /** \} */
-
-    bool compatible_with(const Type& other) const override;
-
   private:
-    /// The Type pointed to.
-    const int* type_;
+    /// Construct an Int.
+    Int() = default;
+    /// Destroys an Int.
+    ~Int() = default;
+    /** \} */
   };
 
-  class String : public Type
+  /// String builtin type.
+  class String : public Singleton<String>
   {
-    /** \name Ctor & dtor.
-     ** \{ */
   public:
-    /** \brief Construct a Int type. */
-    String();
-    /** \} */
-
     /// \name Visitors entry point.
     /** \{ */
     /// Accept a const visitor \a v.
@@ -62,33 +61,20 @@ namespace type
     void accept(Visitor& v) override;
     /** \} */
 
-    /** \name Accessors.
+    /** \name Ctor & dtor.
      ** \{ */
-    /// Return the user defined type's structure.
-    const std::string type_get() const;
-
-    /// Set the defined type's structure.
-    void type_set(const std::string type);
-    /// Set the defined type's structure.
-    void type_set(const std::string type) const;
-    /** \} */
-
-    bool compatible_with(const Type& other) const override;
-
   private:
-    /// The Type pointed to.
-    const std::string* type_;
+    /// Construct a String.
+    String() = default;
+    /// Destroys a String.
+    ~String() = default;
+    /** \} */
   };
 
-  class Void : public Type
+  /// Void builtin type.
+  class Void : public Singleton<Void>
   {
-    /** \name Ctor & dtor.
-     ** \{ */
   public:
-    /** \brief Construct a Int type. */
-    Void();
-    /** \} */
-
     /// \name Visitors entry point.
     /** \{ */
     /// Accept a const visitor \a v.
@@ -96,5 +82,14 @@ namespace type
     /// Accept a non-const visitor \a v.
     void accept(Visitor& v) override;
     /** \} */
+
+    /** \name Ctor & dtor.
+     ** \{ */
+  private:
+    /// Construct Void type.
+    Void() = default;
+    /// Destroys Void type.
+    ~Void() = default;
   };
+
 } // namespace type

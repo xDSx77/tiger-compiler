@@ -36,13 +36,13 @@ namespace object
   | Visiting /Var/.  |
   `-----------------*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::SimpleVar& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::FieldVar& e)
   {
     const type::Type* def_type = nullptr;
@@ -55,7 +55,7 @@ namespace object
       }
     else
       super_type::operator()(e);
-  }
+  }*/
 
 
   /*----------------.
@@ -63,20 +63,20 @@ namespace object
   `----------------*/
 
   // Handle the case of `Object'.
-  void
+  /*void
   TypeChecker::operator()(ast::NameTy& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
 
   /*-----------------.
   | Visiting /Exp/.  |
   `-----------------*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::IfExp& e)
-  {
+  {*/
     // We want to handle the following case
     // let
     //   class A {}
@@ -90,9 +90,9 @@ namespace object
     //    a.print() /* error */
     // end
   // FIXME: Some code was deleted here.
-  }
+  //}
 
-  void
+  /*void
   TypeChecker::operator()(ast::OpExp& e)
   {
     // We want to only compare equal static object types.
@@ -107,19 +107,19 @@ namespace object
     //   a = b
     // end
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::ObjectExp& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::MethodCallExp& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
 
   /*-----------------.
@@ -130,7 +130,7 @@ namespace object
   | Visiting TypeDecs.  |
   `--------------------*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::TypeDecs& e)
   {
     // Visit the header and the body of the typedecs, as in
@@ -146,14 +146,14 @@ namespace object
         if (auto classty = dynamic_cast<ast::ClassTy*>(&ty))
           visit_dec_members(*classty);
       }
-  }
+  }*/
 
 
   /*----------------------.
   | Visiting MethodDecs.  |
   `----------------------*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::MethodDecs& e)
   {
     // Two passes: once on headers, then on bodies.
@@ -161,10 +161,10 @@ namespace object
       visit_dec_header(*m);
     for (ast::MethodDec* m : e.decs_get())
       visit_dec_body(*m);
-  }
+  }*/
 
   // Store the type of this method.
-  void
+  /*void
   TypeChecker::visit_dec_header(ast::MethodDec& e)
   {
     assertion(current_);
@@ -180,32 +180,32 @@ namespace object
     const type::Method* super_meth_type =
       dynamic_cast<const type::Method*>(current_->meth_type(e.name_get()));
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
 
   // Type check this method's body.
-  void
+  /*void
   TypeChecker::visit_dec_body(ast::MethodDec& e)
   {
     precondition(!within_methoddec_body_p_);
     within_methoddec_body_p_ = true;
     visit_routine_body<type::Method>(e);
     within_methoddec_body_p_ = false;
-  }
+  }*/
 
 
   /*---------------.
   | Visit VarDec.  |
   `---------------*/
 
-  void
+  /*void
   TypeChecker::operator()(ast::VarDec& e)
   {
-    super_type::operator()(e);
+    super_type::operator()(e);*/
     /* If we are inside a class declaration, but not within a
        method's body, then E is an attribute: record it into the
        CURRENT_ class.  */
-    if (e.init_get() && current_ && !within_methoddec_body_p_)
+    /*if (e.init_get() && current_ && !within_methoddec_body_p_)
       {
         assertion(e.init_get());
 
@@ -214,7 +214,7 @@ namespace object
         else
           current_->attr_add(&e);
       }
-  }
+  }*/
 
 
   /*-------------.
@@ -222,7 +222,7 @@ namespace object
   `-------------*/
 
   // Don't handle members, as visit_dec_members is in charge of this task.
-  void
+  /*void
   TypeChecker::operator()(ast::ClassTy& e)
   {
   // FIXME: Some code was deleted here (Create class).
@@ -230,10 +230,10 @@ namespace object
   // FIXME: Some code was deleted here (Set the type of the super class).
 
   // FIXME: Some code was deleted here (Recursively update the list of subclasses of the super classes).
-  }
+  }*/
 
   // Handle the members of a class.
-  void
+  /*void
   TypeChecker::visit_dec_members(ast::ClassTy& e)
   {
     const type::Type* type = nullptr;
@@ -246,16 +246,16 @@ namespace object
     type::Class* saved_class_type = current_;
     // Make the type writable, so that we can add references to the
     // types of the members.
-    current_ = const_cast<type::Class*>(class_type);
+    current_ = const_cast<type::Class*>(class_type);*/
     /* Even if it were the case, pretend we are not within a method,
        since we are inside a class definition, which ``overrides'' any
        (outer) enclosing method.  */
-    bool saved_within_methoddec_body_p = within_methoddec_body_p_;
+    /*bool saved_within_methoddec_body_p = within_methoddec_body_p_;
     within_methoddec_body_p_ = false;
     e.decs_get().accept(*this);
     // Set back the status we had before we visited the members.
     within_methoddec_body_p_ = saved_within_methoddec_body_p;
     current_ = saved_class_type;
-  }
+  }*/
 
 } // namespace object

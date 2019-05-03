@@ -25,11 +25,11 @@ namespace desugar
   /*-----------------------------.
   | Desugar string comparisons.  |
   `-----------------------------*/
-  void
+  /*void
   DesugarVisitor::operator()(const ast::OpExp& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
 
   /*----------------------.
@@ -72,10 +72,10 @@ namespace desugar
        is done to prevent overflows on INT_MAX.
        ->>*/
 
-  void
+  /*void
   DesugarVisitor::operator()(const ast::ForExp& e)
   {
   // FIXME: Some code was deleted here.
-  }
+  }*/
 
 } // namespace desugar
