@@ -45,35 +45,40 @@ namespace type
   void
   GenDefaultVisitor<Const>::operator()(const_t<Named>& e)
   {
-    super_type::operator()(e);
+    e.type_get()->accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Array>& e)
   {
-    super_type::operator()(e);
+    e.type_get().accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Record>& e)
   {
-    super_type::operator()(e);
+    for (auto i : e.fields_get())
+      i.type_get().accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Class>& e)
   {
-    super_type::operator()(e);
+    for (auto i : e.attrs_get())
+      i.type_get().accept(*this);
+    for (auto j : e.meths_get())
+      j->type_get().accept(*this);
   }
 
   template <template <typename> class Const>
   void
   GenDefaultVisitor<Const>::operator()(const_t<Function>& e)
   {
-    super_type::operator()(e);
+    e.formals_get().accept(*this);
+    e.result_get().accept(*this);
   }
 
   template <template <typename> class Const>
