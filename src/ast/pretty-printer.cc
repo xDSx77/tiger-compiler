@@ -121,7 +121,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const RecordExp& e)
   {
-    ostr_ << e.type_get() << " { " << misc::separate(e.fieldinits_get(), ", ") << " }";
+    ostr_ << e.name_ty_get() << " { " << misc::separate(e.fieldinits_get(), ", ") << " }";
   }
 
   void
@@ -174,7 +174,7 @@ namespace ast
   void
   PrettyPrinter::operator()(const ArrayExp& e)
   {
-    ostr_ << e.type_get() << " [" << e.size_get() << "] of " << e.value_get();
+    ostr_ << e.name_ty_get() << " [" << e.size_get() << "] of " << e.value_get();
   }
 
   void

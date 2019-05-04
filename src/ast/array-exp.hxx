@@ -12,14 +12,14 @@ namespace ast
 
 
   inline const NameTy&
-  ArrayExp::type_get() const
+  ArrayExp::name_ty_get() const
   {
-    return *type_;
+    return *name_ty_;
   }
   inline NameTy&
-  ArrayExp::type_get()
+  ArrayExp::name_ty_get()
   {
-    return *type_;
+    return *name_ty_;
   }
 
   inline const Exp&

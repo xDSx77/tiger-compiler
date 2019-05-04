@@ -26,10 +26,10 @@ namespace astclone
   Cloner::operator()(const ast::ArrayExp& e)
   {
     const Location& location = e.location_get();
-    NameTy* type = recurse(e.type_get());
+    NameTy* name_ty = recurse(e.name_ty_get());
     Exp* size = recurse(e.size_get());
     Exp* value = recurse(e.value_get());
-    result_ = new ArrayExp(location, type, size, value);
+    result_ = new ArrayExp(location, name_ty, size, value);
   }
 
   void
@@ -235,9 +235,9 @@ namespace astclone
   Cloner::operator()(const ast::RecordExp& e)
   {
     const Location& location = e.location_get();
-    NameTy* type = recurse(e.type_get());
+    NameTy* name_ty = recurse(e.name_ty_get());
     fieldinits_type fieldinits = e.fieldinits_get();
-    result_ = new RecordExp(location, type, fieldinits);
+    result_ = new RecordExp(location, name_ty, fieldinits);
   }
 
   void

@@ -11,14 +11,14 @@ namespace ast
 {
 
   inline const NameTy&
-  RecordExp::type_get() const
+  RecordExp::name_ty_get() const
   {
-    return *type_;
+    return *name_ty_;
   }
   inline NameTy&
-  RecordExp::type_get()
+  RecordExp::name_ty_get()
   {
-    return *type_;
+    return *name_ty_;
   }
 
   inline const fieldinits_type&

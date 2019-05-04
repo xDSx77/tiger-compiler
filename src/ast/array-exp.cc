@@ -9,16 +9,16 @@
 namespace ast
 {
 
-  ArrayExp::ArrayExp(const Location& location, NameTy* type, Exp* size, Exp* value)
+  ArrayExp::ArrayExp(const Location& location, NameTy* name_ty, Exp* size, Exp* value)
     : Exp(location)
-    , type_(type)
+    , name_ty_(name_ty)
     , size_(size)
     , value_(value)
   {}
 
   ArrayExp::~ArrayExp()
   {
-    delete type_;
+    delete name_ty_;
     delete size_;
     delete value_;
   }
