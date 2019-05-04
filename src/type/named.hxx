@@ -43,7 +43,7 @@ namespace type
   inline const Type&
   Named::actual() const
   {
-    return *type_;
+    return type_->actual();
   }
 
 } // namespace type

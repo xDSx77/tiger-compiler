@@ -168,12 +168,10 @@ namespace type
     void operator()(ast::AssignExp& e) override;
     void operator()(ast::BreakExp& e) override;
     void operator()(ast::CallExp& e) override;
-    void operator()(ast::MethodCallExp& e) override;
     void operator()(ast::CastExp& e) override;
     void operator()(ast::ForExp& e) override;
     void operator()(ast::IfExp& e) override;
     void operator()(ast::LetExp& e) override;
-    void operator()(ast::ObjectExp& e) override;
     void operator()(ast::SeqExp& e) override;
     void operator()(ast::WhileExp& e) override;
 

@@ -10,21 +10,29 @@
 namespace type
 {
 
+  class Int;
+  class String;
+  class Void;
+
   /// Singleton design pattern.
   template <class C> class Singleton : public Type
   {
+  friend class Int;
+  friend class String;
+  friend class Void;
   public:
+    /// Delete copy operators.
+    Singleton(const Singleton&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
     /// Get a unique instance of the Singleton.
-    static Singleton* getInstance()
+    static C& instance()
     {
-      static Singleton* instance = new Singleton();
+      static C instance;
       return instance;
     }
 
   protected:
-    /// Delete copy operators.
-    Singleton(const Singleton&) = delete;
-    Singleton& operator=(const Singleton&) = delete;
+    Singleton() = default;
   };
 
   /// Int builtin type.
@@ -39,14 +47,6 @@ namespace type
     void accept(Visitor& v) override;
     /** \} */
 
-    /** \name Ctor & dtor.
-     ** \{ */
-  private:
-    /// Construct an Int.
-    Int() = default;
-    /// Destroys an Int.
-    ~Int() = default;
-    /** \} */
   };
 
   /// String builtin type.
@@ -61,14 +61,6 @@ namespace type
     void accept(Visitor& v) override;
     /** \} */
 
-    /** \name Ctor & dtor.
-     ** \{ */
-  private:
-    /// Construct a String.
-    String() = default;
-    /// Destroys a String.
-    ~String() = default;
-    /** \} */
   };
 
   /// Void builtin type.
@@ -83,13 +75,6 @@ namespace type
     void accept(Visitor& v) override;
     /** \} */
 
-    /** \name Ctor & dtor.
-     ** \{ */
-  private:
-    /// Construct Void type.
-    Void() = default;
-    /// Destroys Void type.
-    ~Void() = default;
   };
 
 } // namespace type

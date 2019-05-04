@@ -35,7 +35,7 @@ function test_bind()
 
 function test_type()
 {
-  ../src/tc $file
+  ../src/tc -T $file
   if [ $(echo $?) = 5 ]; then
     echo -e "\033[32;1m[OK] typing error detected in $file \033[0m"
   else

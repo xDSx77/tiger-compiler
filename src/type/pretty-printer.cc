@@ -74,43 +74,43 @@ namespace type
   void
   PrettyPrinter::operator()(const Int&)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "int";
   }
 
   void
   PrettyPrinter::operator()(const String&)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "string";
   }
 
   void
   PrettyPrinter::operator()(const Named& e)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "named";
   }
 
   void
   PrettyPrinter::operator()(const Array& e)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "array";
   }
 
   void
   PrettyPrinter::operator()(const Record& e)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "array";
   }
 
   void
   PrettyPrinter::operator()(const Class& e)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "class";
   }
 
   void
   PrettyPrinter::operator()(const Function& e)
   {
-  // FIXME: Some code was deleted here.
+    ostr_ << "function";
   }
 
   void

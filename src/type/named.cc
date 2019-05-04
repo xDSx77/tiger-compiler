@@ -38,17 +38,28 @@ namespace type
   bool
   Named::sound() const
   {
-    if (name_ == dynamic_cast<const Named*>(type_)->name_get())
-      return false;
-    return true;
+    std::set<misc::symbol> visited_named;
+    visited_named.insert(name_);
+    const Named* cur = this;
+    while(1)
+    {
+      auto named = dynamic_cast<const Named*>(cur->type_);
+      if (named)
+      {
+        if (visited_named.find(named->name_get()) != visited_named.end())
+          return false;
+        visited_named.insert(named->name_get());
+        cur = named;
+      }
+      else
+        return true;
+    }
   }
 
   bool
   Named::compatible_with(const Type& other) const
   {
-    if (*type_ == other)
-      return true;
-    return false;
+    return *type_ == other;
   }
 
 } // namespace type
