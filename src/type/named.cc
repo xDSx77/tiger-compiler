@@ -23,24 +23,28 @@ namespace type
     type_set(type);
   }
 
-  void Named::accept(ConstVisitor& v) const
+  void
+  Named::accept(ConstVisitor& v) const
   {
     v(*this);
   }
 
-  void Named::accept(Visitor& v)
+  void
+  Named::accept(Visitor& v)
   {
     v(*this);
   }
 
-  bool Named::sound() const
+  bool
+  Named::sound() const
   {
     if (name_ == dynamic_cast<const Named*>(type_)->name_get())
       return false;
     return true;
   }
 
-  bool Named::compatible_with(const Type& other) const
+  bool
+  Named::compatible_with(const Type& other) const
   {
     if (*type_ == other)
       return true;
